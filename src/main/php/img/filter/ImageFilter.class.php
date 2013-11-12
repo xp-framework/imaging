@@ -1,26 +1,22 @@
-<?php
-/* This class is part of the XP framework
- *
- * $Id$
- */
+<?php namespace img\filter;
 
-  uses('img.ImagingException');
+use img\ImagingException;
+
+
+/**
+ * Filter interface
+ *
+ * @see      xp://img.Image#apply
+ * @purpose  Interface
+ */
+interface ImageFilter {
 
   /**
-   * Filter interface
+   * Apply this filter on a given image. Note: This changes the given image!
    *
-   * @see      xp://img.Image#apply
-   * @purpose  Interface
+   * @param   img.Image image
+   * @return  bool
+   * @throws  img.ImagingException
    */
-  interface ImageFilter {
-  
-    /**
-     * Apply this filter on a given image. Note: This changes the given image!
-     *
-     * @param   img.Image image
-     * @return  bool
-     * @throws  img.ImagingException
-     */
-    public function applyOn($image);
-  }
-?>
+  public function applyOn($image);
+}

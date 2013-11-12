@@ -1,52 +1,47 @@
-<?php
-/* This class is part of the XP framework
+<?php namespace img\chart;
+
+
+
+/**
+ * Pie chart
  *
- * $Id$ 
+ * @see      xp://img.chart.Chart
+ * @purpose  Chart
  */
+class PieChart extends Chart {
 
-  uses('img.chart.Chart');
-
+  public
+    $valinset= array();
+  
   /**
-   * Pie chart
+   * Helper method which returns the sum from all values
    *
-   * @see      xp://img.chart.Chart
-   * @purpose  Chart
+   * @return  float
    */
-  class PieChart extends Chart {
-
-    public
-      $valinset= array();
-    
-    /**
-     * Helper method which returns the sum from all values
-     *
-     * @return  float
-     */
-    public function sum() {
-      $sum= 0;
-      for ($i= 0, $s= sizeof($this->series[0]->values); $i < $s; $i++) {
-        $sum+= $this->series[0]->values[$i];
-      }
-      return $sum;
+  public function sum() {
+    $sum= 0;
+    for ($i= 0, $s= sizeof($this->series[0]->values); $i < $s; $i++) {
+      $sum+= $this->series[0]->values[$i];
     }
-    
-    /**
-     * Sets inset for the specified item
-     *
-     * @param int item The item index
-     */
-    public function setValueInset($item, $inset= 10) {
-      $this->valinset[$item]= $inset;
-    }
-    
-    /**
-     * Returns the inset for the specified item
-     *
-     * @param int item The item index
-     * @return int
-     */
-    public function getValueInset($item) {
-      return isset($this->valinset[$item]) ? $this->valinset[$item] : 0;
-    }
+    return $sum;
   }
-?>
+  
+  /**
+   * Sets inset for the specified item
+   *
+   * @param int item The item index
+   */
+  public function setValueInset($item, $inset= 10) {
+    $this->valinset[$item]= $inset;
+  }
+  
+  /**
+   * Returns the inset for the specified item
+   *
+   * @param int item The item index
+   * @return int
+   */
+  public function getValueInset($item) {
+    return isset($this->valinset[$item]) ? $this->valinset[$item] : 0;
+  }
+}

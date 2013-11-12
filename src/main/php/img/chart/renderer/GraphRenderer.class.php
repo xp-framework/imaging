@@ -1,23 +1,18 @@
-<?php
-/* This class is part of the XP framework
+<?php namespace img\chart\renderer;
+
+/**
+ * Renderer
  *
- * $Id$ 
+ * @see      xp://img.chart.Chart
+ * @purpose  Interface
  */
+interface GraphRenderer {
 
   /**
-   * Renderer
+   * Renders a chart
    *
-   * @see      xp://img.chart.Chart
-   * @purpose  Interface
+   * @param   img.chart.Chart chart
+   * @return  var
    */
-  interface GraphRenderer {
-  
-    /**
-     * Renders a chart
-     *
-     * @param   img.chart.Chart chart
-     * @return  var
-     */
-    public function render(Chart $chart);
-  }
-?>
+  public function render(\img\chart\Chart $chart);
+}

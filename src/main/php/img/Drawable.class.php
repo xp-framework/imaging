@@ -1,24 +1,19 @@
-<?php
-/* This class is part of the XP framework
+<?php namespace img;
+
+/**
+ * Denotes a drawable object
  *
- * $Id$ 
+ * @see      xp://img.Image#draw
+ * @purpose  Interface
  */
+interface Drawable {
 
   /**
-   * Denotes a drawable object
+   * Draws this object onto an image
    *
-   * @see      xp://img.Image#draw
-   * @purpose  Interface
+   * @param   img.Image image
+   * @return  var
    */
-  interface Drawable {
-  
-    /**
-     * Draws this object onto an image
-     *
-     * @param   img.Image image
-     * @return  var
-     */
-    public function draw($image);
-  
-  }
-?>
+  public function draw($image);
+
+}

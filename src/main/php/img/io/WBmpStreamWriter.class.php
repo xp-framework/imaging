@@ -1,40 +1,35 @@
-<?php
-/* This class is part of the XP framework
- *
- * $Id$ 
- */
+<?php namespace img\io;
 
-  uses('img.io.StreamWriter');
+
+
+/**
+ * Writes WBMP to a stream
+ *
+ * @ext   gd
+ * @see   php://imagewbmp
+ * @see   xp://img.io.StreamWriter
+ */
+class WBmpStreamWriter extends StreamWriter {
+  public $foreground  = 0;
+  
+  /**
+   * Constructor
+   *
+   * @param   io.Stream stream
+   * @param   int foreground default 0
+   */
+  public function __construct($stream, $foreground= 0) {
+    parent::__construct($stream);
+    $this->foreground= $foreground;
+  }
 
   /**
-   * Writes WBMP to a stream
+   * Output an image
    *
-   * @ext   gd
-   * @see   php://imagewbmp
-   * @see   xp://img.io.StreamWriter
-   */
-  class WBmpStreamWriter extends StreamWriter {
-    public $foreground  = 0;
-    
-    /**
-     * Constructor
-     *
-     * @param   io.Stream stream
-     * @param   int foreground default 0
-     */
-    public function __construct($stream, $foreground= 0) {
-      parent::__construct($stream);
-      $this->foreground= $foreground;
-    }
-
-    /**
-     * Output an image
-     *
-     * @param   resource handle
-     * @return  bool
-     */    
-    public function output($handle) {
-      return imagewbmp($handle, '', $this->foreground);
-    }
+   * @param   resource handle
+   * @return  bool
+   */    
+  public function output($handle) {
+    return imagewbmp($handle, '', $this->foreground);
   }
-?>
+}

@@ -1,32 +1,27 @@
-<?php
-/* This class is part of the XP framework
- *
- * $Id$
- */
+<?php namespace img;
  
-  /**
-   * Brush class
-   *
-   * @see xp://img.Image#setBrush
-   */
-  class ImgBrush extends Object {
-    public
-      $image    = NULL,
-      $style    = NULL;
-      
-    public
-      $handle     = IMG_COLOR_STYLEDBRUSHED;
+/**
+ * Brush class
+ *
+ * @see xp://img.Image#setBrush
+ */
+class ImgBrush extends \lang\Object {
+  public
+    $image    = null,
+    $style    = null;
     
-    /**
-     * Constructor
-     *
-     * @param   img.Image an image object
-     * @param   img.ImgStyle a style object
-     */
-    public function __construct($i, $s) {
-      $this->image= $i;
-      $this->style= $s;
-      
-    }
+  public
+    $handle     = IMG_COLOR_STYLEDBRUSHED;
+  
+  /**
+   * Constructor
+   *
+   * @param   img.Image an image object
+   * @param   img.ImgStyle a style object
+   */
+  public function __construct($i, $s) {
+    $this->image= $i;
+    $this->style= $s;
+    
   }
-?>
+}

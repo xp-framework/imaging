@@ -1,25 +1,21 @@
-<?php
-/* This class is part of the XP framework
- *
- * $Id$ 
- */
+<?php namespace img\io;
 
-  uses('img.ImagingException');
+use img\ImagingException;
+
+
+/**
+ * Read images
+ *
+ * @see      xp://img.Image#loadFrom
+ * @purpose  Interface
+ */
+interface ImageReader {
 
   /**
-   * Read images
+   * Retrieve an image resource
    *
-   * @see      xp://img.Image#loadFrom
-   * @purpose  Interface
+   * @return  resource
+   * @throws  img.ImagingException
    */
-  interface ImageReader {
-  
-    /**
-     * Retrieve an image resource
-     *
-     * @return  resource
-     * @throws  img.ImagingException
-     */
-    public function getResource();
-  }
-?>
+  public function getResource();
+}

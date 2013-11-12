@@ -1,25 +1,21 @@
-<?php
-/* This class is part of the XP framework
- *
- * $Id$ 
- */
+<?php namespace img\io;
 
-  uses('img.ImagingException');
+use img\ImagingException;
+
+
+/**
+ * Writes images
+ *
+ * @see      xp://img.Image#saveTo
+ * @purpose  Interface
+ */
+interface ImageWriter {
 
   /**
-   * Writes images
+   * Sets the image resource that is to be written
    *
-   * @see      xp://img.Image#saveTo
-   * @purpose  Interface
+   * @param   resource handle
+   * @throws  img.ImagingException
    */
-  interface ImageWriter {
-  
-    /**
-     * Sets the image resource that is to be written
-     *
-     * @param   resource handle
-     * @throws  img.ImagingException
-     */
-    public function setResource($handle);
-  }
-?>
+  public function setResource($handle);
+}

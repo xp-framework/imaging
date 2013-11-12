@@ -1,23 +1,18 @@
-<?php
-/* This class is part of the XP framework
- *
- * $Id$ 
- */
+<?php namespace img\io;
 
-  $package= 'img.io';
+
+
+/**
+ * Reads images from URIs
+ */
+interface UriReader {
 
   /**
-   * Reads images from URIs
+   * Read image
+   *
+   * @param   string uri
+   * @return  resource
+   * @throws  img.ImagingException
    */
-  interface img·io·UriReader {
-
-    /**
-     * Read image
-     *
-     * @param   string uri
-     * @return  resource
-     * @throws  img.ImagingException
-     */
-    public function readImageFromUri($uri);
-  }
-?>
+  public function readImageFromUri($uri);
+}

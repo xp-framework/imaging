@@ -1,28 +1,23 @@
-<?php
-/* This class is part of the XP framework
+<?php namespace img\io;
+
+
+
+/**
+ * Writes GD to a stream
  *
- * $Id$ 
+ * @ext   gd
+ * @see   php://imagegd
+ * @see   xp://img.io.StreamWriter
  */
-
-  uses('img.io.StreamWriter');
-
+class GDStreamWriter extends StreamWriter {
+  
   /**
-   * Writes GD to a stream
+   * Output an image
    *
-   * @ext   gd
-   * @see   php://imagegd
-   * @see   xp://img.io.StreamWriter
-   */
-  class GDStreamWriter extends StreamWriter {
-    
-    /**
-     * Output an image
-     *
-     * @param   resource handle
-     * @return  bool
-     */    
-    public function output($handle) {
-      return imagegd($handle);
-    }
+   * @param   resource handle
+   * @return  bool
+   */    
+  public function output($handle) {
+    return imagegd($handle);
   }
-?>
+}

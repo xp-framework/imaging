@@ -1,15 +1,10 @@
-<?php
-/* This class is part of the XP framework
- * 
- * $Id$
- */
+<?php namespace img;
  
-  /**
-   * Wraps the ImagingException
-   *
-   * @see xp://lang.XPException
-   */
-  class ImagingException extends XPException {
-  
-  }
-?>
+/**
+ * Wraps the ImagingException
+ *
+ * @see xp://lang.XPException
+ */
+class ImagingException extends \lang\XPException {
+
+}

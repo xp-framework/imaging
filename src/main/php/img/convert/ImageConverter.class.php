@@ -1,26 +1,22 @@
-<?php
-/* This class is part of the XP framework
- *
- * $Id$ 
- */
+<?php namespace img\convert;
 
-  uses('img.ImagingException');
+use img\ImagingException;
+
+
+/**
+ * Converter interface
+ *
+ * @see      xp://img.Image#convertTo
+ * @purpose  Interface
+ */
+interface ImageConverter {
 
   /**
-   * Converter interface
+   * Convert an image. Note: This changes the given image!
    *
-   * @see      xp://img.Image#convertTo
-   * @purpose  Interface
+   * @param   img.Image image
+   * @return  bool
+   * @throws  img.ImagingException
    */
-  interface ImageConverter {
-  
-    /**
-     * Convert an image. Note: This changes the given image!
-     *
-     * @param   img.Image image
-     * @return  bool
-     * @throws  img.ImagingException
-     */
-    public function convert($image);
-  }
-?>
+  public function convert($image);
+}

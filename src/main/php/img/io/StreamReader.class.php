@@ -4,7 +4,6 @@ use io\streams\InputStream;
 use io\Stream;
 use io\streams\Streams;
 
-
 /**
  * Read images from a stream
  *
@@ -32,9 +31,9 @@ class StreamReader extends \lang\Object implements ImageReader {
    * @throws  lang.IllegalArgumentException when types are not met
    */
   public function __construct($stream) {
-    $this->stream= deref($stream);
+    $this->stream= $stream;
     if ($this->stream instanceof InputStream) {
-      if ($this instanceof \imgÂ\ioÂ\UriReader && !self::$GD_USERSTREAMS_BUG) {
+      if ($this instanceof UriReader && !self::$GD_USERSTREAMS_BUG) {
         $this->reader= function($reader, $stream) {
           return $reader->readImageFromUri(Streams::readableUri($stream));
         };

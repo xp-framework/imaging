@@ -35,7 +35,7 @@ class PngImageWriterTest extends AbstractImageWriterTest {
   #[@test]
   public function write_bc() {
     $s= new \io\Stream();
-    $this->image->saveTo(new PngStreamWriter(ref($s)));
+    $this->image->saveTo(new PngStreamWriter($s));
     $this->assertNotEmpty(\io\FileUtil::getContents($s));
   }
 }

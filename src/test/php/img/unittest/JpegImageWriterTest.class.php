@@ -30,7 +30,7 @@ class JpegImageWriterTest extends AbstractImageWriterTest {
   #[@test]
   public function write_bc() {
     $s= new \io\Stream();
-    $this->image->saveTo(new JpegStreamWriter(ref($s)));
+    $this->image->saveTo(new JpegStreamWriter($s));
     $this->assertNotEmpty(\io\FileUtil::getContents($s));
   }
 }

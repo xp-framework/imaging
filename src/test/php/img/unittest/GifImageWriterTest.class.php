@@ -30,7 +30,7 @@ class GifImageWriterTest extends AbstractImageWriterTest {
   #[@test]
   public function write_bc() {
     $s= new \io\Stream();
-    $this->image->saveTo(new GifStreamWriter(ref($s)));
+    $this->image->saveTo(new GifStreamWriter($s));
     $this->assertNotEmpty(\io\FileUtil::getContents($s));
   }
 }

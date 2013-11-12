@@ -28,6 +28,6 @@ class GifImageReaderTest extends TestCase {
   public function read_bc() {
     $s= new Stream();
     FileUtil::setContents($s, base64_decode('R0lGODdhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='));
-    Image::loadFrom(new \img\io\StreamReader(ref($s)));
+    Image::loadFrom(new \img\io\StreamReader($s));
   }
 }

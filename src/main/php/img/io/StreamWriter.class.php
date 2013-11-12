@@ -3,7 +3,6 @@
 use io\streams\OutputStream;
 use io\Stream;
 
-
 /**
  * Writes to a stream
  *
@@ -32,7 +31,7 @@ abstract class StreamWriter extends \lang\Object implements ImageWriter {
    * @throws  lang.IllegalArgumentException when types are not met
    */
   public function __construct($stream) {
-    $this->stream= deref($stream);
+    $this->stream= $stream;
     if ($this->stream instanceof OutputStream) {
       // Already open
     } else if ($this->stream instanceof Stream) {

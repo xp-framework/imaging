@@ -44,13 +44,13 @@ class ImageReaderTest extends TestCase {
   public function readEmptyDataBC() {
     $s= new Stream();
     FileUtil::setContents($s, '');
-    Image::loadFrom(new \img\io\StreamReader(ref($s)));
+    Image::loadFrom(new \img\io\StreamReader($s));
   }
 
   #[@test, @expect('img.ImagingException')]
   public function readMalformedDataBC() {
     $s= new Stream();
     FileUtil::setContents($s, '@@MALFORMED@@');
-    Image::loadFrom(new \img\io\StreamReader(ref($s)));
+    Image::loadFrom(new \img\io\StreamReader($s));
   }
 }

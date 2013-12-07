@@ -1,13 +1,10 @@
 <?php namespace img\filter;
 
-
-
 /**
  * A filter which applies a convolution kernel to an image. 
  *
- * @see      http://www.eas.asu.edu/~karam/2dconvolution/
- * @see      php://imageconvolution  
- * @purpose  Filter implementation
+ * @see   http://www.eas.asu.edu/~karam/2dconvolution/
+ * @see   php://imageconvolution  
  */
 class ConvolveFilter extends \lang\Object implements ImageFilter {
   public

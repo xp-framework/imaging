@@ -1,7 +1,8 @@
 <?php namespace img;
 
 use lang\CloneNotSupportedException;
-
+use img\filter\ImageFilter;
+use img\convert\ImageConverter;
 
 define('IMG_PALETTE',   0x0000);
 define('IMG_TRUECOLOR', 0x0001);
@@ -20,8 +21,8 @@ define('IMG_TRUECOLOR', 0x0001);
  *   $image= Image::loadFrom(new JpegStreamReader(new File('picture.jpg')));
  * </code>
  *
- * @ext gd
- * @see php://image
+ * @ext  gd
+ * @see  php://image
  */
 class Image extends \lang\Object {
   public
@@ -43,7 +44,6 @@ class Image extends \lang\Object {
 
   /**
    * Destructor
-   *
    */
   public function __destruct() {
     if (is_resource($this->handle)) imagedestroy($this->handle);
@@ -51,7 +51,6 @@ class Image extends \lang\Object {
 
   /**
    * Clone method
-   *
    */
   public function __clone() {
     if (!is_resource($handle= (imageistruecolor($this->handle)
@@ -101,7 +100,7 @@ class Image extends \lang\Object {
    * @return  img.Image
    */
   public static function loadFrom($reader) {
-    return new Image($reader->getResource());
+    return new self($reader->getResource());
   }
 
   /**
@@ -120,7 +119,7 @@ class Image extends \lang\Object {
    * @return  bool
    * @throws  lang.IllegalArgumentException if converter is not a img.convert.ImageConverter
    */
-  public function convertTo(\ImageConverter $converter) {
+  public function convertTo(ImageConverter $converter) {
     return $converter->convert($this);
   }
   
@@ -131,7 +130,7 @@ class Image extends \lang\Object {
    * @return  bool
    * @throws  lang.IllegalArgumentException if filter is not a img.filter.ImageFilter
    */
-  public function apply(\ImageFilter $filter) {
+  public function apply(ImageFilter $filter) {
     return $filter->applyOn($this);
   }
 
@@ -454,8 +453,8 @@ class Image extends \lang\Object {
    *
    * @param   img.Color color
    */
-  public function setTransparency($col) {
-    imagecolortransparent($this->handle, $col->handle);
+  public function setTransparency($color) {
+    imagecolortransparent($this->handle, $color->handle);
   }
 
   /**
@@ -464,7 +463,7 @@ class Image extends \lang\Object {
    * @return  img.Color color
    */
   public function getTransparency() {
-    if (-1 == ($t= imagecolortransparent($this->handle))) return null;
+    if (-1 === ($t= imagecolortransparent($this->handle))) return null;
     return $this->palette[$t];
   }
 

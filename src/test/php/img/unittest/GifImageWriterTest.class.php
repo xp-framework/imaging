@@ -1,6 +1,10 @@
 <?php namespace img\unittest;
 
 use img\io\GifStreamWriter;
+use io\IOException;
+use io\streams\MemoryOutputStream;
+use io\Stream;
+use io\FileUtil;
 
 /**
  * Tests writing GIF images
@@ -13,24 +17,24 @@ class GifImageWriterTest extends AbstractImageWriterTest {
 
   #[@test, @expect('img.ImagingException')]
   public function write_error() {
-    $this->image->saveTo(new GifStreamWriter(newinstance('io.streams.OutputStream', array(), '{
-      public function write($arg) { throw new IOException("Could not write: Intentional exception"); }
-      public function flush() { }
-      public function close() { }
-    }')));
+    $this->image->saveTo(new GifStreamWriter(newinstance('io.streams.OutputStream', [], [
+      'write' => function($arg) { throw new IOException('Could not write: Intentional exception'); },
+      'flush' => function() { },
+      'close' => function() { }
+    ])));
   }
 
   #[@test]
   public function write() {
-    $s= new \io\streams\MemoryOutputStream();
+    $s= new MemoryOutputStream();
     $this->image->saveTo(new GifStreamWriter($s));
-    $this->assertNotEmpty($s->getBytes());
+    $this->assertNotEquals('', $s->getBytes());
   }
 
   #[@test]
   public function write_bc() {
-    $s= new \io\Stream();
+    $s= new Stream();
     $this->image->saveTo(new GifStreamWriter($s));
-    $this->assertNotEmpty(\io\FileUtil::getContents($s));
+    $this->assertNotEquals('', FileUtil::getContents($s));
   }
 }

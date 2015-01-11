@@ -4,6 +4,7 @@ use lang\Runtime;
 use unittest\TestCase;
 use io\Stream;
 use io\FileUtil;
+use io\IOException;
 use img\Image;
 use img\io\GifStreamReader;
 use img\io\JpegStreamReader;
@@ -20,11 +21,11 @@ class ImageReaderTest extends TestCase {
 
   #[@test, @expect('img.ImagingException')]
   public function readError() {
-    $s= newinstance('io.streams.InputStream', array(), '{
-      public function read($limit= 8192) { throw new IOException("Could not read: Intentional exception"); }
-      public function available() { return 1; }
-      public function close() { }
-    }');
+    $s= newinstance('io.streams.InputStream', [], [
+      'read' => function($limit= 8192) { throw new IOException('Could not read: Intentional exception'); },
+      'available' => function() { return 1; },
+      'close' => function() { }
+    ]);
     Image::loadFrom(new GifStreamReader($s));
   }
 

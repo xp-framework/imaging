@@ -55,9 +55,9 @@ abstract class StreamWriter extends \lang\Object implements ImageWriter {
       // Use output buffering with a callback method to capture the 
       // image(gd|jpeg|png|...) functions' output.
       $this->writer= function($writer, $stream, $handle) {
-        ob_start(function($data) use($stream) { $stream->write($data); });
+        ob_start([$stream, 'write']);
         $r= $writer->output($handle);
-        ob_end_flush();
+        ob_end_clean();
         return $r;
       };
     }
@@ -83,7 +83,7 @@ abstract class StreamWriter extends \lang\Object implements ImageWriter {
       $r= call_user_func($this->writer, $this, $this->stream, $handle);
       $this->stream->close();
     } catch (\lang\Throwable $e) {
-      ob_clean();
+      if (ob_get_level()) ob_clean();
       throw new \img\ImagingException($e->getMessage());
     }
     if (!$r) throw new \img\ImagingException('Could not write image');

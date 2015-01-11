@@ -1,7 +1,0 @@
-{
-  "name"    : "xp-framework/imaging",
-  "version" : "6.0.0",
-  "require" : {
-    "xp-framework/xml" : "~6.0"
-  }
-}

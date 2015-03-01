@@ -2,6 +2,10 @@
 
 use io\streams\OutputStream;
 use io\Stream;
+use io\File;
+use lang\IllegalArgumentException;
+use lang\Throwable;
+use img\ImagingException;
 
 /**
  * Writes to a stream
@@ -10,12 +14,11 @@ use io\Stream;
  * @test     xp://net.xp_framework.unittest.img.ImageWriterTest
  * @see      xp://img.io.ImageWriter
  * @see      xp://img.Image#saveTo
- * @purpose  Abstract base class
  */
 abstract class StreamWriter extends \lang\Object implements ImageWriter {
   public $stream= null;
-  protected static $GD_USERSTREAMS_BUG= false;
-  protected $writer= null;
+  private static $GD_USERSTREAMS_BUG= false;
+  private $writer= null;
 
   static function __static() {
     self::$GD_USERSTREAMS_BUG= (
@@ -27,26 +30,38 @@ abstract class StreamWriter extends \lang\Object implements ImageWriter {
   /**
    * Constructor
    *
-   * @param   var stream either an io.streams.OutputStream or an io.Stream (BC)
+   * @param   var $arg either an io.streams.OutputStream, an io.File or an io.Stream (BC)
    * @throws  lang.IllegalArgumentException when types are not met
    */
-  public function __construct($stream) {
-    $this->stream= $stream;
-    if ($this->stream instanceof OutputStream) {
-      // Already open
-    } else if ($this->stream instanceof Stream) {
-      $this->stream->open(STREAM_MODE_WRITE);
+  public function __construct($arg) {
+    if ($arg instanceof OutputStream) {
+      $this->write($arg);
+    } else if ($arg instanceof File) {
+      $this->write($arg->out());
+    } else if ($arg instanceof Stream) {  // BC
+      $this->stream= $arg;
+      $this->writer= function($writer, $stream, $handle) {
+        ob_start();
+        if ($r= $writer->output($handle)) {
+          $stream->open(STREAM_MODE_WRITE);
+          $stream->write(ob_get_contents());
+          $stream->close();
+        }
+        ob_end_clean();
+        return $r;
+      };
     } else {
-      throw new \lang\IllegalArgumentException('Expected either an io.streams.OutputStream or an io.Stream, have '.\xp::typeOf($this->stream));
+      throw new IllegalArgumentException('Expected either an io.streams.OutputStream or an io.File, have '.\xp::typeOf($arg));
     }
+  }
 
+  /** @param io.streams.OutputStream */
+  private function write($stream) {
+    $this->stream= $stream;
     if (self::$GD_USERSTREAMS_BUG) {
       $this->writer= function($writer, $stream, $handle) {
         ob_start();
-        $r= $writer->output($handle);
-        if ($r) {
-          $stream->write(ob_get_contents());
-        }
+        $r= $writer->output($handle) && $stream->write(ob_get_contents());
         ob_end_clean();
         return $r;
       };
@@ -82,10 +97,10 @@ abstract class StreamWriter extends \lang\Object implements ImageWriter {
     try {
       $r= call_user_func($this->writer, $this, $this->stream, $handle);
       $this->stream->close();
-    } catch (\lang\Throwable $e) {
+    } catch (Throwable $e) {
       if (ob_get_level()) ob_clean();
-      throw new \img\ImagingException($e->getMessage());
+      throw new ImagingException($e->getMessage());
     }
-    if (!$r) throw new \img\ImagingException('Could not write image');
+    if (!$r) throw new ImagingException('Could not write image');
   }
 } 

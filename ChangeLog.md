@@ -3,8 +3,8 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
-* Fixed img.io.StreamReader to support io.File objects again after XP 6
-  removed its subclassing io.Stream @thekid
+* Fixed img.io.StreamReader and img.io.StreamWriter to support io.File
+  objects again after XP 6 removed its subclassing io.Stream - @thekid
 
 ## 6.0.1 / 2015-02-12
 

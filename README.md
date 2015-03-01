@@ -15,7 +15,7 @@ use img\Image;
 use img\io\JpegStreamReader;
 use io\File;
 
-$image= Image::loadFrom(new JpegStreamReader((new File('image.jpeg')->in())));
+$image= Image::loadFrom(new JpegStreamReader(new File('image.jpeg')));
 
 // Can now be manipulated
 ```
@@ -55,5 +55,5 @@ Saving an image
 use img\io\JpegStreamWriter;
 use io\File;
 
-$transformed->saveTo(new JpegStreamWriter((new File('transformed.jpeg')->out()), 100));
+$transformed->saveTo(new JpegStreamWriter(new File('transformed.jpeg'), 100));
 ```

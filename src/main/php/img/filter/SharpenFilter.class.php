@@ -1,11 +1,7 @@
 <?php namespace img\filter;
 
-
-
 /**
  * A filter which sharpens an image
- *
- * @purpose  Filter implementation
  */
 class SharpenFilter extends \lang\Object implements ImageFilter {
   
@@ -55,7 +51,6 @@ class SharpenFilter extends \lang\Object implements ImageFilter {
       }       
     }
     
-    delete($clone);
+    unset($clone);
   }
-
 } 

@@ -28,6 +28,6 @@ abstract class AbstractImageWriterTest extends \unittest\TestCase {
    * Tears down this test
    */
   public function tearDown() {
-    delete($this->image);
+    unset($this->image);
   }
 }

@@ -1,7 +1,6 @@
 <?php namespace img\convert;
 
 use img\Image;
-
  
 /**
  * Converts a truecolor image to a paletted image. Uses 
@@ -33,7 +32,7 @@ class MatchingPaletteConverter extends PaletteConverter {
       $this->ncolors
     );
     imagecolormatch($tmp->handle, $image->handle);
-    delete($tmp);
+    unset($tmp);
     return true;
   }
 }

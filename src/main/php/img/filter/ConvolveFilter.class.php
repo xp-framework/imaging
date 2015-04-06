@@ -95,8 +95,7 @@ class ConvolveFilter extends \lang\Object implements ImageFilter {
         );
       }
     }
-    
-    delete($clone);
-  }
 
+    unset($clone);
+  }
 } 

@@ -27,11 +27,11 @@ class ColorTest extends \unittest\TestCase {
 
   #[@test]
   public function toHex_returns_lowercase_hex_with_leading_hash() {
-    $this->assertEquals('#efefef', create(new Color('#efefef'))->toHex());
+    $this->assertEquals('#efefef', (new Color('#efefef'))->toHex());
   }
 
   #[@test]
   public function string_representation() {
-    $this->assertEquals('img.Color@(239, 010, 007)', create(new Color('#ef0a07'))->toString());
+    $this->assertEquals('img.Color@(239, 010, 007)', (new Color('#ef0a07'))->toString());
   }
 }

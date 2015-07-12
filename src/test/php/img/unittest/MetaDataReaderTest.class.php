@@ -44,9 +44,7 @@ class MetaDataReaderTest extends TestCase {
    * @return  lang.Generic the instance
    */
   protected function extractFromFile($name, $sub= null) {
-    with ($f= $this->resourceAsFile($name, $sub)); {
-      return $this->fixture->read($f->getInputStream(), $name);
-    }
+    return $this->fixture->read($this->resourceAsFile($name, $sub)->getInputStream(), $name);
   }
 
   /**
@@ -169,7 +167,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_CanonIxus() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('canon-ixus.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -197,7 +195,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_FujifilmDx10() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('fujifilm-dx10.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -224,7 +222,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_FujifilmFinepix40i() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('fujifilm-finepix40i.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -251,7 +249,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_FujifilmMx1700() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('fujifilm-mx1700.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -278,7 +276,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_KodakDC210() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('kodak-dc210.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -305,7 +303,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_KodakDC240() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('kodak-dc240.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -332,7 +330,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_NikonE950() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('nikon-e950.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -359,7 +357,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_OlympusC960() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('olympus-c960.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -386,7 +384,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_Ricohrdc5300() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('ricoh-rdc5300.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -413,7 +411,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_SanyoVpcg250() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('sanyo-vpcg250.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -440,7 +438,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_Sanyovpcsx550() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('sanyo-vpcsx550.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -467,7 +465,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_SonyCybershot() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('sony-cybershot.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -494,7 +492,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function exif_dot_org_sample_SonyD700() {
     $this->assertEquals(
-      create(new \img\util\ExifData())
+      (new \img\util\ExifData())
         ->withFileName('sony-d700.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -521,7 +519,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function detailed_iptc_data() {
     $this->assertEquals(
-      create(new \img\util\IptcData())
+      (new \img\util\IptcData())
         ->withTitle('Unittest Image')
         ->withUrgency(null)
         ->withCategory(null)

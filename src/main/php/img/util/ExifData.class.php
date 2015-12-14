@@ -518,7 +518,7 @@ class ExifData extends \lang\Object {
    * @return  string
    */
   public function getOrientationString() {
-    static $string= array(
+    static $string= [
       1 => 'normal',
       2 => 'flip_horizonal',
       3 => 'rotate_180',
@@ -527,7 +527,7 @@ class ExifData extends \lang\Object {
       6 => 'rotate_90',
       7 => 'transverse',
       8 => 'rotate_270' 
-    );
+    ];
     return isset($string[$this->orientation]) ? $string[$this->orientation] : '(unknown)';
   }
   
@@ -538,11 +538,11 @@ class ExifData extends \lang\Object {
    * @return  int
    */
   public function getRotationDegree() {
-    static $degree= array(
+    static $degree= [
       3 => 180,   // flip
       6 => 90,    // clockwise
       8 => 270    // counterclockwise
-    );
+    ];
     return isset($degree[$this->orientation]) ? $degree[$this->orientation] : 0;
   }
   
@@ -669,7 +669,7 @@ class ExifData extends \lang\Object {
    * @return  string
    */
   public function getExposureProgramString() {
-    static $ep= array(
+    static $ep= [
       0 => 'not defined',
       1 => 'manual',
       2 => 'normal program',
@@ -679,7 +679,7 @@ class ExifData extends \lang\Object {
       6 => 'action program',      // (biased toward fast shutter speed)
       7 => 'portrait mode',       // (for closeup photos with the background out of focus)
       8 => 'landscape mode',      // (for landscape photos with the background in the focus)
-    );
+    ];
     
     return (isset($ep[$this->exposureProgram])
       ? $ep[$this->exposureProgram]
@@ -722,7 +722,7 @@ class ExifData extends \lang\Object {
    * @return  string
    */
   public function getMeteringModeString() {
-    static $mm= array(
+    static $mm= [
       0   => 'unknown',                 
       1   => 'average',                 
       2   => 'center weighted average', 
@@ -731,7 +731,7 @@ class ExifData extends \lang\Object {
       5   => 'pattern',                 
       6   => 'partial',                 
       255 => 'other'
-    );
+    ];
     
     return (isset($mm[$this->meteringMode])
       ? $mm[$this->meteringMode]

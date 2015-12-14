@@ -28,7 +28,7 @@ class Image extends \lang\Object {
   public
     $width    = 0,
     $height   = 0,
-    $palette  = array(),
+    $palette  = [],
     $handle   = null;
 
   /**
@@ -158,7 +158,7 @@ class Image extends \lang\Object {
    * @return  int[2] width, height
    */
   public function getDimensions() {
-    return array($this->width, $this->height);
+    return [$this->width, $this->height];
   }
 
   /**

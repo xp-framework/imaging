@@ -29,7 +29,7 @@ class IptcData extends \lang\Object {
     $title                         = '',
     $urgency                       = '',
     $category                      = '',
-    $keywords                      = array(), 
+    $keywords                      = [], 
     $dateCreated                   = null, 
     $author                        = '', 
     $authorPosition                = '', 
@@ -43,7 +43,7 @@ class IptcData extends \lang\Object {
     $caption                       = '', 
     $writer                        = '', 
     $specialInstructions           = '',
-    $supplementalCategories        = array(),
+    $supplementalCategories        = [],
     $originalTransmissionReference = '';
 
   static function __static() {

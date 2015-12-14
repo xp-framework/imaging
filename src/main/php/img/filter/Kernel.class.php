@@ -14,7 +14,7 @@
  */
 class Kernel extends \lang\Object {
   public
-    $matrix= array();
+    $matrix= [];
   
   /**
    * Constructor

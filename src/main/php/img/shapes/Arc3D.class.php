@@ -20,7 +20,7 @@ use img\Drawable;
  */
 class Arc3D extends Arc implements Drawable {
   public
-    $colors= array(),
+    $colors= [],
     $shadow= 0;
     
   /**

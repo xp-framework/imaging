@@ -24,7 +24,7 @@ class TrueTypeFont extends \lang\Object {
     $windows= strncasecmp(PHP_OS, 'Win', 3) === 0;
   
     // Compile extension list
-    $extensions= array('.ttf', '.TTF');
+    $extensions= ['.ttf', '.TTF'];
     if (strncasecmp($ext= substr($font, -4, 4), '.ttf', 4) === 0) {
       $font= substr($font, 0, -4);
       $extensions[]= $ext;
@@ -32,9 +32,9 @@ class TrueTypeFont extends \lang\Object {
     
     // Compose TTF search path
     if ($windows) {
-      $search= array('.\\', getenv('WINDIR').'\\fonts\\');
+      $search= ['.\\', getenv('WINDIR').'\\fonts\\'];
     } else {
-      $search= array(
+      $search= [
         './',
         '/usr/X11R6/lib/X11/fonts/TrueType/',
         '/usr/X11R6/lib/X11/fonts/truetype/',
@@ -42,7 +42,7 @@ class TrueTypeFont extends \lang\Object {
         '/usr/share/fonts/TrueType/',
         '/usr/share/fonts/truetype/',
         '/usr/openwin/lib/X11/fonts/TrueType/'
-      );
+      ];
     }
     
     // Check for absolute filenames

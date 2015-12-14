@@ -8,7 +8,7 @@ use img\util\ExifData;
  * 
  */
 class ExifSegment extends Segment {
-  protected $data= array();
+  protected $data= [];
 
   // From TIFF 6.0 Specification, Image File Directory, subsection "Types"
   const BYTE      = 1;
@@ -24,8 +24,8 @@ class ExifSegment extends Segment {
   const FLOAT     = 11;
   const DOUBLE    = 12;
 
-  protected static $pack= array(
-    'MM' => array(
+  protected static $pack= [
+    'MM' => [
       self::BYTE      => 'C1',
       self::ASCII     => 'a*',
       self::USHORT    => 'n1',
@@ -38,8 +38,8 @@ class ExifSegment extends Segment {
       self::RATIONAL  => 'N2',
       self::FLOAT     => 'n2',
       self::DOUBLE    => 'N2'
-    ),
-    'II' => array(
+    ],
+    'II' => [
       self::BYTE      => 'C1',
       self::ASCII     => 'a*',
       self::USHORT    => 'v1',
@@ -52,11 +52,11 @@ class ExifSegment extends Segment {
       self::RATIONAL  => 'V2',
       self::FLOAT     => 'n2',
       self::DOUBLE    => 'V2'
-    )
-  );
+    ]
+  ];
 
   // From PHP's exif.c
-  protected static $tag= array(
+  protected static $tag= [
     0x000B => 'ACDComment',
     0x00FE => 'NewSubFile', /* better name it 'ImageType' ? */
 
@@ -329,7 +329,7 @@ class ExifSegment extends Segment {
     0xA40B => 'DeviceSettingDescription',
     0xA40C => 'SubjectDistanceRange',
     0xA420 => 'ImageUniqueID'
-  );
+  ];
 
   /**
    * Creates a segment instance
@@ -366,7 +366,7 @@ class ExifSegment extends Segment {
 
     // Read IFDs
     $n= $tiff['ifd1'];
-    $data= array();
+    $data= [];
     do {
       $offset= $n + 6;
       $data= array_merge($data, self::readIFD($bytes, $offset, 6, self::$tag, self::$pack[$tiff['align']]));
@@ -386,7 +386,7 @@ class ExifSegment extends Segment {
    * @return [:var] IFD
    */
   protected static function readIFD($data, &$offset, $base, $tags, $format) {
-    static $length= array(
+    static $length= [
       self::BYTE      => 1,
       self::ASCII     => 1,
       self::USHORT    => 2,
@@ -399,10 +399,10 @@ class ExifSegment extends Segment {
       self::RATIONAL  => 8,
       self::FLOAT     => 4,
       self::DOUBLE    => 8
-    );
-    static $sub= array(
+    ];
+    static $sub= [
       0x8769 => true,           // Exif_IFD_Pointer, inherit tags
-      0x8825 => array(          // GPS_IFD_Pointer, defines own tags
+      0x8825 => [          // GPS_IFD_Pointer, defines own tags
         0x0000 => 'GPSVersion',
         0x0001 => 'GPSLatitudeRef',
         0x0002 => 'GPSLatitude',
@@ -434,15 +434,15 @@ class ExifSegment extends Segment {
         0x001C => 'GPSAreaInformation',
         0x001D => 'GPSDateStamp',
         0x001E => 'GPSDifferential'
-      )
-    );
-    static $maker = array(
-      "FUJIFILM\x0C\x00\x00\x00" => array(
+      ]
+    ];
+    static $maker = [
+      "FUJIFILM\x0C\x00\x00\x00" => [
         'name'   => 'FujiFilm',
         'format' => 'II',
         'offset' => 0,
         'base'   => 0,
-        'tags'   => array(
+        'tags'   => [
           0x0000 => 'Version',
           0x1000 => 'Quality',
           0x1001 => 'Sharpness',
@@ -459,13 +459,13 @@ class ExifSegment extends Segment {
           0x1300 => 'BlurWarning',
           0x1301 => 'FocusWarning',
           0x1302 => 'AEWarning '
-        ),
-      ),
-      "Nikon\x00\x01\x00" => array(
+        ],
+      ],
+      "Nikon\x00\x01\x00" => [
         'name'   => 'Nikon',
         'offset' => 0,
         'base'   => -826,       // ???
-        'tags'   => array(
+        'tags'   => [
           0x0003 => 'Quality',
           0x0004 => 'ColorMode',
           0x0005 => 'ImageAdjustment',
@@ -474,13 +474,13 @@ class ExifSegment extends Segment {
           0x0008 => 'Focus',
           0x000a => 'DigitalZoom',
           0x000b => 'Converter'
-        )
-      ),
-      "OLYMP\x00\x01\x00" => array(
+        ]
+      ],
+      "OLYMP\x00\x01\x00" => [
         'name'   => 'Olympus',
         'offset' => 0,
         'base'   => -782,       // ???
-        'tags'   => array(
+        'tags'   => [
           0x0200 => 'SpecialMode',
           0x0201 => 'JPEGQuality',
           0x0202 => 'Macro',
@@ -489,14 +489,14 @@ class ExifSegment extends Segment {
           0x0208 => 'PictureInfo',
           0x0209 => 'CameraId',
           0x0F00 => 'DataDump'
-        )
-      ),
-    );
+        ]
+      ],
+    ];
 
     $entries= current(unpack($format[self::USHORT], substr($data, $offset, 2)));
     $offset+= 2;
 
-    $return= array();
+    $return= [];
     for ($i= 0; $i < $entries; $i++) {
       $entry= unpack(
         $format[self::USHORT].'tag/'.$format[self::USHORT].'type/'.$format[self::ULONG].'size', 

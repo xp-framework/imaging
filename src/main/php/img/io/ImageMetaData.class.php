@@ -11,7 +11,7 @@ use img\util\ImageInfo;
  */
 class ImageMetaData extends \lang\Object {
   protected $source= null;
-  protected $segments= array();
+  protected $segments= [];
 
   /**
    * Sets source
@@ -48,7 +48,7 @@ class ImageMetaData extends \lang\Object {
    * @return img.io.Segment[]
    */
   public function segmentsNamed($name) {
-    $r= array();
+    $r= [];
     foreach ($this->segments as $segment) {
       if ($segment->marker === $name) $r[]= $segment;
     }
@@ -63,7 +63,7 @@ class ImageMetaData extends \lang\Object {
    */
   public function segmentsOf($type) {
     $class= $type instanceof \lang\XPClass ? $type->getName() : $type;
-    $r= array();
+    $r= [];
     foreach ($this->segments as $segment) {
       if ($segment->getClassName() === $class) $r[]= $segment;
     }
@@ -81,7 +81,7 @@ class ImageMetaData extends \lang\Object {
       throw new \img\ImagingException('Cannot load image information from '.$this->source);
     }
 
-    return array($seg[0]->width(), $seg[0]->height());
+    return [$seg[0]->width(), $seg[0]->height()];
   }
 
   /**

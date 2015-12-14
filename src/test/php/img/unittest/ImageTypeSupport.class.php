@@ -29,7 +29,7 @@ class ImageTypeSupport extends \lang\Object implements TestAction {
    */
   public function beforeTest(TestCase $t) { 
     if (!(imagetypes() & constant('IMG_'.$this->type))) {
-      throw new PrerequisitesNotMetError('Image type not supported', null, array($this->type));
+      throw new PrerequisitesNotMetError('Image type not supported', null, [$this->type]);
     }
   }
 

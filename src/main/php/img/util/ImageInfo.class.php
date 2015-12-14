@@ -17,7 +17,7 @@ class ImageInfo extends \lang\Object {
     $mime       = '',
     $bits       = null,
     $channels   = null,
-    $segments   = array();
+    $segments   = [];
 
   /**
    * Retrieve an ImageInfo object from a file

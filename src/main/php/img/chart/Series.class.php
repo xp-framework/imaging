@@ -9,7 +9,7 @@
 class Series extends \lang\Object {
   public
     $name   = '',
-    $values = array();
+    $values = [];
     
   /**
    * Constructor
@@ -17,7 +17,7 @@ class Series extends \lang\Object {
    * @param   string name
    * @param   float[] values default array()
    */
-  public function __construct($name, $values= array()) {
+  public function __construct($name, $values= []) {
     $this->name= $name;
     $this->values= $values;
   }

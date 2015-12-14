@@ -1,5 +1,8 @@
 <?php namespace img\unittest;
 
+use img\ImagingException;
+use io\File;
+
 /**
  * Base class for EXIF- and IPTC-Data tests
  *
@@ -27,14 +30,14 @@ abstract class MetaDataTest extends \unittest\TestCase {
    * @param   io.File $f
    * @return  lang.Generic the instance
    */
-  protected abstract function extractFromFile(\io\File $f);
+  protected abstract function extractFromFile(File $f);
 
-  #[@test, @expect('img.ImagingException')]
+  #[@test, @expect(ImagingException::class)]
   public function fromNonImageFile() {
-    $this->extractFromFile(new \io\File(__FILE__));
+    $this->extractFromFile(new File(__FILE__));
   }
 
-  #[@test, @expect('img.ImagingException')]
+  #[@test, @expect(ImagingException::class)]
   public function fromEmptyFile() {
     $this->extractFromFile($this->resourceAsFile('empty.jpg'));
   }

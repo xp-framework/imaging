@@ -1,9 +1,10 @@
 <?php namespace img\unittest;
 
+use img\ImagingException;
+use io\streams\OutputStream;
 use img\io\PngStreamWriter;
 use io\IOException;
 use io\streams\MemoryOutputStream;
-use io\Stream;
 use io\FileUtil;
 
 /**
@@ -18,9 +19,9 @@ class PngImageWriterTest extends AbstractImageWriterTest {
   /** @return string */
   protected function imageType() { return 'PNG'; }
 
-  #[@test, @expect('img.ImagingException')]
+  #[@test, @expect(ImagingException::class)]
   public function write_error() {
-    $this->image->saveTo(new PngStreamWriter(newinstance('io.streams.OutputStream', [], [
+    $this->image->saveTo(new PngStreamWriter(newinstance(OutputStream::class, [], [
       'write' => function($arg) { throw new IOException('Could not write: Intentional exception'); },
       'flush' => function() { },
       'close' => function() { }
@@ -32,12 +33,5 @@ class PngImageWriterTest extends AbstractImageWriterTest {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new PngStreamWriter($s));
     $this->assertNotEquals('', $s->getBytes());
-  }
-
-  #[@test]
-  public function write_bc() {
-    $s= new Stream();
-    $this->image->saveTo(new PngStreamWriter($s));
-    $this->assertNotEquals('', FileUtil::getContents($s));
   }
 }

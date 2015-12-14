@@ -7,7 +7,7 @@
  * 
  */
 class SOFNSegment extends Segment {
-  protected $data= array();
+  protected $data= [];
 
   /**
    * Creates a segment instance

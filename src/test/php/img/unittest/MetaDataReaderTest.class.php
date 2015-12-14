@@ -1,5 +1,6 @@
 <?php namespace img\unittest;
 
+use xml\Node;
 use unittest\TestCase;
 use img\io\MetaDataReader;
 use img\io\SOFNSegment;
@@ -83,7 +84,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function segment_named_sof0() {
     $this->assertEquals(
-      array(new SOFNSegment('SOF0', array('bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3))),
+      [new SOFNSegment('SOF0', ['bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3])],
       $this->extractFromFile('1x1.jpg')->segmentsNamed('SOF0')
     );
   }
@@ -91,7 +92,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function segment_of_sofn() {
     $this->assertEquals(
-      array(new SOFNSegment('SOF0', array('bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3))),
+      [new SOFNSegment('SOF0', ['bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3])],
       $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.SOFNSegment')
     );
   }
@@ -99,7 +100,7 @@ class MetaDataReaderTest extends TestCase {
   #[@test]
   public function com_segment() {
     $this->assertEquals(
-      array(new CommentSegment('COM', 'Created with GIMP')),
+      [new CommentSegment('COM', 'Created with GIMP')],
       $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.CommentSegment')
     );
   }
@@ -108,27 +109,27 @@ class MetaDataReaderTest extends TestCase {
   public function xmp_segment() {
     $segments= $this->extractFromFile('xmp.jpg')->segmentsOf('img.io.XMPSegment');
     $this->assertArrayOf('img.io.XMPSegment', 1, $segments);
-    $this->assertInstanceOf('xml.Node', this($segments[0]->document()->getElementsByTagName('dc:title'), 0));
+    $this->assertInstanceOf(Node::class, $segments[0]->document()->getElementsByTagName('dc:title')[0]);
   }
 
   #[@test]
   public function dimensions_of_1x1_image() {
-    $this->assertEquals(array(1, 1), $this->extractFromFile('1x1.jpg')->imageDimensions());
+    $this->assertEquals([1, 1], $this->extractFromFile('1x1.jpg')->imageDimensions());
   }
 
   #[@test]
   public function dimensions_of_xmp_image() {
-    $this->assertEquals(array(640, 480), $this->extractFromFile('canon-ixus.jpg', 'exif_org')->imageDimensions());
+    $this->assertEquals([640, 480], $this->extractFromFile('canon-ixus.jpg', 'exif_org')->imageDimensions());
   }
 
   #[@test]
   public function no_exif_data_segments_in_1x1() {
-    $this->assertEquals(array(), $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.ExifSegment'));
+    $this->assertEquals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.ExifSegment'));
   }
 
   #[@test]
   public function no_iptc_data_segments_in_1x1() {
-    $this->assertEquals(array(), $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.IptcSegment'));
+    $this->assertEquals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.IptcSegment'));
   }
 
   #[@test]
@@ -546,22 +547,22 @@ class MetaDataReaderTest extends TestCase {
 
   #[@test]
   public function gps_data() {
-    $exif= this($this->extractFromFile('gps-embedded.jpg')->segmentsOf('img.io.ExifSegment'), 0);
+    $exif= $this->extractFromFile('gps-embedded.jpg')->segmentsOf('img.io.ExifSegment')[0];
     $this->assertEquals(
-      array(
+      [
         'Version'      => '2/2/0/0',
         'Latitude'     => '48/1/59/1/54669/1000',    // 48° 59' 54,669" North
         'LatitudeRef'  => 'N',
         'Longitude'    => '8/1/23/1/10003/1000',     // 8° 23' 10,003" East
         'LongitudeRef' => 'E'
-      ),
-      array(
+      ],
+      [
         'Version'      => $exif->rawData('GPS_IFD_Pointer', 'GPSVersion'),
         'Latitude'     => $exif->rawData('GPS_IFD_Pointer', 'GPSLatitude'),
         'LatitudeRef'  => $exif->rawData('GPS_IFD_Pointer', 'GPSLatitudeRef'),
         'Longitude'    => $exif->rawData('GPS_IFD_Pointer', 'GPSLongitude'),
         'LongitudeRef' => $exif->rawData('GPS_IFD_Pointer', 'GPSLongitudeRef')
-      )
+      ]
     );
   }
 }

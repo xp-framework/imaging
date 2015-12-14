@@ -53,7 +53,7 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
       if ($upper > 0) $upper += $h;
       if ($lower < 0) $lower += $h;
     }
-    return array(
+    return [
     
       // Common values
       $chart->max(), $chart->min(),
@@ -75,7 +75,7 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
       
       // Calculate zero line
       $zero
-    );
+    ];
   }
   
   /**
@@ -87,8 +87,8 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
    * @return &img.Color[]
    */
   protected function _colors($img, $c) {
-    $colors= array();
-    if (!is_array($c)) $c= array($c);
+    $colors= [];
+    if (!is_array($c)) $c= [$c];
     foreach ($c as $color) $colors[]= $img->allocate($color);
     return $colors;
   }
@@ -145,12 +145,12 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
     );
 
     // Draw Y axis scale
-    imagesetstyle($img->handle, array(
+    imagesetstyle($img->handle, [
       $params['gridColor']->handle,
       $params['gridColor']->handle,
       $params['chartbackColor']->handle,
       $params['chartbackColor']->handle
-    ));
+    ]);
     for ($i= $lower; $i <= $upper; $i+= $step) {
       $y= $zero - ($i / ($upper - $lower) * $innerHeight);
       imageline(
@@ -308,7 +308,7 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
     // Create image
     with ($img= Image::create($this->width, $this->height)); {
       $colors= $this->_colors($img, $bc->getColor('sample'));
-      $this->_renderAxis(array(
+      $this->_renderAxis([
         'count'           => $count,
         'distance'        => $distance,
         'lower'           => $lower,
@@ -327,9 +327,9 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
         'fontHeight'      => $fonth,
         'labels'          => $bc->getLabels(),
         'gridLines'       => $bc->getGridLines()
-      ), $img);
+      ], $img);
       
-      $bc->getDisplayLegend() && $this->_renderLegend(array(
+      $bc->getDisplayLegend() && $this->_renderLegend([
         'labels'          => array_map(create_function('$a', 'return $a->name;'), $bc->series),
         'font'            => $font,
         'fontWidth'       => $fontw,
@@ -340,13 +340,13 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
         'legendColor'     => $img->allocate($bc->getColor('legend')),
         'legendbackColor' => $img->allocate($bc->getColor('legendback')),
         'sampleColor'     => $colors
-      ), $img);
+      ], $img);
       
       // Draw bars
       $barWidth= $bc->getAccumulated()
         ? $width
         : $width / $seriesCount;
-      $py= $v= array();
+      $py= $v= [];
       for ($i= 0; $i < $count; $i++) {
         for ($j= 0; $j < $seriesCount; $j++) {
           $offset= $leftBorder + ($i + 0.5) * $distance - $width / 2;
@@ -432,7 +432,7 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
     // Create image
     with ($img= Image::create($this->width, $this->height)); {
       $colors= $this->_colors($img, $lc->getColor('sample'));
-      $this->_renderAxis(array(
+      $this->_renderAxis([
         'count'           => $count,
         'distance'        => $distance,
         'lower'           => $lower,
@@ -451,9 +451,9 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
         'fontHeight'      => $fonth,
         'labels'          => $lc->getLabels(),
         'gridLines'       => $lc->getGridLines()
-      ), $img);
+      ], $img);
       
-      $lc->getDisplayLegend() && $this->_renderLegend(array(
+      $lc->getDisplayLegend() && $this->_renderLegend([
         'labels'          => array_map(create_function('$a', 'return $a->name;'), $lc->series),
         'font'            => $font,
         'fontWidth'       => $fontw,
@@ -464,10 +464,10 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
         'legendColor'     => $img->allocate($lc->getColor('legend')),
         'legendbackColor' => $img->allocate($lc->getColor('legendback')),
         'sampleColor'     => $colors
-      ), $img);
+      ], $img);
       
       // Draw lines
-      $x= $y= $py= array();
+      $x= $y= $py= [];
       for ($i= 0; $i < $count; $i++) {
         for ($j= 0; $j < $seriesCount; $j++) {
           $offset= $leftBorder + ($i + 0.5) * $distance;
@@ -554,7 +554,7 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
       // Flood fill with background color
       $img->fill($img->allocate($pc->getColor('chartback')), $leftBorder+ 1, $topBorder+ 1);
       
-      $pc->getDisplayLegend() && $this->_renderLegend(array(
+      $pc->getDisplayLegend() && $this->_renderLegend([
         'labels'          => $pc->getLabels(),
         'font'            => $font,
         'fontWidth'       => $fontw,
@@ -565,7 +565,7 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
         'legendColor'     => $img->allocate($pc->getColor('legend')),
         'legendbackColor' => $img->allocate($pc->getColor('legendback')),
         'sampleColor'     => $colors
-      ), $img);
+      ], $img);
 
       $start= $end= 0;
       for ($i= 0; $i < $count; $i++) {
@@ -615,6 +615,6 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
       throw new \lang\IllegalArgumentException('Cannot render '.\xp::typeOf($chart).'s');
     }
     
-    return call_user_func_array(array($this, $method), array($chart));
+    return call_user_func_array([$this, $method], [$chart]);
   }
 }

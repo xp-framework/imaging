@@ -11,7 +11,7 @@
 class LineChart extends Chart {
   public
     $distance  = DISTANCE_AUTO,
-    $range     = array(RANGE_AUTO, RANGE_AUTO, RANGE_AUTO),
+    $range     = [RANGE_AUTO, RANGE_AUTO, RANGE_AUTO],
     $accumulated= false;
 
   /**
@@ -22,7 +22,7 @@ class LineChart extends Chart {
   public function max() {
     if (!$this->getAccumulated()) return parent::max();
     
-    $max= array();
+    $max= [];
     for ($i= 0, $s= sizeof($this->series); $i < $s; $i++) {
       for ($j= 0, $c= sizeof($this->series[$i]->values); $j < $c; $j++) {
         @$max[$j] += $this->series[$i]->values[$j];
@@ -39,7 +39,7 @@ class LineChart extends Chart {
   public function min() {
     if ($this->getAccumulated()) return parent::min();
 
-    $min= array();
+    $min= [];
     for ($i= 0, $s= sizeof($this->series); $i < $s; $i++) {
       for ($j= 0, $c= sizeof($this->series[$i]->values); $j < $c; $j++) {
         @$min[$j] += $this->series[$i]->values[$j];
@@ -57,7 +57,7 @@ class LineChart extends Chart {
    * @param   float step
    */
   public function setRange($lower, $upper, $step) {
-    $this->range= array($lower, $upper, $step);
+    $this->range= [$lower, $upper, $step];
   }
 
   /**

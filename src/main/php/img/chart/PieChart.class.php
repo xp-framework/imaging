@@ -11,7 +11,7 @@
 class PieChart extends Chart {
 
   public
-    $valinset= array();
+    $valinset= [];
   
   /**
    * Helper method which returns the sum from all values

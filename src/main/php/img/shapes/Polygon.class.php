@@ -33,7 +33,7 @@ use img\Drawable;
 class Polygon extends \lang\Object implements Drawable {
   public
     $col=     null,
-    $points=  array(),
+    $points=  [],
     $fill=    false;
 
   /**

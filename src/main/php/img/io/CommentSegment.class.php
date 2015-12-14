@@ -7,7 +7,7 @@
  * 
  */
 class CommentSegment extends Segment {
-  protected $text= array();
+  protected $text= [];
 
   /**
    * Creates a segment instance

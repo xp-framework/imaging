@@ -21,7 +21,7 @@ use img\ImagingException;
  * @test xp://net.xp_framework.unittest.img.MetaDataReaderTest
  */
 class MetaDataReader extends \lang\Object {
-  protected static $seg= array(
+  protected static $seg= [
     "\x01" => 'TEM',   "\x02" => 'RES',
 
     "\xc0" => 'SOF0',  "\xc1" => 'SOF1',  "\xc2" => 'SOF2',  "\xc3" => 'SOF4',
@@ -43,14 +43,14 @@ class MetaDataReader extends \lang\Object {
     "\xf4" => 'JPG4',  "\xf5" => 'JPG5',  "\xf6" => 'JPG6',  "\xf7" => 'JPG7',
     "\xf8" => 'JPG8',  "\xf9" => 'JPG9',  "\xfa" => 'JPG10', "\xfb" => 'JPG11',
     "\xfc" => 'JPG12', "\xfd" => 'JPG13', "\xfe" => 'COM',   
-  );
+  ];
 
-  protected $impl= array(
+  protected $impl= [
     'SOF0'  => 'img.io.SOFNSegment',    // image width and height
     'APP1'  => 'img.io.APP1Segment',    // Exif, XMP
     'APP13' => 'img.io.APP13Segment',   // IPTC
     'COM'   => 'img.io.CommentSegment'
-  );
+  ];
 
   /**
    * Returns a segment
@@ -63,7 +63,7 @@ class MetaDataReader extends \lang\Object {
     if (isset(self::$seg[$marker])) {
       $seg= self::$seg[$marker];
       if (isset($this->impl[$seg])) {
-        return \lang\XPClass::forName($this->impl[$seg])->getMethod('read')->invoke(null, array($seg, $data));
+        return \lang\XPClass::forName($this->impl[$seg])->getMethod('read')->invoke(null, [$seg, $data]);
       } else {
         return new Segment($seg, $data);
       }

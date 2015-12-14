@@ -7,8 +7,8 @@
  */
 class ImgStyle extends \lang\Object {
   public
-    $colors   = array(),
-    $pixels   = array();
+    $colors   = [],
+    $pixels   = [];
     
   public
     $handle     = IMG_COLOR_STYLED;

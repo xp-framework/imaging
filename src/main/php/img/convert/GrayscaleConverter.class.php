@@ -43,7 +43,7 @@ class GrayscaleConverter extends \lang\Object implements ImageConverter {
     $handle= $image->handle;
     
     if (imageistruecolor($handle)) {
-      $l= array();
+      $l= [];
       $h= $image->getHeight();
       $w= $image->getWidth();
       for ($y= 0; $y < $h; $y++) {

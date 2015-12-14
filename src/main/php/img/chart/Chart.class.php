@@ -32,9 +32,9 @@ use img\Color;
  */
 class Chart extends \lang\Object {
   public
-    $series = array(),
-    $colors = array(),
-    $theme  = array(
+    $series = [],
+    $colors = [],
+    $theme  = [
       'background'  => '#ffffff',
       'chartback'   => '#efefef',
       'sample'      => '#990000',
@@ -42,9 +42,9 @@ class Chart extends \lang\Object {
       'grid'        => '#888888',
       'legend'      => '#444444',
       'legendback'  => '#ffffff'
-    ),
+    ],
     $gridlines = false,
-    $labels    = array(),
+    $labels    = [],
     $displeg   = false,
     $dispval   = false;
 

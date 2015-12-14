@@ -1,5 +1,6 @@
 <?php namespace img\unittest;
 
+use lang\ElementNotFoundException;
 use img\util\IptcData;
 
 /**
@@ -30,7 +31,7 @@ class IptcDataTest extends MetaDataTest {
     $this->assertEquals('', IptcData::$EMPTY->getTitle());
   }
 
-  #[@test, @expect('lang.ElementNotFoundException')]
+  #[@test, @expect(ElementNotFoundException::class)]
   public function fromFileWithoutIptc() {
     $this->extractFromFile($this->resourceAsFile('exif-only.jpg'));
   }

@@ -46,7 +46,7 @@ class CommentSegment extends Segment {
    * @return string
    */
   public function toString() {
-    return $this->getClassName().'<'.$this->marker.'>'.\xp::stringOf($this->text);
+    return nameof($this).'<'.$this->marker.'>'.\xp::stringOf($this->text);
   }
 
   /**

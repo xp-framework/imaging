@@ -3,6 +3,12 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 6.1.1 / 2016-01-23
+
+* Fix code to use `nameof()` instead of the deprecated `getClassName()`
+  method from lang.Generic. See xp-framework/core#120
+  (@thekid)
+
 ## 6.1.0 / 2015-12-14
 
 * **Heads up**: Changed minimum XP version to XP 6.5.0, and with it the

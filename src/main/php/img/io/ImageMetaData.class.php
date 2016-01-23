@@ -65,7 +65,7 @@ class ImageMetaData extends \lang\Object {
     $class= $type instanceof \lang\XPClass ? $type->getName() : $type;
     $r= [];
     foreach ($this->segments as $segment) {
-      if ($segment->getClassName() === $class) $r[]= $segment;
+      if (nameof($segment) === $class) $r[]= $segment;
     }
     return $r;
   }

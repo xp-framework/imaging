@@ -58,7 +58,7 @@ class ImageInfo extends \lang\Object {
       "  [bits       ] %s\n".
       "  [segments   ] %s\n".
       "}",
-      $this->getClassName(),
+      nameof($this),
       $this->width,
       $this->height,
       $this->mime,

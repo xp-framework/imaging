@@ -499,7 +499,7 @@ class Image extends \lang\Object {
   public function toString() {
     return sprintf(
       "%s(%dx%d) {\n  #colors = %s\n}",
-      $this->getClassName(),
+      nameof($this),
       $this->width,
       $this->height,
       imageistruecolor($this->handle) ? '(truecolor)' : imagecolorstotal($this->handle)

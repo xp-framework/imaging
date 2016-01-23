@@ -25,7 +25,7 @@ class Segment extends \lang\Object {
    * @return string
    */
   public function toString() {
-    return $this->getClassName().'<'.$this->marker.'>('.strlen($this->bytes).' bytes)';
+    return nameof($this).'<'.$this->marker.'>('.strlen($this->bytes).' bytes)';
   }
 
   /**

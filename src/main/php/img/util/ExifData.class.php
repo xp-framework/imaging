@@ -863,7 +863,7 @@ class ExifData extends \lang\Object {
       "  [isoSpeedRatings ] %s\n".
       "  [focalLength     ] %s\n".
       "}",
-      $this->getClassName(),
+      nameof($this),
       $this->width,
       $this->height,
       $this->mimeType,

@@ -73,7 +73,7 @@ class SOFNSegment extends Segment {
    * @return string
    */
   public function toString() {
-    return $this->getClassName().'<'.$this->marker.'>'.\xp::stringOf($this->data);
+    return nameof($this).'<'.$this->marker.'>'.\xp::stringOf($this->data);
   }
 
   /**

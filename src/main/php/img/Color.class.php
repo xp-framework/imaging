@@ -47,7 +47,7 @@ class Color extends \lang\Object {
   public function toString() {
     return sprintf(
       '%s@(%03d, %03d, %03d)',
-      $this->getClassName(),
+      nameof($this),
       $this->red,
       $this->green,
       $this->blue

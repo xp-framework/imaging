@@ -9,7 +9,7 @@ use img\ImagingException;
  *
  * <code>
  *   $reader= new MetaDataReader();
- *   $meta= $reader->read($file->getInputStream(), $file->getURI());
+ *   $meta= $reader->read($file->in(), $file->getURI());
  *
  *   $exif= $meta->exifData();
  *   $iptc= $meta->iptcData();

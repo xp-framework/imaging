@@ -45,7 +45,7 @@ class MetaDataReaderTest extends TestCase {
    * @return  lang.Generic the instance
    */
   protected function extractFromFile($name, $sub= null) {
-    return $this->fixture->read($this->resourceAsFile($name, $sub)->getInputStream(), $name);
+    return $this->fixture->read($this->resourceAsFile($name, $sub)->in(), $name);
   }
 
   /**

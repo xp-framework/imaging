@@ -37,21 +37,21 @@ class ExifDataTest extends MetaDataTest {
     $this->extractFromFile($this->resourceAsFile('iptc-only.jpg'));
   }
 
-  #[@test]
+  #[@test, @ignore('https://bugs.php.net/bug.php?id=72819')]
   public function fromFileWithExifAndIptc() {
     $i= $this->extractFromFile($this->resourceAsFile('exif-and-iptc.jpg'));
     $this->assertEquals(1, $i->getWidth());
     $this->assertEquals(1, $i->getHeight());
   }
 
-  #[@test]
+  #[@test, @ignore('https://bugs.php.net/bug.php?id=72819')]
   public function fromFileWithExifOnly() {
     $i= $this->extractFromFile($this->resourceAsFile('exif-only.jpg'));
     $this->assertEquals(1, $i->getWidth());
     $this->assertEquals(1, $i->getHeight());
   }
 
-  #[@test]
+  #[@test, @ignore('https://bugs.php.net/bug.php?id=72819')]
   public function exifSampleCanonIxus() {
     $i= $this->extractFromFile($this->resourceAsFile('canon-ixus.jpg', 'exif_org'));
     $this->assertEquals('1/350', $i->getExposureTime());

@@ -48,7 +48,7 @@ class StreamReader extends \lang\Object implements ImageReader {
         return $reader->readImageFromString($bytes);
       };
     } else {
-      throw new IllegalArgumentException('Expected either an io.streams.InputStream or an io.File, have '.\xp::typeOf($this->stream));
+      throw new IllegalArgumentException('Expected either an io.streams.InputStream or an io.File, have '.typeof($this->stream)->getName());
     }
   }
 

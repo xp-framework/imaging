@@ -612,7 +612,7 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
     // Method overloading by delegation
     $method= 'render'.$chart->getSimpleName();
     if (!method_exists($this, $method)) {
-      throw new \lang\IllegalArgumentException('Cannot render '.\xp::typeOf($chart).'s');
+      throw new \lang\IllegalArgumentException('Cannot render '.typeof($chart)->getName().'s');
     }
     
     return call_user_func_array([$this, $method], [$chart]);

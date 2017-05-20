@@ -51,7 +51,7 @@ abstract class StreamWriter extends \lang\Object implements ImageWriter {
         return $r;
       };
     } else {
-      throw new IllegalArgumentException('Expected either an io.streams.OutputStream or an io.File, have '.\xp::typeOf($arg));
+      throw new IllegalArgumentException('Expected either an io.streams.OutputStream or an io.File, have '.type($arg)->getName());
     }
   }
 

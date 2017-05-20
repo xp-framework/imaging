@@ -3,6 +3,12 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 7.1.1 / 2017-05-20
+
+* Refactored code to use `typeof()` instead of `xp::typeOf()`, see
+  https://github.com/xp-framework/rfc/issues/323
+  (@thekid)
+
 ## 7.1.0 / 2016-08-29
 
 * Added forward compatibility with XP 8.0.0 - @thekid

@@ -3,6 +3,9 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added constants `Image::TRUECOLOR` and `Image::PALETTE`, deprecating
+  the global defines with the same name and an `IMG_` prefix
+  (@thekid)
 * **Heads up:** Dropped PHP 5.5 support, minimum PHP version is now
   PHP 5.6.
   (@thekid)

@@ -3,7 +3,7 @@
 /**
  * A filter which sharpens an image
  */
-class SharpenFilter extends \lang\Object implements ImageFilter {
+class SharpenFilter implements ImageFilter {
   
   /**
    * Apply this filter on a given image. Note: This changes the given image!

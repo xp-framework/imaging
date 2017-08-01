@@ -6,7 +6,7 @@
  * @see   http://www.eas.asu.edu/~karam/2dconvolution/
  * @see   php://imageconvolution  
  */
-class ConvolveFilter extends \lang\Object implements ImageFilter {
+class ConvolveFilter implements ImageFilter {
   public
     $kernel   = null,
     $divisor  = 0.0,

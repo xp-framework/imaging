@@ -12,7 +12,7 @@
  * @see      xp://img.filter.ConvolveFilter
  * @purpose  3x3 kernel
  */
-class Kernel extends \lang\Object {
+class Kernel {
   public
     $matrix= [];
   

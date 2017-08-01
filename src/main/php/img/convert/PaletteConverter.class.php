@@ -9,7 +9,7 @@
  * @see      xp://img.convert.ImageConverter
  * @purpose  Converter
  */
-class PaletteConverter extends \lang\Object implements ImageConverter {
+class PaletteConverter implements ImageConverter {
   public
     $dither   = false,
     $ncolors  = 0;

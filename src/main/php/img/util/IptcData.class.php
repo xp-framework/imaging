@@ -21,7 +21,7 @@ use lang\ElementNotFoundException;
  * @see      http://photothumb.com/IPTCExt/
  * @see      http://www.controlledvocabulary.com/pdf/IPTC_mapped_fields.pdf
  */
-class IptcData extends \lang\Object {
+class IptcData {
   public static
     $EMPTY= null;
 

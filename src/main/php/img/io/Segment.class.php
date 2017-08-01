@@ -4,7 +4,7 @@
  * Image meta data segment
  * 
  */
-class Segment extends \lang\Object {
+class Segment {
   public $marker= null;
   public $bytes= null;
 

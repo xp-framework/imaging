@@ -8,7 +8,7 @@ use img\Drawable;
  *
  * @see xp://img.Image
  */
-class Text extends \lang\Object implements Drawable {
+class Text implements Drawable {
   public
     $font=    null,
     $col=     null,

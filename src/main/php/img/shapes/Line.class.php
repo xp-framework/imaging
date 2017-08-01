@@ -17,7 +17,7 @@ use img\Drawable;
  *
  * @see xp://img.Image
  */
-class Line extends \lang\Object implements Drawable {
+class Line implements Drawable {
   public
     $col=  null,
     $x1=   0,

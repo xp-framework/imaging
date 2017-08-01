@@ -16,7 +16,7 @@ use img\ImagingException;
  * @see   xp://img.io.ImageReader
  * @see   xp://img.Image#loadFrom
  */
-class StreamReader extends \lang\Object implements ImageReader {
+class StreamReader implements ImageReader {
   public $stream= null;
   private static $GD_USERSTREAMS_BUG= false;
   private $reader= null;

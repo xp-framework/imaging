@@ -30,7 +30,7 @@ use img\Drawable;
  *
  * @see xp://img.Image
  */
-class Polygon extends \lang\Object implements Drawable {
+class Polygon implements Drawable {
   public
     $col=     null,
     $points=  [],

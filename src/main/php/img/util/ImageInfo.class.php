@@ -9,7 +9,7 @@ use img\ImagingException;
  * @see      php://getimagesize
  * @purpose  Utility
  */
-class ImageInfo extends \lang\Object {
+class ImageInfo {
   public
     $width      = 0,
     $height     = 0,

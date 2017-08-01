@@ -8,7 +8,7 @@ use unittest\TestAction;
  *
  * @see   php://imagetypes
  */
-class ImageTypeSupport extends \lang\Object implements TestAction {
+class ImageTypeSupport implements TestAction {
   protected $type= '';
 
   /**

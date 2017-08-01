@@ -17,7 +17,7 @@ use img\Drawable;
  *
  * @see xp://img.Image
  */
-class Rectangle extends \lang\Object implements Drawable {
+class Rectangle implements Drawable {
   public
     $col=  null,
     $x1=   0,

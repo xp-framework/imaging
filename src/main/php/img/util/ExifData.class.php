@@ -23,7 +23,7 @@ use lang\ElementNotFoundException;
  * @ext      exif
  * @purpose  Utility
  */
-class ExifData extends \lang\Object {
+class ExifData {
   public static
     $EMPTY= null;
 

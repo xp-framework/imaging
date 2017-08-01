@@ -5,7 +5,7 @@
  *
  * @see xp://img.Image#setBrush
  */
-class ImgBrush extends \lang\Object {
+class ImgBrush {
   public
     $image    = null,
     $style    = null;

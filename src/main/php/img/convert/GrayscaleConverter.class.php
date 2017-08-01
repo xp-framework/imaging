@@ -27,7 +27,7 @@
  * @see      xp://img.convert.ImageConverter
  * @purpose  Converter
  */
-class GrayscaleConverter extends \lang\Object implements ImageConverter {
+class GrayscaleConverter implements ImageConverter {
 
   /**
    * Convert an image.

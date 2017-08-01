@@ -7,7 +7,7 @@
  * @see      xp://img.shapes.Text
  * @purpose  Font
  */
-class BitmapFont extends \lang\Object {
+class BitmapFont {
   public
     $id= 0;
     

@@ -10,7 +10,7 @@ use img\Image;
  * @see      xp://img.chart.GraphRenderer
  * @purpose  Renderer
  */
-class ImageRenderer extends \lang\Object implements GraphRenderer {
+class ImageRenderer implements GraphRenderer {
   public
     $width  = 0, 
     $height = 0;

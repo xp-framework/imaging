@@ -5,7 +5,7 @@
  *
  * @see   xp://img.Image#setStyle
  */
-class ImgStyle extends \lang\Object {
+class ImgStyle {
   public
     $colors   = [],
     $pixels   = [];

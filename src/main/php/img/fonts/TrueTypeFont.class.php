@@ -7,7 +7,7 @@
  * @see      xp://img.shapes.Text
  * @purpose  Font
  */
-class TrueTypeFont extends \lang\Object {
+class TrueTypeFont {
   public
     $name=            '',
     $size=            0.0,

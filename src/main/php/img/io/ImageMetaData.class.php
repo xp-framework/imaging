@@ -9,7 +9,7 @@ use img\util\ImageInfo;
  * Image meta data
  * 
  */
-class ImageMetaData extends \lang\Object {
+class ImageMetaData {
   protected $source= null;
   protected $segments= [];
 

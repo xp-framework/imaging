@@ -15,7 +15,7 @@ use img\ImagingException;
  * @see      xp://img.io.ImageWriter
  * @see      xp://img.Image#saveTo
  */
-abstract class StreamWriter extends \lang\Object implements ImageWriter {
+abstract class StreamWriter implements ImageWriter {
   public $stream= null;
   private static $GD_USERSTREAMS_BUG= false;
   private $writer= null;

@@ -6,7 +6,7 @@
  * @see      xp://img.chart.Chart
  * @purpose  Value object
  */
-class Series extends \lang\Object {
+class Series {
   public
     $name   = '',
     $values = [];

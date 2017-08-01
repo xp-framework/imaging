@@ -17,7 +17,7 @@ use img\Drawable;
  *
  * @see xp://img.Image
  */
-class Arc extends \lang\Object implements Drawable {
+class Arc implements Drawable {
   public
     $col=  null,
     $cx=   0,

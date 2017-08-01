@@ -30,7 +30,7 @@ use img\Color;
  *
  * @purpose  Base class for charts
  */
-class Chart extends \lang\Object {
+class Chart {
   public
     $series = [],
     $colors = [],

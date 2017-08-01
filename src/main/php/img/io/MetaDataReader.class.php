@@ -20,7 +20,7 @@ use img\ImagingException;
  * @see  php://getimagesize
  * @test xp://net.xp_framework.unittest.img.MetaDataReaderTest
  */
-class MetaDataReader extends \lang\Object {
+class MetaDataReader {
   protected static $seg= [
     "\x01" => 'TEM',   "\x02" => 'RES',
 

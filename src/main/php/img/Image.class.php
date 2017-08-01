@@ -24,7 +24,10 @@ define('IMG_TRUECOLOR', 0x0001);
  * @ext  gd
  * @see  php://image
  */
-class Image extends \lang\Object {
+class Image {
+  const PALETTE   = 0x0000;
+  const TRUECOLOR = 0x0001;
+
   public
     $width    = 0,
     $height   = 0,

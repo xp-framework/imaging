@@ -543,6 +543,29 @@ class MetaDataReaderTest extends TestCase {
       ,
       $this->extractFromFile('detailed-iptc-embedded.jpg')->iptcData()
     );
+    var_dump(      (new \img\util\IptcData())
+        ->withTitle('Unittest Image')
+        ->withUrgency(null)
+        ->withCategory(null)
+        ->withKeywords(null)
+        ->withDateCreated(new \util\Date('2011-12-07 00:00:00+0100'))
+        ->withAuthor(null)
+        ->withAuthorPosition(null)
+        ->withCity(null)
+        ->withState(null)
+        ->withCountry(null)
+        ->withHeadline('Caption')
+        ->withCredit('Provider')
+        ->withSource('Source')
+        ->withCopyrightNotice('Timm Friebe, 2012')
+        ->withCaption('Description')
+        ->withWriter('Timm')
+        ->withSupplementalCategories(null)
+        ->withSpecialInstructions(null)
+        ->withOriginalTransmissionReference(null)
+      ,
+      $this->extractFromFile('detailed-iptc-embedded.jpg')->iptcData()
+);
   }
 
   #[@test]

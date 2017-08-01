@@ -19,7 +19,7 @@ abstract class MetaDataTest extends \unittest\TestCase {
    * @return  io.File
    */
   protected function resourceAsFile($name, $sub= null) {
-    $package= $this->getClass()->getPackage();
+    $package= typeof($this)->getPackage();
     $container= $sub ? $package->getPackage($sub) : $package;
     return $container->getResourceAsStream($name);
   }

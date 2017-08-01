@@ -3,11 +3,18 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 8.0.0 / 2017-08-01
+
+* **Heads up:** Removed support for deprecated `io.Stream` instances
+  (@thekid)
+* Changed Stream(Reader|Writer) constructors to accept `io.Channel`
+  instances as well as `io.streams.InputStream`.
+  (@thekid)
 * Added constants `Image::TRUECOLOR` and `Image::PALETTE`, deprecating
   the global defines with the same name and an `IMG_` prefix
   (@thekid)
-* **Heads up:** Dropped PHP 5.5 support, minimum PHP version is now
-  PHP 5.6.
+* **Heads up:** Added forward compatibility with XP 9; dropped PHP 5.5
+  support, minimum PHP version is now PHP 5.6.
   (@thekid)
 
 ## 7.1.1 / 2017-05-20

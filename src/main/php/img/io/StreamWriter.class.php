@@ -1,8 +1,7 @@
 <?php namespace img\io;
 
 use io\streams\OutputStream;
-use io\Stream;
-use io\File;
+use io\Channel;
 use lang\IllegalArgumentException;
 use lang\Throwable;
 use img\ImagingException;
@@ -22,28 +21,16 @@ abstract class StreamWriter implements ImageWriter {
   /**
    * Constructor
    *
-   * @param   var $arg either an io.streams.OutputStream, an io.File or an io.Stream (BC)
-   * @throws  lang.IllegalArgumentException when types are not met
+   * @param  io.streams.InputStream|io.Channel $arg
+   * @throws lang.IllegalArgumentException when types are not met
    */
   public function __construct($arg) {
     if ($arg instanceof OutputStream) {
       $this->write($arg);
-    } else if ($arg instanceof File) {
+    } else if ($arg instanceof Channel) {
       $this->write($arg->out());
-    } else if ($arg instanceof Stream) {  // BC
-      $this->stream= $arg;
-      $this->writer= function($writer, $stream, $handle) {
-        ob_start();
-        if ($r= $writer->output($handle)) {
-          $stream->open(STREAM_MODE_WRITE);
-          $stream->write(ob_get_contents());
-          $stream->close();
-        }
-        ob_end_clean();
-        return $r;
-      };
     } else {
-      throw new IllegalArgumentException('Expected either an io.streams.OutputStream or an io.File, have '.type($arg)->getName());
+      throw new IllegalArgumentException('Expected either an io.streams.OutputStream or an io.Channel, have '.type($arg)->getName());
     }
   }
 

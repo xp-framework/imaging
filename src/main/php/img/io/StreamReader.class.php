@@ -1,7 +1,6 @@
 <?php namespace img\io;
 
-use io\Stream;
-use io\File;
+use io\Channel;
 use io\IOException;
 use io\streams\InputStream;
 use io\streams\Streams;
@@ -23,24 +22,16 @@ class StreamReader implements ImageReader {
   /**
    * Constructor
    *
-   * @param   var $arg either an io.streams.InputStream, an io.File or an io.Stream (BC)
-   * @throws  lang.IllegalArgumentException when types are not met
+   * @param  io.streams.InputStream|io.Channel $arg
+   * @throws lang.IllegalArgumentException when types are not met
    */
   public function __construct($arg) {
     if ($arg instanceof InputStream) {
       $this->read($arg);
-    } else if ($arg instanceof File) {
+    } else if ($arg instanceof Channel) {
       $this->read($arg->in());
-    } else if ($arg instanceof Stream) {  // BC
-      $this->stream= $arg;
-      $this->reader= function($reader, $stream) {
-        $stream->open(STREAM_MODE_READ);
-        $bytes= $stream->read($stream->size());
-        $stream->close();
-        return $reader->readImageFromString($bytes);
-      };
     } else {
-      throw new IllegalArgumentException('Expected either an io.streams.InputStream or an io.File, have '.typeof($this->stream)->getName());
+      throw new IllegalArgumentException('Expected either an io.streams.InputStream or an io.Channel, have '.typeof($this->stream)->getName());
     }
   }
 

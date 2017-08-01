@@ -3,10 +3,10 @@
 use util\Date;
 use img\ImagingException;
 use lang\ElementNotFoundException;
-
+use util\Objects;
 
 /**
- * Reads the IPTC headers from Photoshop-files, JPEGs or TIFFs
+ * Reads the IPTC headers from Photoshop-files JPEGs or TIFFs
  *
  * <code>
  *   uses('img.util.IptcData', 'io.File');
@@ -21,9 +21,8 @@ use lang\ElementNotFoundException;
  * @see      http://photothumb.com/IPTCExt/
  * @see      http://www.controlledvocabulary.com/pdf/IPTC_mapped_fields.pdf
  */
-class IptcData {
-  public static
-    $EMPTY= null;
+class IptcData implements \lang\Value {
+  public static $EMPTY= null;
 
   public
     $title                         = '',
@@ -659,11 +658,7 @@ class IptcData {
     return $this->originalTransmissionReference;
   }
 
-  /**
-   * Retrieve a string representation
-   *
-   * @return  string
-   */
+  /** @return string */
   public function toString() {
     return sprintf(
       "  [title                        ] %s\n".
@@ -708,34 +703,81 @@ class IptcData {
     );
   }
 
+  /** @return string */
+  public function hashCode() {
+    return Objects::hashOf([
+      $this->title,
+      $this->urgency,
+      $this->category,
+      $this->keywords,
+      $this->dateCreated,
+      $this->author,
+      $this->authorPosition,
+      $this->city,
+      $this->state,
+      $this->country,
+      $this->headline,
+      $this->credit,
+      $this->source,
+      $this->copyrightNotice,
+      $this->caption,
+      $this->writer,
+      $this->specialInstructions,
+      $this->supplementalCategories,
+      $this->originalTransmissionReference
+    ]);
+  }
+
   /**
-   * Returns whether another ExifData instance is equal to this
+   * Compares this ExifData instance to another value
    *
-   * @param  var cmp
-   * @return bool
+   * @param  var $value
+   * @return int
    */
-  public function equals($cmp) {
-    return (
-      $cmp instanceof self &&
-      $cmp->title === $this->title &&
-      $cmp->urgency === $this->urgency &&
-      $cmp->category === $this->category &&
-      $cmp->keywords === $this->keywords &&
-      (null === $cmp->dateCreated ? null === $this->dateCreated : $cmp->dateCreated->equals($this->dateCreated)) &&
-      $cmp->author === $this->author &&
-      $cmp->authorPosition === $this->authorPosition &&
-      $cmp->city === $this->city &&
-      $cmp->state === $this->state &&
-      $cmp->country === $this->country &&
-      $cmp->headline === $this->headline &&
-      $cmp->credit === $this->credit &&
-      $cmp->source === $this->source &&
-      $cmp->copyrightNotice === $this->copyrightNotice &&
-      $cmp->caption === $this->caption &&
-      $cmp->writer === $this->writer &&
-      $cmp->supplementalCategories === $this->supplementalCategories &&
-      $cmp->specialInstructions === $this->specialInstructions &&
-      $cmp->originalTransmissionReference === $this->originalTransmissionReference
-    );
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare([
+          $this->title,
+          $this->urgency,
+          $this->category,
+          $this->keywords,
+          $this->dateCreated,
+          $this->author,
+          $this->authorPosition,
+          $this->city,
+          $this->state,
+          $this->country,
+          $this->headline,
+          $this->credit,
+          $this->source,
+          $this->copyrightNotice,
+          $this->caption,
+          $this->writer,
+          $this->specialInstructions,
+          $this->supplementalCategories,
+          $this->originalTransmissionReference
+        ], [
+          $value->title,
+          $value->urgency,
+          $value->category,
+          $value->keywords,
+          $value->dateCreated,
+          $value->author,
+          $value->authorPosition,
+          $value->city,
+          $value->state,
+          $value->country,
+          $value->headline,
+          $value->credit,
+          $value->source,
+          $value->copyrightNotice,
+          $value->caption,
+          $value->writer,
+          $value->specialInstructions,
+          $value->supplementalCategories,
+          $value->originalTransmissionReference
+        ])
+      : 1
+    ;
   }
 }

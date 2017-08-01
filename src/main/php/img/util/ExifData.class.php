@@ -6,7 +6,7 @@ use img\Image;
 use img\io\StreamReader;
 use io\Stream;
 use lang\ElementNotFoundException;
-
+use util\Objects;
 
 /**
  * Reads the EXIF headers from JPEG or TIFF
@@ -23,9 +23,8 @@ use lang\ElementNotFoundException;
  * @ext      exif
  * @purpose  Utility
  */
-class ExifData {
-  public static
-    $EMPTY= null;
+class ExifData implements \lang\Value {
+  public static $EMPTY= null;
 
   public
     $height           = 0,
@@ -890,33 +889,78 @@ class ExifData {
     );
   }
 
+  /** @return string */
+  public function hashCode() {
+    return Objects::hashOf([
+      $this->height,
+      $this->width,
+      $this->make,
+      $this->model,
+      $this->flash,
+      $this->orientation,
+      $this->fileName,
+      $this->fileSize,
+      $this->mimeType,
+      $this->dateTime,
+      $this->apertureFNumber,
+      $this->software,
+      $this->exposureTime,
+      $this->exposureProgram,
+      $this->whitebalance,
+      $this->meteringMode,
+      $this->isoSpeedRatings,
+      $this->focalLength
+    ]);
+  }
+
   /**
-   * Returns whether another ExifData instance is equal to this
+   * Compares this ImageInfo instance to another value
    *
-   * @param  var cmp
-   * @return bool
+   * @param  var $value
+   * @return int
    */
-  public function equals($cmp) {
-    return (
-      $cmp instanceof self &&
-      $cmp->width === $this->width &&
-      $cmp->height === $this->height &&
-      $cmp->mimeType === $this->mimeType &&
-      $cmp->fileName === $this->fileName &&
-      $cmp->fileSize === $this->fileSize &&
-      $cmp->make === $this->make &&
-      $cmp->model === $this->model &&
-      $cmp->software === $this->software &&
-      $cmp->flash === $this->flash &&
-      $cmp->orientation === $this->orientation &&
-      (null === $cmp->dateTime ? null === $this->dateTime : $cmp->dateTime->equals($this->dateTime)) &&
-      $cmp->apertureFNumber === $this->apertureFNumber &&
-      $cmp->exposureTime === $this->exposureTime &&
-      $cmp->exposureProgram === $this->exposureProgram &&
-      $cmp->meteringMode === $this->meteringMode &&
-      $cmp->whitebalance === $this->whitebalance &&
-      $cmp->isoSpeedRatings === $this->isoSpeedRatings &&
-      $cmp->focalLength === $this->focalLength
-    );
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare([
+          $this->height,
+          $this->width,
+          $this->make,
+          $this->model,
+          $this->flash,
+          $this->orientation,
+          $this->fileName,
+          $this->fileSize,
+          $this->mimeType,
+          $this->dateTime,
+          $this->apertureFNumber,
+          $this->software,
+          $this->exposureTime,
+          $this->exposureProgram,
+          $this->whitebalance,
+          $this->meteringMode,
+          $this->isoSpeedRatings,
+          $this->focalLength
+        ], [
+          $value->height,
+          $value->width,
+          $value->make,
+          $value->model,
+          $value->flash,
+          $value->orientation,
+          $value->fileName,
+          $value->fileSize,
+          $value->mimeType,
+          $value->dateTime,
+          $value->apertureFNumber,
+          $value->software,
+          $value->exposureTime,
+          $value->exposureProgram,
+          $value->whitebalance,
+          $value->meteringMode,
+          $value->isoSpeedRatings,
+          $value->focalLength
+        ])
+      : 1
+    ;
   }
 }

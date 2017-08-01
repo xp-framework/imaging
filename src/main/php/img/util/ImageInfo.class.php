@@ -1,7 +1,7 @@
 <?php namespace img\util;
  
 use img\ImagingException;
-
+use util\Objects;
 
 /**
  * Image information
@@ -9,7 +9,7 @@ use img\ImagingException;
  * @see      php://getimagesize
  * @purpose  Utility
  */
-class ImageInfo {
+class ImageInfo implements \lang\Value {
   public
     $width      = 0,
     $height     = 0,
@@ -44,7 +44,20 @@ class ImageInfo {
     }
     return $i;
   }
-  
+
+  /** @return string */
+  public function hashCode() {
+    return Objects::hashOf([
+      $this->width,
+      $this->height,
+      $this->type,
+      $this->mime,
+      $this->bits,
+      $this->channels,
+      $this->segments
+    ]);
+  }
+
   /**
    * Creates a string representation of this object
    *
@@ -67,6 +80,48 @@ class ImageInfo {
       null === $this->bits ? '(unknown)' : $this->bits,
       implode(', ', array_keys($this->segments))
     );
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return Objects::hashOf([
+      $this->width,
+      $this->height,
+      $this->type,
+      $this->mime,
+      $this->bits,
+      $this->channels,
+      $this->segments
+    ]);
+  }
+
+  /**
+   * Compares this ImageInfo instance to another value
+   *
+   * @param  var $value
+   * @return int
+   */
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare([
+          $this->width,
+          $this->height,
+          $this->type,
+          $this->mime,
+          $this->bits,
+          $this->channels,
+          $this->segments
+        ], [
+          $value->width,
+          $value->height,
+          $value->type,
+          $value->mime,
+          $value->bits,
+          $value->channels,
+          $value->segments
+        ])
+      : 1
+    ;
   }
 
   /**

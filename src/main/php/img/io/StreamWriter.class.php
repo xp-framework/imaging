@@ -94,8 +94,9 @@ abstract class StreamWriter extends \lang\Object implements ImageWriter {
    * @throws  img.ImagingException
    */
   public function setResource($handle) {
+    $f= $this->writer;
     try {
-      $r= call_user_func($this->writer, $this, $this->stream, $handle);
+      $r= $f($this, $this->stream, $handle);
       $this->stream->close();
     } catch (Throwable $e) {
       if (ob_get_level()) ob_clean();

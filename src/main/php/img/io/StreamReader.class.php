@@ -94,8 +94,9 @@ class StreamReader extends \lang\Object implements ImageReader {
    * @throws  img.ImagingException
    */
   public function getResource() {
+    $f= $this->reader;
     try {
-      return call_user_func($this->reader, $this, $this->stream);
+      return $f($this, $this->stream);
     } catch (IOException $e) {
       throw new ImagingException($e->getMessage());
     }

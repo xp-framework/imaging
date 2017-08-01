@@ -615,6 +615,6 @@ class ImageRenderer extends \lang\Object implements GraphRenderer {
       throw new \lang\IllegalArgumentException('Cannot render '.typeof($chart)->getName().'s');
     }
     
-    return call_user_func_array([$this, $method], [$chart]);
+    return $this->{$method}($chart);
   }
 }

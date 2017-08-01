@@ -4,6 +4,7 @@ use lang\CloneNotSupportedException;
 use img\filter\ImageFilter;
 use img\convert\ImageConverter;
 
+// @deprecated Use Image::PALETTE and Image::TRUECOLOR instead
 define('IMG_PALETTE',   0x0000);
 define('IMG_TRUECOLOR', 0x0001);
 
@@ -13,7 +14,7 @@ define('IMG_TRUECOLOR', 0x0001);
  * Usage example: Creating an empty image:
  * <code>
  *   $palette_image= Image::create(640, 480);
- *   $truecolor_image= Image::create(640, 480, IMG_TRUECOLOR);
+ *   $truecolor_image= Image::create(640, 480, Image::TRUECOLOR);
  * </code>
  *
  * Usage example: Loading an image from a file:

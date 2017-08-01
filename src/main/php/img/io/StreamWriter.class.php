@@ -17,15 +17,7 @@ use img\ImagingException;
  */
 abstract class StreamWriter implements ImageWriter {
   public $stream= null;
-  private static $GD_USERSTREAMS_BUG= false;
   private $writer= null;
-
-  static function __static() {
-    self::$GD_USERSTREAMS_BUG= (
-      version_compare(PHP_VERSION, '5.5.0RC1', '>=') && version_compare(PHP_VERSION, '5.5.1', '<') &&
-      0 !== strncmp('WIN', PHP_OS, 3)
-    );
-  }
 
   /**
    * Constructor
@@ -58,24 +50,15 @@ abstract class StreamWriter implements ImageWriter {
   /** @param io.streams.OutputStream */
   private function write($stream) {
     $this->stream= $stream;
-    if (self::$GD_USERSTREAMS_BUG) {
-      $this->writer= function($writer, $stream, $handle) {
-        ob_start();
-        $r= $writer->output($handle) && $stream->write(ob_get_contents());
-        ob_end_clean();
-        return $r;
-      };
-    } else {
 
-      // Use output buffering with a callback method to capture the 
-      // image(gd|jpeg|png|...) functions' output.
-      $this->writer= function($writer, $stream, $handle) {
-        ob_start([$stream, 'write']);
-        $r= $writer->output($handle);
-        ob_end_clean();
-        return $r;
-      };
-    }
+    // Use output buffering with a callback method to capture the 
+    // image(gd|jpeg|png|...) functions' output.
+    $this->writer= function($writer, $stream, $handle) {
+      ob_start([$stream, 'write']);
+      $r= $writer->output($handle);
+      ob_end_clean();
+      return $r;
+    };
   }
 
   /**

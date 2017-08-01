@@ -1,7 +1,5 @@
 <?php namespace img\io;
 
-
-
 /**
  * Reads images from URIs
  */

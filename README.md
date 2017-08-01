@@ -29,7 +29,7 @@ Resizing the original image to 640x480
 ```php
 use img\Image;
 
-$transformed= Image::create(640, 480, IMG_TRUECOLOR);
+$transformed= Image::create(640, 480, Image::TRUECOLOR);
 $transformed->resampleFrom($image);
 ```
 

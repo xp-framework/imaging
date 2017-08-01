@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* **Heads up:** Dropped PHP 5.5 support, minimum PHP version is now
+  PHP 5.6.
+  (@thekid)
+
 ## 7.1.1 / 2017-05-20
 
 * Refactored code to use `typeof()` instead of `xp::typeOf()`, see

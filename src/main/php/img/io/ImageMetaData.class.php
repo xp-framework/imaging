@@ -1,9 +1,11 @@
 <?php namespace img\io;
 
+use img\ImagingException;
 use img\util\ExifData;
-use img\util\IptcData;
 use img\util\ImageInfo;
-
+use img\util\IptcData;
+use lang\XPClass;
+use util\Date;
 
 /**
  * Image meta data
@@ -62,7 +64,7 @@ class ImageMetaData {
    * @return img.io.Segment[]
    */
   public function segmentsOf($type) {
-    $class= $type instanceof \lang\XPClass ? $type->getName() : $type;
+    $class= $type instanceof XPClass ? $type->getName() : $type;
     $r= [];
     foreach ($this->segments as $segment) {
       if (nameof($segment) === $class) $r[]= $segment;
@@ -78,7 +80,7 @@ class ImageMetaData {
    */
   public function imageDimensions() {
     if (!($seg= $this->segmentsOf('img.io.SOFNSegment'))) {
-      throw new \img\ImagingException('Cannot load image information from '.$this->source);
+      throw new ImagingException('Cannot load image information from '.$this->source);
     }
 
     return [$seg[0]->width(), $seg[0]->height()];
@@ -93,35 +95,36 @@ class ImageMetaData {
   public function iptcData() {
     if (!($seg= $this->segmentsOf('img.io.IptcSegment'))) return null;
 
-    with ($data= new IptcData(), $iptc= $seg[0]->rawData()); {
-      // Parse creation date
-      if (3 == sscanf(@$iptc['2#055'][0], '%4d%2d%d', $year, $month, $day)) {
-        $created= \util\Date::create($year, $month, $day, 0, 0, 0);
-      } else {
-        $created= null;
-      }
+    $data= new IptcData();
+    $iptc= $seg[0]->rawData();
 
-      $data->setTitle(@$iptc['2#005'][0]);
-      $data->setUrgency(@$iptc['2#010'][0]);
-      $data->setCategory(@$iptc['2#015'][0]);
-      $data->setSupplementalCategories(@$iptc['2#020']);
-      $data->setKeywords(@$iptc['2#025']);
-      $data->setSpecialInstructions(@$iptc['2#040'][0]);
-      $data->setDateCreated($created);
-      $data->setAuthor(@$iptc['2#080'][0]);
-      $data->setAuthorPosition(@$iptc['2#085'][0]);
-      $data->setCity(@$iptc['2#090'][0]);
-      $data->setState(@$iptc['2#095'][0]);
-      $data->setCountry(@$iptc['2#101'][0]);
-      $data->setOriginalTransmissionReference(@$iptc['2#103'][0]);   
-      $data->setHeadline(@$iptc['2#105'][0]);
-      $data->setCredit(@$iptc['2#110'][0]);
-      $data->setSource(@$iptc['2#115'][0]);
-      $data->setCopyrightNotice(@$iptc['2#116'][0]);
-      $data->setCaption(@$iptc['2#120'][0]);
-      $data->setWriter(@$iptc['2#122'][0]);
-      return $data;
+    // Parse creation date
+    if (3 === sscanf(isset($iptc['2#055']) ? $iptc['2#055'][0] : '', '%4d%2d%d', $year, $month, $day)) {
+      $created= Date::create($year, $month, $day, 0, 0, 0);
+    } else {
+      $created= null;
     }
+
+    $data->setTitle(isset($iptc['2#005']) ? $iptc['2#005'][0] : null);
+    $data->setUrgency(isset($iptc['2#010']) ? $iptc['2#010'][0] : null);
+    $data->setCategory(isset($iptc['2#015']) ? $iptc['2#015'][0] : null);
+    $data->setSupplementalCategories(isset($iptc['2#020']) ? $iptc['2#020'] : null);
+    $data->setKeywords(isset($iptc['2#025']) ? $iptc['2#025'] : null);
+    $data->setSpecialInstructions(isset($iptc['2#040']) ? $iptc['2#040'][0] : null);
+    $data->setDateCreated($created);
+    $data->setAuthor(isset($iptc['2#080']) ? $iptc['2#080'][0] : null);
+    $data->setAuthorPosition(isset($iptc['2#085']) ? $iptc['2#085'][0] : null);
+    $data->setCity(isset($iptc['2#090']) ? $iptc['2#090'][0] : null);
+    $data->setState(isset($iptc['2#095']) ? $iptc['2#095'][0] : null);
+    $data->setCountry(isset($iptc['2#101']) ? $iptc['2#101'][0] : null);
+    $data->setOriginalTransmissionReference(isset($iptc['2#103']) ? $iptc['2#103'][0] : null);
+    $data->setHeadline(isset($iptc['2#105']) ? $iptc['2#105'][0] : null);
+    $data->setCredit(isset($iptc['2#110']) ? $iptc['2#110'][0] : null);
+    $data->setSource(isset($iptc['2#115']) ? $iptc['2#115'][0] : null);
+    $data->setCopyrightNotice(isset($iptc['2#116']) ? $iptc['2#116'][0] : null);
+    $data->setCaption(isset($iptc['2#120']) ? $iptc['2#120'][0] : null);
+    $data->setWriter(isset($iptc['2#122']) ? $iptc['2#122'][0] : null);
+    return $data;
   }
 
   /**

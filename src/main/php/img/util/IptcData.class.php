@@ -1,8 +1,8 @@
 <?php namespace img\util;
 
-use util\Date;
 use img\ImagingException;
 use lang\ElementNotFoundException;
+use util\Date;
 use util\Objects;
 
 /**
@@ -77,32 +77,32 @@ class IptcData implements \lang\Value {
     }
     
     // Parse creation date
-    if (3 == sscanf(@$iptc['2#055'][0], '%4d%2d%d', $year, $month, $day)) {
+    if (3 == sscanf(isset($iptc['2#055']) ? $iptc['2#055'][0] : '', '%4d%2d%d', $year, $month, $day)) {
       $created= Date::create($year, $month, $day, 0, 0, 0);
     } else {
       $created= null;
     }
 
     with ($i= new self()); {
-      $i->setTitle(@$iptc['2#005'][0]);
-      $i->setUrgency(@$iptc['2#010'][0]);
-      $i->setCategory(@$iptc['2#015'][0]);
-      $i->setSupplementalCategories(@$iptc['2#020']);
-      $i->setKeywords(@$iptc['2#025']);
-      $i->setSpecialInstructions(@$iptc['2#040'][0]);
+      $i->setTitle(isset($iptc['2#005']) ? $iptc['2#005'][0] : null);
+      $i->setUrgency(isset($iptc['2#010']) ? $iptc['2#010'][0] : null);
+      $i->setCategory(isset($iptc['2#015']) ? $iptc['2#015'][0] : null);
+      $i->setSupplementalCategories(isset($iptc['2#020']) ? $iptc['2#020'] : null);
+      $i->setKeywords(isset($iptc['2#025']) ? $iptc['2#025'] : null);
+      $i->setSpecialInstructions(isset($iptc['2#040']) ? $iptc['2#040'][0] : null);
       $i->setDateCreated($created);
-      $i->setAuthor(@$iptc['2#080'][0]);
-      $i->setAuthorPosition(@$iptc['2#085'][0]);
-      $i->setCity(@$iptc['2#090'][0]);
-      $i->setState(@$iptc['2#095'][0]);
-      $i->setCountry(@$iptc['2#101'][0]);
-      $i->setOriginalTransmissionReference(@$iptc['2#103'][0]);   
-      $i->setHeadline(@$iptc['2#105'][0]);
-      $i->setCredit(@$iptc['2#110'][0]);
-      $i->setSource(@$iptc['2#115'][0]);
-      $i->setCopyrightNotice(@$iptc['2#116'][0]);
-      $i->setCaption(@$iptc['2#120'][0]);
-      $i->setWriter(@$iptc['2#122'][0]);
+      $i->setAuthor(isset($iptc['2#080']) ? $iptc['2#080'][0] : null);
+      $i->setAuthorPosition(isset($iptc['2#085']) ? $iptc['2#085'][0] : null);
+      $i->setCity(isset($iptc['2#090']) ? $iptc['2#090'][0] : null);
+      $i->setState(isset($iptc['2#095']) ? $iptc['2#095'][0] : null);
+      $i->setCountry(isset($iptc['2#101']) ? $iptc['2#101'][0] : null);
+      $i->setOriginalTransmissionReference(isset($iptc['2#103']) ? $iptc['2#103'][0] : null);
+      $i->setHeadline(isset($iptc['2#105']) ? $iptc['2#105'][0] : null);
+      $i->setCredit(isset($iptc['2#110']) ? $iptc['2#110'][0] : null);
+      $i->setSource(isset($iptc['2#115']) ? $iptc['2#115'][0] : null);
+      $i->setCopyrightNotice(isset($iptc['2#116']) ? $iptc['2#116'][0] : null);
+      $i->setCaption(isset($iptc['2#120']) ? $iptc['2#120'][0] : null);
+      $i->setWriter(isset($iptc['2#122']) ? $iptc['2#122'][0] : null);
     }
     return $i;
   }

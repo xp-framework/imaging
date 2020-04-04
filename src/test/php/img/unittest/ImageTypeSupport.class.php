@@ -1,6 +1,6 @@
 <?php namespace img\unittest;
 
-use unittest\TestCase;
+use unittest\Test;
 use unittest\TestAction;
 
 /**
@@ -24,10 +24,10 @@ class ImageTypeSupport implements TestAction {
    * This method gets invoked before a test method is invoked, and before
    * the setUp() method is called.
    *
-   * @param  unittest.TestCase $t
+   * @param  unittest.Test $t
    * @throws unittest.PrerequisitesNotMetError
    */
-  public function beforeTest(TestCase $t) { 
+  public function beforeTest(Test $t) { 
     if (!(imagetypes() & constant('IMG_'.$this->type))) {
       throw new PrerequisitesNotMetError('Image type not supported', null, [$this->type]);
     }
@@ -37,9 +37,9 @@ class ImageTypeSupport implements TestAction {
    * This method gets invoked after the test method is invoked and regard-
    * less of its outcome, after the tearDown() call has run.
    *
-   * @param  unittest.TestCase $t
+   * @param  unittest.Test $t
    */
-  public function afterTest(TestCase $t) {
+  public function afterTest(Test $t) {
     // Empty
   }
 }

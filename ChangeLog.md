@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 8.0.1 / 2020-04-04
+
+* Made compatible with XP 10 - @thekid
+
 ## 8.0.0 / 2017-08-01
 
 * **Heads up:** Removed support for deprecated `io.Stream` instances

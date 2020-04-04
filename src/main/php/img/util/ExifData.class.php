@@ -1,11 +1,11 @@
 <?php namespace img\util;
 
-use util\Date;
-use img\ImagingException;
 use img\Image;
+use img\ImagingException;
 use img\io\StreamReader;
 use io\Stream;
 use lang\ElementNotFoundException;
+use util\Date;
 use util\Objects;
 
 /**
@@ -544,7 +544,6 @@ class ExifData implements \lang\Value {
     ];
     return isset($degree[$this->orientation]) ? $degree[$this->orientation] : 0;
   }
-  
 
   /**
    * Set ApertureFNumber

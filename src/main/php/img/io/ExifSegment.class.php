@@ -545,7 +545,7 @@ class ExifSegment extends Segment {
         if ('a*' === $unpack) {
           $entry['data']= rtrim(substr($data, $read, $l), "\0");
         } else {
-          $value= unpack($unpack{0}.((int)$unpack{1} * $entry['size']), substr($data, $read, $l));
+          $value= unpack($unpack[0].((int)$unpack[1] * $entry['size']), substr($data, $read, $l));
           $entry['data']= sizeof($value) > 1 ? implode('/', $value) : current($value);
         }
       } else {

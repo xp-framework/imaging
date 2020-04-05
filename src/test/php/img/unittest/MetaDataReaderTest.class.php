@@ -1,11 +1,12 @@
 <?php namespace img\unittest;
 
-use xml\Node;
-use unittest\TestCase;
+use img\ImagingException;
+use img\io\CommentSegment;
 use img\io\MetaDataReader;
 use img\io\SOFNSegment;
-use img\io\CommentSegment;
 use img\io\XMPSegment;
+use unittest\TestCase;
+use xml\Node;
 
 /**
  * TestCase for MetaDataReader class
@@ -61,12 +62,12 @@ class MetaDataReaderTest extends TestCase {
     $this->assertEquals($size, sizeof($value));
   }
 
-  #[@test, @expect(class= 'img.ImagingException', withMessage= '/Could not find start of image/')]
+  #[@test, @expect(['class' => ImagingException::class, 'withMessage' => '/Could not find start of image/'])]
   public function this_class_file() {
     $this->extractFromFile(basename(__FILE__));
   }
 
-  #[@test, @expect(class= 'img.ImagingException', withMessage= '/Could not find start of image/')]
+  #[@test, @expect(['class' => ImagingException::class, 'withMessage' => '/Could not find start of image/'])]
   public function empty_file() {
     $this->extractFromFile('empty.jpg');
   }

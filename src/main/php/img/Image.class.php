@@ -1,8 +1,8 @@
 <?php namespace img;
 
-use lang\CloneNotSupportedException;
-use img\filter\ImageFilter;
 use img\convert\ImageConverter;
+use img\filter\ImageFilter;
+use lang\CloneNotSupportedException;
 
 // @deprecated Use Image::PALETTE and Image::TRUECOLOR instead
 define('IMG_PALETTE',   0x0000);

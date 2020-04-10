@@ -1,12 +1,10 @@
 <?php namespace img\util;
 
-use img\Image;
-use img\ImagingException;
+use img\{Image, ImagingException};
 use img\io\StreamReader;
 use io\Stream;
 use lang\ElementNotFoundException;
-use util\Date;
-use util\Objects;
+use util\{Date, Objects};
 
 /**
  * Reads the EXIF headers from JPEG or TIFF
@@ -499,20 +497,20 @@ class ExifData implements \lang\Value {
    * image was captured. The relation of the '0th row' and '0th column' 
    * to visual position is shown as below:
    *
-   * <pre>
-   *   +---------------------------------+-----------------+
-   *   | value | 0th row    | 0th column | human readable  |
-   *   +---------------------------------+-----------------+
-   *   | 1     | top        | left side  | normal          |
-   *   | 2     | top        | right side | flip horizontal |
-   *   | 3     | bottom     | right side | rotate 180°     |
-   *   | 4     | bottom     | left side  | flip vertical   |
-   *   | 5     | left side  | top        | transpose       |
-   *   | 6     | right side | top        | rotate 90°      |
-   *   | 7     | right side | bottom     | transverse      |
-   *   | 8     | left side  | bottom     | rotate 270°     |
-   *   +---------------------------------+-----------------+
-   *</pre>
+   * ```
+   * +---------------------------------+-----------------+
+   * | value | 0th row    | 0th column | human readable  |
+   * +---------------------------------+-----------------+
+   * | 1     | top        | left side  | normal          |
+   * | 2     | top        | right side | flip horizontal |
+   * | 3     | bottom     | right side | rotate 180Â°     |
+   * | 4     | bottom     | left side  | flip vertical   |
+   * | 5     | left side  | top        | transpose       |
+   * | 6     | right side | top        | rotate 90Â°      |
+   * | 7     | right side | bottom     | transverse      |
+   * | 8     | left side  | bottom     | rotate 270Â°     |
+   * +---------------------------------+-----------------+
+   * ```
    *
    * @return  string
    */

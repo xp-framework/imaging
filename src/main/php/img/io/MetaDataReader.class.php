@@ -1,7 +1,7 @@
 <?php namespace img\io;
 
-use io\streams\InputStream;
 use img\ImagingException;
+use io\streams\InputStream;
 
 
 /**

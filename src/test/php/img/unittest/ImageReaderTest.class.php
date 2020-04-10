@@ -1,16 +1,11 @@
 <?php namespace img\unittest;
 
-use img\ImagingException;
-use io\streams\InputStream;
+use img\{Image, ImagingException};
+use img\io\{GifStreamReader, JpegStreamReader, PngStreamReader};
+use io\{FileUtil, IOException};
+use io\streams\{InputStream, MemoryInputStream};
 use lang\Runtime;
 use unittest\TestCase;
-use io\FileUtil;
-use io\IOException;
-use img\Image;
-use img\io\GifStreamReader;
-use img\io\JpegStreamReader;
-use img\io\PngStreamReader;
-use io\streams\MemoryInputStream;
 
 /**
  * Tests reading images

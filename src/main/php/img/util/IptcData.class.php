@@ -2,8 +2,7 @@
 
 use img\ImagingException;
 use lang\ElementNotFoundException;
-use util\Date;
-use util\Objects;
+use util\{Date, Objects};
 
 /**
  * Reads the IPTC headers from Photoshop-files JPEGs or TIFFs

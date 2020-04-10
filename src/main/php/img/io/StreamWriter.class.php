@@ -1,10 +1,9 @@
 <?php namespace img\io;
 
-use io\streams\OutputStream;
-use io\Channel;
-use lang\IllegalArgumentException;
-use lang\Throwable;
 use img\ImagingException;
+use io\Channel;
+use io\streams\OutputStream;
+use lang\{IllegalArgumentException, Throwable};
 
 /**
  * Writes to a stream

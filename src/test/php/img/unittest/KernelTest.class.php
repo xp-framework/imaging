@@ -1,7 +1,7 @@
 <?php namespace img\unittest;
 
-use lang\IllegalArgumentException;
 use img\filter\Kernel;
+use lang\IllegalArgumentException;
 
 /**
  * Tests the kernel class

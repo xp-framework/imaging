@@ -1,11 +1,9 @@
 <?php namespace img\unittest;
 
 use img\ImagingException;
-use io\streams\OutputStream;
 use img\io\PngStreamWriter;
-use io\IOException;
-use io\streams\MemoryOutputStream;
-use io\FileUtil;
+use io\{FileUtil, IOException};
+use io\streams\{MemoryOutputStream, OutputStream};
 
 /**
  * Tests writing PNG images

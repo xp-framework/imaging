@@ -1,10 +1,10 @@
 <?php namespace img\unittest;
 
-use unittest\TestCase;
 use img\Image;
 use img\io\PngStreamReader;
 use io\FileUtil;
 use io\streams\MemoryInputStream;
+use unittest\TestCase;
 
 /**
  * Tests reading PNG images

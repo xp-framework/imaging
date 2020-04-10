@@ -1,7 +1,7 @@
 <?php namespace img\unittest;
 
-use lang\ElementNotFoundException;
 use img\util\IptcData;
+use lang\ElementNotFoundException;
 
 /**
  * TestCase for IptcData class

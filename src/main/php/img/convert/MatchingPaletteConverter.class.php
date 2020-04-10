@@ -1,7 +1,7 @@
 <?php namespace img\convert;
 
 use img\Image;
- 
+
 /**
  * Converts a truecolor image to a paletted image. Uses 
  * imagecolormatch() to get a better result

@@ -1,11 +1,9 @@
 <?php namespace img\io;
 
-use io\Channel;
-use io\IOException;
-use io\streams\InputStream;
-use io\streams\Streams;
-use lang\IllegalArgumentException;
 use img\ImagingException;
+use io\{Channel, IOException};
+use io\streams\{InputStream, Streams};
+use lang\IllegalArgumentException;
 
 /**
  * Read images from a stream

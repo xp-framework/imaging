@@ -1,10 +1,7 @@
 <?php namespace img\unittest;
 
 use img\ImagingException;
-use img\io\CommentSegment;
-use img\io\MetaDataReader;
-use img\io\SOFNSegment;
-use img\io\XMPSegment;
+use img\io\{CommentSegment, MetaDataReader, SOFNSegment, XMPSegment};
 use unittest\TestCase;
 use xml\Node;
 

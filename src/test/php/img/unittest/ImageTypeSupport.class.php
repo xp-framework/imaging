@@ -1,7 +1,6 @@
 <?php namespace img\unittest;
 
-use unittest\Test;
-use unittest\TestAction;
+use unittest\{Test, TestAction};
 
 /**
  * Tests image type support

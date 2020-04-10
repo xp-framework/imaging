@@ -1,8 +1,7 @@
 <?php namespace img\unittest;
 
+use img\{Color, Image};
 use lang\XPClass;
-use img\Image;
-use img\Color;
 
 /**
  * Tests writing images

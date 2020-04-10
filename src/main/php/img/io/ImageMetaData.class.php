@@ -1,9 +1,7 @@
 <?php namespace img\io;
 
 use img\ImagingException;
-use img\util\ExifData;
-use img\util\ImageInfo;
-use img\util\IptcData;
+use img\util\{ExifData, ImageInfo, IptcData};
 use lang\XPClass;
 use util\Date;
 

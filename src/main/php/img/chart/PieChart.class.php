@@ -42,6 +42,6 @@ class PieChart extends Chart {
    * @return int
    */
   public function getValueInset($item) {
-    return isset($this->valinset[$item]) ? $this->valinset[$item] : 0;
+    return $this->valinset[$item] ?? 0;
   }
 }

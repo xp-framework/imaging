@@ -1,27 +1,21 @@
 <?php namespace img\util;
 
-use img\{Image, ImagingException};
 use img\io\StreamReader;
-use io\Stream;
-use lang\ElementNotFoundException;
+use img\{Image, ImagingException};
+use io\File;
+use lang\Value;
+use lang\{ElementNotFoundException, FormatException};
 use util\{Date, Objects};
 
 /**
  * Reads the EXIF headers from JPEG or TIFF
- *
- * <code>
- *   uses('img.util.ExifData', 'io.File');
- *
- *   // Use empty Exif data as default value when no Exif data is found
- *   echo ExifData::fromFile(new File($filename), ExifData::$EMPTY)->toString();
- * </code>
  *
  * @test     xp://net.xp_framework.unittest.img.ExifDataTest
  * @see      php://exif_read_data
  * @ext      exif
  * @purpose  Utility
  */
-class ExifData implements \lang\Value {
+class ExifData implements Value {
   public static $EMPTY= null;
 
   public
@@ -74,7 +68,7 @@ class ExifData implements \lang\Value {
    * @throws  lang.ElementNotFoundException in case no meta data is available
    * @throws  img.ImagingException in case reading meta data fails
    */
-  public static function fromFile(\io\File $file) {
+  public static function fromFile(File $file) {
     if (false === getimagesize($file->getURI(), $info)) {
       $e= new ImagingException('Cannot read image information from '.$file->getURI());
       \xp::gc(__FILE__);
@@ -88,7 +82,7 @@ class ExifData implements \lang\Value {
     }
 
     if (!($info= exif_read_data($file->getURI(), 'COMPUTED,FILE,IFD0,EXIF,COMMENT,MAKERNOTE', true, false))) {
-      throw new \lang\FormatException('Cannot get EXIF information from '.$file->getURI());
+      throw new FormatException('Cannot get EXIF information from '.$file->getURI());
     }
     
     // Change key case for lookups
@@ -525,7 +519,7 @@ class ExifData implements \lang\Value {
       7 => 'transverse',
       8 => 'rotate_270' 
     ];
-    return isset($string[$this->orientation]) ? $string[$this->orientation] : '(unknown)';
+    return $string[$this->orientation] ?? '(unknown)';
   }
   
   /**
@@ -540,7 +534,7 @@ class ExifData implements \lang\Value {
       6 => 90,    // clockwise
       8 => 270    // counterclockwise
     ];
-    return isset($degree[$this->orientation]) ? $degree[$this->orientation] : 0;
+    return $degree[$this->orientation] ?? 0;
   }
 
   /**
@@ -677,10 +671,7 @@ class ExifData implements \lang\Value {
       8 => 'landscape mode',      // (for landscape photos with the background in the focus)
     ];
     
-    return (isset($ep[$this->exposureProgram])
-      ? $ep[$this->exposureProgram]
-      : 'n/a'
-    );
+    return $ep[$this->exposureProgram] ?? 'n/a';
   }    
 
   /**
@@ -729,10 +720,7 @@ class ExifData implements \lang\Value {
       255 => 'other'
     ];
     
-    return (isset($mm[$this->meteringMode])
-      ? $mm[$this->meteringMode]
-      : 'n/a'
-    );
+    return $mm[$this->meteringMode] ?? 'n/a';
   }
 
   /**

@@ -1,9 +1,9 @@
 <?php namespace img\unittest;
 
-use img\{Image, ImagingException};
 use img\io\{GifStreamReader, JpegStreamReader, PngStreamReader};
-use io\{FileUtil, IOException};
+use img\{Image, ImagingException};
 use io\streams\{InputStream, MemoryInputStream};
+use io\{FileUtil, IOException};
 use lang\Runtime;
 use unittest\TestCase;
 
@@ -17,12 +17,11 @@ class ImageReaderTest extends TestCase {
 
   #[@test, @expect(ImagingException::class)]
   public function readError() {
-    $s= newinstance(InputStream::class, [], [
-      'read' => function($limit= 8192) { throw new IOException('Could not read: Intentional exception'); },
-      'available' => function() { return 1; },
-      'close' => function() { }
-    ]);
-    Image::loadFrom(new GifStreamReader($s));
+    Image::loadFrom(new GifStreamReader(new class() implements InputStream {
+      public function read($limit= 8192) { throw new IOException('Could not read: Intentional exception'); }
+      public function available() { return 1; }
+      public function close() { }
+    }));
   }
 
   #[@test, @expect(ImagingException::class)]

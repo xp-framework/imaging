@@ -2,6 +2,7 @@
 
 use img\ImagingException;
 use io\File;
+use unittest\{Expect, Test, TestCase};
 
 /**
  * Base class for EXIF- and IPTC-Data tests
@@ -9,7 +10,7 @@ use io\File;
  * @see  xp://net.xp_framework.unittest.img.ExifDataTest
  * @see  xp://net.xp_framework.unittest.img.IptcDataTest
  */
-abstract class MetaDataTest extends \unittest\TestCase {
+abstract class MetaDataTest extends TestCase {
 
   /**
    * Returns a file for a classloader resource
@@ -32,12 +33,12 @@ abstract class MetaDataTest extends \unittest\TestCase {
    */
   protected abstract function extractFromFile(File $f);
 
-  #[@test, @expect(ImagingException::class)]
+  #[Test, Expect(ImagingException::class)]
   public function fromNonImageFile() {
     $this->extractFromFile(new File(__FILE__));
   }
 
-  #[@test, @expect(ImagingException::class)]
+  #[Test, Expect(ImagingException::class)]
   public function fromEmptyFile() {
     $this->extractFromFile($this->resourceAsFile('empty.jpg'));
   }

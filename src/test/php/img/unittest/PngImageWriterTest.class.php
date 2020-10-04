@@ -2,22 +2,21 @@
 
 use img\ImagingException;
 use img\io\PngStreamWriter;
+use io\IOException;
 use io\streams\{MemoryOutputStream, OutputStream};
-use io\{FileUtil, IOException};
+use unittest\actions\ExtensionAvailable;
+use unittest\{Expect, Test};
 
 /**
  * Tests writing PNG images
  */
-#[@action([
-#  new \unittest\actions\ExtensionAvailable('gd'),
-#  new ImageTypeSupport('PNG')
-#])]
+#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("PNG")]')]
 class PngImageWriterTest extends AbstractImageWriterTest {
 
   /** @return string */
   protected function imageType() { return 'PNG'; }
 
-  #[@test, @expect(ImagingException::class)]
+  #[Test, Expect(ImagingException::class)]
   public function write_error() {
     $this->image->saveTo(new PngStreamWriter(new class() implements OutputStream {
       public function write($arg) { throw new IOException('Could not write: Intentional exception'); }
@@ -26,7 +25,7 @@ class PngImageWriterTest extends AbstractImageWriterTest {
     }));
   }
 
-  #[@test]
+  #[Test]
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new PngStreamWriter($s));

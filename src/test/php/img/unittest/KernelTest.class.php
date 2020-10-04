@@ -2,15 +2,16 @@
 
 use img\filter\Kernel;
 use lang\IllegalArgumentException;
+use unittest\{Expect, Test, TestCase};
 
 /**
  * Tests the kernel class
  *
  * @see  xp://img.filter.Kernel
  */
-class KernelTest extends \unittest\TestCase {
+class KernelTest extends TestCase {
 
-  #[@test]
+  #[Test]
   public function create_from_array() {
     $matrix= [
       [-1.0, -1.0, -1.0], 
@@ -22,7 +23,7 @@ class KernelTest extends \unittest\TestCase {
     $this->assertEquals($matrix, $k->getMatrix());
   }
 
-  #[@test]
+  #[Test]
   public function create_from_string() {
     $string= '[[-1.0, -1.0, -1.0], [-1.0, 16.0, -1.0], [-1.0, -1.0, -1.0]]';
     $matrix= [
@@ -35,12 +36,12 @@ class KernelTest extends \unittest\TestCase {
     $this->assertEquals($matrix, $k->getMatrix());
   }
 
-  #[@test, @expect(IllegalArgumentException::class)]
+  #[Test, Expect(IllegalArgumentException::class)]
   public function create_from_empty_array() {
     new Kernel([]);
   }
 
-  #[@test, @expect(IllegalArgumentException::class)]
+  #[Test, Expect(IllegalArgumentException::class)]
   public function create_from_array_with_incorrect_row_size() {
     $matrix= [
       [-1.0, -1.0, -1.0], 
@@ -50,12 +51,12 @@ class KernelTest extends \unittest\TestCase {
     new Kernel($matrix);
   }
 
-  #[@test, @expect(IllegalArgumentException::class)]
+  #[Test, Expect(IllegalArgumentException::class)]
   public function create_with_malformed_string() {
     new Kernel('@@SYNTAX-ERROR@@');
   }
 
-  #[@test, @expect(IllegalArgumentException::class)]
+  #[Test, Expect(IllegalArgumentException::class)]
   public function create_from_string_with_incorrect_row_size() {
     new Kernel('[[-1.0, -1.0, -1.0], [-1.0, -1.0], [-1.0, -1.0, -1.0]]');
   }

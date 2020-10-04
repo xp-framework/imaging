@@ -2,6 +2,8 @@
 
 use img\util\ExifData;
 use lang\ElementNotFoundException;
+use unittest\actions\ExtensionAvailable;
+use unittest\{Expect, Ignore, Test};
 
 /**
  * TestCase for IptcData class
@@ -9,7 +11,7 @@ use lang\ElementNotFoundException;
  * @see  xp://net.xp_framework.unittest.img.MetaDataTest
  * @see  xp://img.util.ExifData
  */
-#[@action(new \unittest\actions\ExtensionAvailable('exif'))]
+#[Action(eval: 'new ExtensionAvailable("exif")')]
 class ExifDataTest extends MetaDataTest {
 
   /**
@@ -22,36 +24,36 @@ class ExifDataTest extends MetaDataTest {
     return ExifData::fromFile($f);
   }
 
-  #[@test]
+  #[Test]
   public function defaultValueIfNotFound() {
     $this->assertNull(ExifData::fromFile($this->resourceAsFile('iptc-only.jpg'), null));
   }
 
-  #[@test]
+  #[Test]
   public function emptyExifData() {
     $this->assertEquals(0, ExifData::$EMPTY->getWidth());
   }
 
-  #[@test, @expect(ElementNotFoundException::class)]
+  #[Test, Expect(ElementNotFoundException::class)]
   public function fromFileWithIptcOnly() {
     $this->extractFromFile($this->resourceAsFile('iptc-only.jpg'));
   }
 
-  #[@test, @ignore('https://bugs.php.net/bug.php?id=72819')]
+  #[Test, Ignore('https://bugs.php.net/bug.php?id=72819')]
   public function fromFileWithExifAndIptc() {
     $i= $this->extractFromFile($this->resourceAsFile('exif-and-iptc.jpg'));
     $this->assertEquals(1, $i->getWidth());
     $this->assertEquals(1, $i->getHeight());
   }
 
-  #[@test, @ignore('https://bugs.php.net/bug.php?id=72819')]
+  #[Test, Ignore('https://bugs.php.net/bug.php?id=72819')]
   public function fromFileWithExifOnly() {
     $i= $this->extractFromFile($this->resourceAsFile('exif-only.jpg'));
     $this->assertEquals(1, $i->getWidth());
     $this->assertEquals(1, $i->getHeight());
   }
 
-  #[@test, @ignore('https://bugs.php.net/bug.php?id=72819')]
+  #[Test, Ignore('https://bugs.php.net/bug.php?id=72819')]
   public function exifSampleCanonIxus() {
     $i= $this->extractFromFile($this->resourceAsFile('canon-ixus.jpg', 'exif_org'));
     $this->assertEquals('1/350', $i->getExposureTime());
@@ -71,7 +73,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertFalse($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleFujifilmDx10() {
     $i= $this->extractFromFile($this->resourceAsFile('fujifilm-dx10.jpg', 'exif_org'));
     $this->assertEquals(null, $i->getExposureTime());
@@ -91,7 +93,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertTrue($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleFujifilmFinepix40i() {
     $i= $this->extractFromFile($this->resourceAsFile('fujifilm-finepix40i.jpg', 'exif_org'));
     $this->assertEquals(null, $i->getExposureTime());
@@ -111,7 +113,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertTrue($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleFujifilmMx1700() {
     $i= $this->extractFromFile($this->resourceAsFile('fujifilm-mx1700.jpg', 'exif_org'));
     $this->assertEquals(null, $i->getExposureTime());
@@ -131,7 +133,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertFalse($i->flashUsed());
   }
 
-  #[@test, @ignore('Not reliable within XAR files, see issue #259')]
+  #[Test, Ignore('Not reliable within XAR files, see issue #259')]
   public function exifSampleKodakDC210() {
     $i= $this->extractFromFile($this->resourceAsFile('kodak-dc210.jpg', 'exif_org'));
     $this->assertEquals('1/30', $i->getExposureTime());
@@ -151,7 +153,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertTrue($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleKodakDC240() {
     $i= $this->extractFromFile($this->resourceAsFile('kodak-dc240.jpg', 'exif_org'));
     $this->assertEquals('1/30', $i->getExposureTime());
@@ -171,7 +173,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertTrue($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleNikonE950() {
     $i= $this->extractFromFile($this->resourceAsFile('nikon-e950.jpg', 'exif_org'));
     $this->assertEquals('10/770', $i->getExposureTime());
@@ -191,7 +193,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertFalse($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleOlympusC960() {
     $i= $this->extractFromFile($this->resourceAsFile('olympus-c960.jpg', 'exif_org'));
     $this->assertEquals('1/345', $i->getExposureTime());
@@ -211,7 +213,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertFalse($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleRicohrdc5300() {
     $i= $this->extractFromFile($this->resourceAsFile('ricoh-rdc5300.jpg', 'exif_org'));
     $this->assertEquals(null, $i->getExposureTime());
@@ -231,7 +233,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertTrue($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleSanyoVpcg250() {
     $i= $this->extractFromFile($this->resourceAsFile('sanyo-vpcg250.jpg', 'exif_org'));
     $this->assertEquals('1/171', $i->getExposureTime());
@@ -251,7 +253,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertTrue($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleSanyovpcsx550() {
     $i= $this->extractFromFile($this->resourceAsFile('sanyo-vpcsx550.jpg', 'exif_org'));
     $this->assertEquals('10/483', $i->getExposureTime());
@@ -271,7 +273,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertFalse($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleSonyCybershot() {
     $i= $this->extractFromFile($this->resourceAsFile('sony-cybershot.jpg', 'exif_org'));
     $this->assertEquals('1/197', $i->getExposureTime());
@@ -291,7 +293,7 @@ class ExifDataTest extends MetaDataTest {
     $this->assertFalse($i->flashUsed());
   }
 
-  #[@test]
+  #[Test]
   public function exifSampleSonyD700() {
     $i= $this->extractFromFile($this->resourceAsFile('sony-d700.jpg', 'exif_org'));
     $this->assertEquals(null, $i->getExposureTime());

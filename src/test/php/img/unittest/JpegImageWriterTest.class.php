@@ -4,17 +4,16 @@ use img\ImagingException;
 use img\io\JpegStreamWriter;
 use io\streams\{MemoryOutputStream, OutputStream};
 use io\{FileUtil, IOException};
+use unittest\actions\ExtensionAvailable;
+use unittest\{Expect, Test};
 
 /**
  * Tests writing JPEG images
  */
-#[@action([
-#  new \unittest\actions\ExtensionAvailable('gd'),
-#  new ImageTypeSupport('JPEG')
-#])]
+#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("JPEG")]')]
 class JpegImageWriterTest extends AbstractImageWriterTest {
 
-  #[@test, @expect(ImagingException::class)]
+  #[Test, Expect(ImagingException::class)]
   public function write_error() {
     $this->image->saveTo(new JpegStreamWriter(new class() implements OutputStream {
       public function write($arg) { throw new IOException('Could not write: Intentional exception'); }
@@ -23,7 +22,7 @@ class JpegImageWriterTest extends AbstractImageWriterTest {
     }));
   }
 
-  #[@test]
+  #[Test]
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new JpegStreamWriter($s));

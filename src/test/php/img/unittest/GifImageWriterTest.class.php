@@ -4,17 +4,16 @@ use img\ImagingException;
 use img\io\GifStreamWriter;
 use io\streams\{MemoryOutputStream, OutputStream};
 use io\{FileUtil, IOException};
+use unittest\actions\ExtensionAvailable;
+use unittest\{Expect, Test};
 
 /**
  * Tests writing GIF images
  */
-#[@action([
-#  new \unittest\actions\ExtensionAvailable('gd'),
-#  new ImageTypeSupport('GIF')
-#])]
+#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("GIF")]')]
 class GifImageWriterTest extends AbstractImageWriterTest {
 
-  #[@test, @expect(ImagingException::class)]
+  #[Test, Expect(ImagingException::class)]
   public function write_error() {
     $this->image->saveTo(new GifStreamWriter(new class() implements OutputStream {
       public function write($arg) { throw new IOException('Could not write: Intentional exception'); }
@@ -23,7 +22,7 @@ class GifImageWriterTest extends AbstractImageWriterTest {
     }));
   }
 
-  #[@test]
+  #[Test]
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new GifStreamWriter($s));

@@ -5,6 +5,9 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## 10.0.0 / 2022-02-28
 
+* Fixed PHP 8.0+ compatiblity: The image creation functions now return
+  a *GdImage* instance instead of a resource
+  (@thekid)
 * Implemented xp-framework/rfc#341: Drop XP 9 compatibility - @thekid
 * Added XP 11 compatibility - @thekid
 

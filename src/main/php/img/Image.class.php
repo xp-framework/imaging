@@ -50,14 +50,17 @@ class Image {
    * Destructor
    */
   public function __destruct() {
-    if (is_resource($this->handle)) imagedestroy($this->handle);
+    if (null === $this->handle) return;
+
+    imagedestroy($this->handle);
+    $this->handle= null;
   }
 
   /**
    * Clone method
    */
   public function __clone() {
-    if (!is_resource($handle= (imageistruecolor($this->handle)
+    if (!($handle= (imageistruecolor($this->handle)
       ? imagecreatetruecolor($this->width, $this->height)
       : imagecreate($this->width, $this->height)
     ))) {

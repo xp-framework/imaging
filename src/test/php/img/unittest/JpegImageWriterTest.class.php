@@ -26,6 +26,6 @@ class JpegImageWriterTest extends AbstractImageWriterTest {
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new JpegStreamWriter($s));
-    $this->assertNotEquals('', $s->getBytes());
+    $this->assertNotEquals('', $s->bytes());
   }
 }

@@ -3,6 +3,11 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 10.0.0 / 2022-02-28
+
+* Implemented xp-framework/rfc#341: Drop XP 9 compatibility - @thekid
+* Added XP 11 compatibility - @thekid
+
 ## 9.0.0 / 2020-04-10
 
 * Implemented xp-framework/rfc#334: Drop PHP 5.6:

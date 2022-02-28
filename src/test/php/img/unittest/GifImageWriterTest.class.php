@@ -26,6 +26,6 @@ class GifImageWriterTest extends AbstractImageWriterTest {
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new GifStreamWriter($s));
-    $this->assertNotEquals('', $s->getBytes());
+    $this->assertNotEquals('', $s->bytes());
   }
 }

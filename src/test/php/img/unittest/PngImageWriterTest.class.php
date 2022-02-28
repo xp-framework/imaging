@@ -29,6 +29,6 @@ class PngImageWriterTest extends AbstractImageWriterTest {
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new PngStreamWriter($s));
-    $this->assertNotEquals('', $s->getBytes());
+    $this->assertNotEquals('', $s->bytes());
   }
 }

@@ -91,7 +91,7 @@ class Image {
         throw new ImagingException('Unknown type '.$type);
     }
 
-    if (!is_resource($handle)) {
+    if (!$handle) {
       throw new ImagingException('Could not create image of type '.$type);
     }
     return new $class($handle);

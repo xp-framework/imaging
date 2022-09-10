@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 10.1.0 / 2022-09-10
+
+* Merged PR #1: Add WebP support - @thekid
+
 ## 10.0.0 / 2022-02-28
 
 * Fixed PHP 8.0+ compatiblity: The image creation functions now return

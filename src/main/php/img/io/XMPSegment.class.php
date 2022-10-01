@@ -30,8 +30,8 @@ class XMPSegment extends Segment {
    */
   public static function read($marker, $bytes) {
 
-    // Begin parsing after 29 bytes - strlen("http://ns.adobe.com/xap/1.0/\000")
-    return new self($marker, Document::fromString(substr($bytes, 29)));
+    // Begin parsing after 28 bytes - strlen("http://ns.adobe.com/xap/1.0/")
+    return new self($marker, Document::fromString(trim(substr($bytes, 28), "\x00")));
   }
 
   /**

@@ -1,26 +1,26 @@
 <?php namespace img\util;
 
 use img\ImagingException;
-use lang\{ElementNotFoundException, FormatException};
+use lang\{ElementNotFoundException, FormatException, Value};
 use util\{Date, Objects};
 
 /**
  * Reads the IPTC headers from Photoshop-files JPEGs or TIFFs
  *
- * <code>
- *   uses('img.util.IptcData', 'io.File');
+ * ```php
+ * use img\util\IptcData;
+ * use io\File;
  *
- *   // Use empty iptc data as default value when no iptc data is found
- *   echo IptcData::fromFile(new File($filename), IptcData::$EMPTY)->toString();
- * </code>
+ * // Use empty iptc data as default value when no iptc data is found
+ * echo IptcData::fromFile(new File($filename), IptcData::$EMPTY)->toString();
+ * ```
  *
- * @test     xp://net.xp_framework.unittest.img.IptcDataTest
- * @purpose  Utility
- * @see      php://iptcparse
- * @see      http://photothumb.com/IPTCExt/
- * @see      http://www.controlledvocabulary.com/pdf/IPTC_mapped_fields.pdf
+ * @test  net.xp_framework.unittest.img.IptcDataTest
+ * @see   php://iptcparse
+ * @see   http://photothumb.com/IPTCExt/
+ * @see   http://www.controlledvocabulary.com/pdf/IPTC_mapped_fields.pdf
  */
-class IptcData implements \lang\Value {
+class IptcData implements Value {
   public static $EMPTY= null;
 
   public

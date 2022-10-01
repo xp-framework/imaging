@@ -1,15 +1,15 @@
 <?php namespace img\util;
  
 use img\ImagingException;
+use lang\Value;
 use util\Objects;
 
 /**
  * Image information
  *
- * @see      php://getimagesize
- * @purpose  Utility
+ * @see   php://getimagesize
  */
-class ImageInfo implements \lang\Value {
+class ImageInfo implements Value {
   public
     $width      = 0,
     $height     = 0,
@@ -43,19 +43,6 @@ class ImageInfo implements \lang\Value {
       $i->segments= $segments;
     }
     return $i;
-  }
-
-  /** @return string */
-  public function hashCode() {
-    return Objects::hashOf([
-      $this->width,
-      $this->height,
-      $this->type,
-      $this->mime,
-      $this->bits,
-      $this->channels,
-      $this->segments
-    ]);
   }
 
   /**

@@ -10,10 +10,9 @@ use util\{Date, Objects};
 /**
  * Reads the EXIF headers from JPEG or TIFF
  *
- * @test     xp://net.xp_framework.unittest.img.ExifDataTest
- * @see      php://exif_read_data
- * @ext      exif
- * @purpose  Utility
+ * @test  net.xp_framework.unittest.img.ExifDataTest
+ * @see   php://exif_read_data
+ * @ext   exif
  */
 class ExifData implements Value {
   public static $EMPTY= null;

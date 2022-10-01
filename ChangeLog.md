@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 10.1.1 / 2022-10-01
+
+* Fixed "Cannot redeclare img\util\ImageInfo::hashCode()" - @thekid
+
 ## 10.1.0 / 2022-09-10
 
 * Merged PR #1: Add WebP support - @thekid

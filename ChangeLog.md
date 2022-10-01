@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 10.1.2 / 2022-10-02
+
+* Fixed "Invalid document end" in certain XMP segments - @thekid
+
 ## 10.1.1 / 2022-10-01
 
 * Fixed "Cannot redeclare img\util\ImageInfo::hashCode()" - @thekid

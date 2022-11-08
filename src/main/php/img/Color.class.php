@@ -7,7 +7,7 @@
  * @see   img.Image
  */
 class Color {
-  public $reg, $green, $blue;
+  public $red, $green, $blue;
   public $handle= null;
   
   /**

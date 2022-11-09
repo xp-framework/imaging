@@ -35,4 +35,9 @@ class ColorTest extends TestCase {
   public function argb_color_int($argb) {
     $this->assertEquals($argb, (new Color($argb))->intValue());
   }
+
+  #[Test]
+  public function argb_signed_32_bit() {
+    $this->assertEquals(0xff464d32, (new Color(-12169934))->intValue());
+  }
 }

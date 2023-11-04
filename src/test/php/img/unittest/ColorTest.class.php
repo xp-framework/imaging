@@ -1,20 +1,15 @@
 <?php namespace img\unittest;
 
 use img\Color;
-use unittest\{Test, Values};
+use unittest\{Test, TestCase, Values};
 
-/**
- * TestCase
- *
- * @see   xp://img.Color
- */
-class ColorTest extends \unittest\TestCase {
+class ColorTest extends TestCase {
 
   #[Test, Values(['#a7ff03', 'a7ff03', 'A7FF03', '#A7FF03'])]
   public function create_from_hex($value) {
     $c= new Color($value);
-    $this->assertEquals(0xA7, $c->red);
-    $this->assertEquals(0xFF, $c->green);
+    $this->assertEquals(0xa7, $c->red);
+    $this->assertEquals(0xff, $c->green);
     $this->assertEquals(0x03, $c->blue);
   }
 
@@ -34,5 +29,15 @@ class ColorTest extends \unittest\TestCase {
   #[Test]
   public function string_representation() {
     $this->assertEquals('img.Color@(239, 010, 007)', (new Color('#ef0a07'))->toString());
+  }
+
+  #[Test, Values([0xff000000, 0xffa7ff03, 0xffffffff])]
+  public function argb_color_int($argb) {
+    $this->assertEquals($argb, (new Color($argb))->intValue());
+  }
+
+  #[Test]
+  public function argb_signed_32_bit() {
+    $this->assertEquals(0xff464d32, (new Color(-12169934))->intValue());
   }
 }

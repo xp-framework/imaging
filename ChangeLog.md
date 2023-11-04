@@ -3,6 +3,11 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 10.2.0 / 2023-11-04
+
+* Merged PR #2: Add Color::intValue() to convert colors to ARGB color ints
+  (@thekid)
+
 ## 10.1.2 / 2022-10-02
 
 * Fixed "Invalid document end" in certain XMP segments - @thekid

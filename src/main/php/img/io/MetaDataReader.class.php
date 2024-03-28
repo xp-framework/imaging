@@ -59,16 +59,14 @@ class MetaDataReader {
    * @return img.io.Segment
    */
   protected function segmentFor($marker, $data) {
-    if (isset(self::$seg[$marker])) {
-      $seg= self::$seg[$marker];
+    if ($seg= self::$seg[$marker] ?? null) {
       if ($class= $this->impl[$seg] ?? null) {
         return $class::read($seg, $data);
       } else {
         return new Segment($seg, $data);
       }
-    } else {
-      return new Segment(sprintf('0x%02x', ord($marker)), $data);
     }
+    return new Segment(sprintf('0x%02x', ord($marker)), $data);
   }
 
   /**

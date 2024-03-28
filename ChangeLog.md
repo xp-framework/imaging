@@ -3,6 +3,8 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Migrated to new testing library - @thekid
+
 ## 10.3.0 / 2024-03-24
 
 * Made compatible with XP 12 - @thekid

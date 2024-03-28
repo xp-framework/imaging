@@ -3,6 +3,7 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Improved performance when reading meta data - @thekid
 * Migrated to new testing library - @thekid
 
 ## 10.3.0 / 2024-03-24

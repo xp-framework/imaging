@@ -2,15 +2,11 @@
 
 use img\ImagingException;
 use img\io\GifStreamWriter;
+use io\IOException;
 use io\streams\{MemoryOutputStream, OutputStream};
-use io\{FileUtil, IOException};
-use unittest\actions\ExtensionAvailable;
-use unittest\{Expect, Test};
+use test\{Assert, Expect, Test};
 
-/**
- * Tests writing GIF images
- */
-#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("GIF")]')]
+#[ImageTypeSupport('gif')]
 class GifImageWriterTest extends AbstractImageWriterTest {
 
   #[Test, Expect(ImagingException::class)]
@@ -26,6 +22,6 @@ class GifImageWriterTest extends AbstractImageWriterTest {
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new GifStreamWriter($s));
-    $this->assertNotEquals('', $s->bytes());
+    Assert::notEquals('', $s->bytes());
   }
 }

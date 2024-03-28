@@ -2,7 +2,7 @@
 
 use img\ImagingException;
 use img\io\{CommentSegment, MetaDataReader, SOFNSegment, XMPSegment};
-use unittest\{Expect, Test, TestCase};
+use test\{Assert, Before, Expect, Test};
 use xml\Node;
 
 /**
@@ -10,7 +10,7 @@ use xml\Node;
  *
  * @see  xp://img.io.MetaDataReader
  */
-class MetaDataReaderTest extends TestCase {
+class MetaDataReaderTest {
   protected $fixture;
 
   /**
@@ -18,6 +18,7 @@ class MetaDataReaderTest extends TestCase {
    *
    * @throws  unittest.PrerequisitesNotMetError
    */
+  #[Before]
   public function setUp() {
     $this->fixture= new MetaDataReader();
   }
@@ -55,16 +56,16 @@ class MetaDataReaderTest extends TestCase {
    * @throws unittest.AssertionFailedError
    */
   protected function assertArrayOf($type, $size, $value) {
-    $this->assertInstanceOf(new \lang\ArrayType($type), $value);
-    $this->assertEquals($size, sizeof($value));
+    Assert::instance(new \lang\ArrayType($type), $value);
+    Assert::equals($size, sizeof($value));
   }
 
-  #[Test, Expect(['class' => ImagingException::class, 'withMessage' => '/Could not find start of image/'])]
+  #[Test, Expect(class: ImagingException::class, message: '/Could not find start of image/')]
   public function this_class_file() {
     $this->extractFromFile(basename(__FILE__));
   }
 
-  #[Test, Expect(['class' => ImagingException::class, 'withMessage' => '/Could not find start of image/'])]
+  #[Test, Expect(class: ImagingException::class, message: '/Could not find start of image/')]
   public function empty_file() {
     $this->extractFromFile('empty.jpg');
   }
@@ -81,7 +82,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function segment_named_sof0() {
-    $this->assertEquals(
+    Assert::equals(
       [new SOFNSegment('SOF0', ['bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3])],
       $this->extractFromFile('1x1.jpg')->segmentsNamed('SOF0')
     );
@@ -89,7 +90,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function segment_of_sofn() {
-    $this->assertEquals(
+    Assert::equals(
       [new SOFNSegment('SOF0', ['bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3])],
       $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.SOFNSegment')
     );
@@ -97,7 +98,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function com_segment() {
-    $this->assertEquals(
+    Assert::equals(
       [new CommentSegment('COM', 'Created with GIMP')],
       $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.CommentSegment')
     );
@@ -107,37 +108,37 @@ class MetaDataReaderTest extends TestCase {
   public function xmp_segment() {
     $segments= $this->extractFromFile('xmp.jpg')->segmentsOf('img.io.XMPSegment');
     $this->assertArrayOf('img.io.XMPSegment', 1, $segments);
-    $this->assertInstanceOf(Node::class, $segments[0]->document()->getElementsByTagName('dc:title')[0]);
+    Assert::instance(Node::class, $segments[0]->document()->getElementsByTagName('dc:title')[0]);
   }
 
   #[Test]
   public function dimensions_of_1x1_image() {
-    $this->assertEquals([1, 1], $this->extractFromFile('1x1.jpg')->imageDimensions());
+    Assert::equals([1, 1], $this->extractFromFile('1x1.jpg')->imageDimensions());
   }
 
   #[Test]
   public function dimensions_of_xmp_image() {
-    $this->assertEquals([640, 480], $this->extractFromFile('canon-ixus.jpg', 'exif_org')->imageDimensions());
+    Assert::equals([640, 480], $this->extractFromFile('canon-ixus.jpg', 'exif_org')->imageDimensions());
   }
 
   #[Test]
   public function no_exif_data_segments_in_1x1() {
-    $this->assertEquals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.ExifSegment'));
+    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.ExifSegment'));
   }
 
   #[Test]
   public function no_iptc_data_segments_in_1x1() {
-    $this->assertEquals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.IptcSegment'));
+    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.IptcSegment'));
   }
 
   #[Test]
   public function no_exif_data_in_1x1() {
-    $this->assertNull($this->extractFromFile('1x1.jpg')->exifData());
+    Assert::null($this->extractFromFile('1x1.jpg')->exifData());
   }
 
   #[Test]
   public function no_iptc_data_in_1x1() {
-    $this->assertNull($this->extractFromFile('1x1.jpg')->iptcData());
+    Assert::null($this->extractFromFile('1x1.jpg')->iptcData());
   }
 
   #[Test]
@@ -165,7 +166,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_CanonIxus() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('canon-ixus.jpg')
         ->withFileSize(-1)
@@ -193,7 +194,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_FujifilmDx10() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('fujifilm-dx10.jpg')
         ->withFileSize(-1)
@@ -220,7 +221,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_FujifilmFinepix40i() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('fujifilm-finepix40i.jpg')
         ->withFileSize(-1)
@@ -247,7 +248,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_FujifilmMx1700() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('fujifilm-mx1700.jpg')
         ->withFileSize(-1)
@@ -274,7 +275,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_KodakDC210() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('kodak-dc210.jpg')
         ->withFileSize(-1)
@@ -301,7 +302,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_KodakDC240() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('kodak-dc240.jpg')
         ->withFileSize(-1)
@@ -328,7 +329,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_NikonE950() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('nikon-e950.jpg')
         ->withFileSize(-1)
@@ -355,7 +356,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_OlympusC960() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('olympus-c960.jpg')
         ->withFileSize(-1)
@@ -382,7 +383,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_Ricohrdc5300() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('ricoh-rdc5300.jpg')
         ->withFileSize(-1)
@@ -409,7 +410,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_SanyoVpcg250() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('sanyo-vpcg250.jpg')
         ->withFileSize(-1)
@@ -436,7 +437,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_Sanyovpcsx550() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('sanyo-vpcsx550.jpg')
         ->withFileSize(-1)
@@ -463,7 +464,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_SonyCybershot() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('sony-cybershot.jpg')
         ->withFileSize(-1)
@@ -490,7 +491,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function exif_dot_org_sample_SonyD700() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\ExifData())
         ->withFileName('sony-d700.jpg')
         ->withFileSize(-1)
@@ -517,7 +518,7 @@ class MetaDataReaderTest extends TestCase {
 
   #[Test]
   public function detailed_iptc_data() {
-    $this->assertEquals(
+    Assert::equals(
       (new \img\util\IptcData())
         ->withTitle('Unittest Image')
         ->withUrgency(null)
@@ -546,7 +547,7 @@ class MetaDataReaderTest extends TestCase {
   #[Test]
   public function gps_data() {
     $exif= $this->extractFromFile('gps-embedded.jpg')->segmentsOf('img.io.ExifSegment')[0];
-    $this->assertEquals(
+    Assert::equals(
       [
         'Version'      => '2/2/0/0',
         'Latitude'     => '48/1/59/1/54669/1000',    // 48° 59' 54,669" North

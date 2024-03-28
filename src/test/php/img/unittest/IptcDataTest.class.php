@@ -2,7 +2,8 @@
 
 use img\util\IptcData;
 use lang\ElementNotFoundException;
-use unittest\{Expect, Test};
+use test\Assert;
+use test\{Expect, Test};
 
 /**
  * TestCase for IptcData class
@@ -24,12 +25,12 @@ class IptcDataTest extends MetaDataTest {
 
   #[Test]
   public function defaultValueIfNotFound() {
-    $this->assertNull(IptcData::fromFile($this->resourceAsFile('exif-only.jpg'), null));
+    Assert::null(IptcData::fromFile($this->resourceAsFile('exif-only.jpg'), null));
   }
 
   #[Test]
   public function emptyIptcData() {
-    $this->assertEquals('', IptcData::$EMPTY->getTitle());
+    Assert::equals('', IptcData::$EMPTY->getTitle());
   }
 
   #[Test, Expect(ElementNotFoundException::class)]
@@ -40,12 +41,12 @@ class IptcDataTest extends MetaDataTest {
   #[Test]
   public function fromFileWithExifAndIptc() {
     $i= $this->extractFromFile($this->resourceAsFile('exif-and-iptc.jpg'));
-    $this->assertEquals('Unittest Image', $i->getTitle());
+    Assert::equals('Unittest Image', $i->getTitle());
   }
 
   #[Test]
   public function fromFile() {
     $i= $this->extractFromFile($this->resourceAsFile('iptc-only.jpg'));
-    $this->assertEquals('Unittest Image', $i->getTitle());
+    Assert::equals('Unittest Image', $i->getTitle());
   }
 }

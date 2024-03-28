@@ -1,31 +1,18 @@
 <?php namespace img\unittest;
 
 use img\{Color, Image};
-use lang\XPClass;
+use test\{After, Before};
 
-/**
- * Tests writing images
- *
- * @see  xp://img.io.ImageWriter
- */
-abstract class AbstractImageWriterTest extends \unittest\TestCase {
-  protected $image= null;
+abstract class AbstractImageWriterTest {
+  protected $image;
 
-  static function __static() {
-    XPClass::forName('io.File');
-  }
-
-  /**
-   * Setup this test. Creates a 1x1 pixel image filled with white.
-   */
+  #[Before]
   public function setUp() {
     $this->image= Image::create(1, 1);
     $this->image->fill($this->image->allocate(new Color('#ffffff')));
   }
 
-  /**
-   * Tears down this test
-   */
+  #[After]
   public function tearDown() {
     unset($this->image);
   }

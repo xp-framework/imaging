@@ -3,22 +3,21 @@
 use img\ImagingException;
 use io\streams\InputStream;
 
-
 /**
  * Reads meta data from JPEG files
  *
- * <code>
- *   $reader= new MetaDataReader();
- *   $meta= $reader->read($file->in(), $file->getURI());
+ * ```php
+ * $reader= new MetaDataReader();
+ * $meta= $reader->read($file->in(), $file->getURI());
  *
- *   $exif= $meta->exifData();
- *   $iptc= $meta->iptcData();
- * </code>
+ * $exif= $meta->exifData();
+ * $iptc= $meta->iptcData();
+ * ```
  *
- * @see  php://exif_read_data
- * @see  php://iptcparse
- * @see  php://getimagesize
- * @test xp://net.xp_framework.unittest.img.MetaDataReaderTest
+ * @see  https://php.net/exif_read_data
+ * @see  https://php.net/iptcparse
+ * @see  https://php.net/getimagesize
+ * @test net.xp_framework.unittest.img.MetaDataReaderTest
  */
 class MetaDataReader {
   protected static $seg= [
@@ -46,10 +45,10 @@ class MetaDataReader {
   ];
 
   protected $impl= [
-    'SOF0'  => 'img.io.SOFNSegment',    // image width and height
-    'APP1'  => 'img.io.APP1Segment',    // Exif, XMP
-    'APP13' => 'img.io.APP13Segment',   // IPTC
-    'COM'   => 'img.io.CommentSegment'
+    'SOF0'  => SOFNSegment::class,    // image width and height
+    'APP1'  => APP1Segment::class,    // Exif, XMP
+    'APP13' => APP13Segment::class,   // IPTC
+    'COM'   => CommentSegment::class
   ];
 
   /**
@@ -62,8 +61,8 @@ class MetaDataReader {
   protected function segmentFor($marker, $data) {
     if (isset(self::$seg[$marker])) {
       $seg= self::$seg[$marker];
-      if (isset($this->impl[$seg])) {
-        return \lang\XPClass::forName($this->impl[$seg])->getMethod('read')->invoke(null, [$seg, $data]);
+      if ($class= $this->impl[$seg] ?? null) {
+        return $class::read($seg, $data);
       } else {
         return new Segment($seg, $data);
       }

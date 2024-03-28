@@ -1,44 +1,40 @@
 <?php namespace img\unittest;
 
-use unittest\{Test, TestAction};
+use test\assert\{Assertion, Verify};
+use test\execution\Context;
+use test\verify\Verification;
 
-/**
- * Tests image type support
- *
- * @see   php://imagetypes
- */
-class ImageTypeSupport implements TestAction {
-  protected $type= '';
+/** Tests image type support via `imagetypes()` */
+class ImageTypeSupport implements Verification {
+  private $types;
 
   /**
    * Constructor
    *
-   * @param string $type
+   * @param string... $types
    */
-  public function __construct($type) {
-    $this->type= $type;
+  public function __construct(... $types) {
+    $this->types= $types;
   }
 
   /**
-   * This method gets invoked before a test method is invoked, and before
-   * the setUp() method is called.
+   * Yields assertions to verify runtime OS / PHP
    *
-   * @param  unittest.Test $t
-   * @throws unittest.PrerequisitesNotMetError
+   * @param  test.execution.Context $context
+   * @return iterable
    */
-  public function beforeTest(Test $t) { 
-    if (!(imagetypes() & constant('IMG_'.$this->type))) {
-      throw new PrerequisitesNotMetError('Image type not supported', null, [$this->type]);
+  public function assertions(Context $context) {
+    yield new Assertion(
+      extension_loaded('gd'),
+      new Verify('PHP extension "gd" is loaded')
+    );
+
+    $supported= imagetypes();
+    foreach ($this->types as $type) {
+      yield new Assertion(
+        $supported & constant('IMG_'.strtoupper($type)),
+        new Verify('Image type "'.$type.'" is supported')
+      );
     }
-  }
-
-  /**
-   * This method gets invoked after the test method is invoked and regard-
-   * less of its outcome, after the tearDown() call has run.
-   *
-   * @param  unittest.Test $t
-   */
-  public function afterTest(Test $t) {
-    // Empty
   }
 }

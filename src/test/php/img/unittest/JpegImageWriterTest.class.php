@@ -2,15 +2,11 @@
 
 use img\ImagingException;
 use img\io\JpegStreamWriter;
+use io\IOException;
 use io\streams\{MemoryOutputStream, OutputStream};
-use io\{FileUtil, IOException};
-use unittest\actions\ExtensionAvailable;
-use unittest\{Expect, Test};
+use test\{Assert, Expect, Test};
 
-/**
- * Tests writing JPEG images
- */
-#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("JPEG")]')]
+#[ImageTypeSupport('jpeg')]
 class JpegImageWriterTest extends AbstractImageWriterTest {
 
   #[Test, Expect(ImagingException::class)]
@@ -26,6 +22,6 @@ class JpegImageWriterTest extends AbstractImageWriterTest {
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new JpegStreamWriter($s));
-    $this->assertNotEquals('', $s->bytes());
+    Assert::notEquals('', $s->bytes());
   }
 }

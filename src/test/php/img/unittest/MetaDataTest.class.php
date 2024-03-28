@@ -2,7 +2,8 @@
 
 use img\ImagingException;
 use io\File;
-use unittest\{Expect, Test, TestCase};
+use test\Assert;
+use test\{Expect, Test, TestCase};
 
 /**
  * Base class for EXIF- and IPTC-Data tests
@@ -10,7 +11,7 @@ use unittest\{Expect, Test, TestCase};
  * @see  xp://net.xp_framework.unittest.img.ExifDataTest
  * @see  xp://net.xp_framework.unittest.img.IptcDataTest
  */
-abstract class MetaDataTest extends TestCase {
+abstract class MetaDataTest {
 
   /**
    * Returns a file for a classloader resource

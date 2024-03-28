@@ -2,14 +2,15 @@
 
 use img\filter\Kernel;
 use lang\IllegalArgumentException;
-use unittest\{Expect, Test, TestCase};
+use test\Assert;
+use test\{Expect, Test, TestCase};
 
 /**
  * Tests the kernel class
  *
  * @see  xp://img.filter.Kernel
  */
-class KernelTest extends TestCase {
+class KernelTest {
 
   #[Test]
   public function create_from_array() {
@@ -20,7 +21,7 @@ class KernelTest extends TestCase {
     ];
 
     $k= new Kernel($matrix);
-    $this->assertEquals($matrix, $k->getMatrix());
+    Assert::equals($matrix, $k->getMatrix());
   }
 
   #[Test]
@@ -33,7 +34,7 @@ class KernelTest extends TestCase {
     ];
 
     $k= new Kernel($string);
-    $this->assertEquals($matrix, $k->getMatrix());
+    Assert::equals($matrix, $k->getMatrix());
   }
 
   #[Test, Expect(IllegalArgumentException::class)]

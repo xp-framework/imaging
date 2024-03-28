@@ -4,13 +4,9 @@ use img\ImagingException;
 use img\io\PngStreamWriter;
 use io\IOException;
 use io\streams\{MemoryOutputStream, OutputStream};
-use unittest\actions\ExtensionAvailable;
-use unittest\{Expect, Test};
+use test\{Assert, Expect, Test};
 
-/**
- * Tests writing PNG images
- */
-#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("PNG")]')]
+#[ImageTypeSupport('png')]
 class PngImageWriterTest extends AbstractImageWriterTest {
 
   /** @return string */
@@ -29,6 +25,6 @@ class PngImageWriterTest extends AbstractImageWriterTest {
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new PngStreamWriter($s));
-    $this->assertNotEquals('', $s->bytes());
+    Assert::notEquals('', $s->bytes());
   }
 }

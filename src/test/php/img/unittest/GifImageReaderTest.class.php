@@ -2,22 +2,15 @@
 
 use img\Image;
 use img\io\GifStreamReader;
-use io\FileUtil;
 use io\streams\MemoryInputStream;
-use unittest\actions\ExtensionAvailable;
-use unittest\{Test, TestCase};
+use test\Test;
 
-/**
- * Tests reading GIF images
- *
- * @see   xp://img.io.JpegStreamReader
- */
-#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("GIF")]')]
-class GifImageReaderTest extends TestCase {
+#[ImageTypeSupport('gif')]
+class GifImageReaderTest {
+  const BYTES= 'R0lGODdhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=';
 
   #[Test]
   public function read() {
-    $s= new MemoryInputStream(base64_decode('R0lGODdhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='));
-    Image::loadFrom(new GifStreamReader($s));
+    Image::loadFrom(new GifStreamReader(new MemoryInputStream(base64_decode(self::BYTES))));
   }
 }

@@ -4,13 +4,9 @@ use img\ImagingException;
 use img\io\WebpStreamWriter;
 use io\IOException;
 use io\streams\{MemoryOutputStream, OutputStream};
-use unittest\actions\ExtensionAvailable;
-use unittest\{Expect, Test};
+use test\{Assert, Expect, Test};
 
-/**
- * Tests writing WebP images
- */
-#[Action(eval: '[new ExtensionAvailable("gd"), new ImageTypeSupport("WEBP")]')]
+#[ImageTypeSupport('webp')]
 class WebpImageWriterTest extends AbstractImageWriterTest {
 
   #[Test, Expect(ImagingException::class)]
@@ -26,6 +22,6 @@ class WebpImageWriterTest extends AbstractImageWriterTest {
   public function write() {
     $s= new MemoryOutputStream();
     $this->image->saveTo(new WebpStreamWriter($s));
-    $this->assertNotEquals('', $s->bytes());
+    Assert::notEquals('', $s->bytes());
   }
 }

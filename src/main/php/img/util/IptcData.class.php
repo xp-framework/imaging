@@ -227,7 +227,7 @@ class IptcData implements Value {
    *
    * @param   util.Date dateCreated default NULL
    */
-  public function setDateCreated(Date $dateCreated= null) {
+  public function setDateCreated($dateCreated= null) {
     $this->dateCreated= $dateCreated;
   }
 
@@ -237,7 +237,7 @@ class IptcData implements Value {
    * @param   util.Date dateCreated default NULL
    * @return  img.util.IptcData this
    */
-  public function withDateCreated(Date $dateCreated= null) {
+  public function withDateCreated($dateCreated= null) {
     $this->dateCreated= $dateCreated;
     return $this;
   }

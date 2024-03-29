@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 10.5.0 / 2024-03-29
+
+* Made compatible with `xp-framework/xml` 12.0+ - @thekid
+
 ## 10.4.0 / 2024-03-28
 
 * Improved performance when reading meta data - @thekid

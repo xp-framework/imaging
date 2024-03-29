@@ -1,14 +1,12 @@
 <?php namespace img\io;
 
 use img\ImagingException;
+use img\io\{SOFNSegment, IptcSegment, ExifSegment};
 use img\util\{ExifData, ImageInfo, IptcData};
 use lang\XPClass;
 use util\Date;
 
-/**
- * Image meta data
- * 
- */
+/** Image meta data */
 class ImageMetaData {
   protected $source= null;
   protected $segments= [];
@@ -58,14 +56,13 @@ class ImageMetaData {
   /**
    * Returns segments with a given class
    * 
-   * @param  var type either a class name or an XPClass instance
+   * @param  string $type
    * @return img.io.Segment[]
    */
   public function segmentsOf($type) {
-    $class= $type instanceof XPClass ? $type->getName() : $type;
     $r= [];
     foreach ($this->segments as $segment) {
-      if (nameof($segment) === $class) $r[]= $segment;
+      if ($segment instanceof $type) $r[]= $segment;
     }
     return $r;
   }
@@ -77,7 +74,7 @@ class ImageMetaData {
    * @throws img.ImagingException if no information can be extracted
    */
   public function imageDimensions() {
-    if (!($seg= $this->segmentsOf('img.io.SOFNSegment'))) {
+    if (!($seg= $this->segmentsOf(SOFNSegment::class))) {
       throw new ImagingException('Cannot load image information from '.$this->source);
     }
 
@@ -88,10 +85,10 @@ class ImageMetaData {
    * Returns an IptcData instance or NULL if this image does not contain 
    * IPTC Data
    * 
-   * @return img.util.IptcData
+   * @return ?img.util.IptcData
    */
   public function iptcData() {
-    if (!($seg= $this->segmentsOf('img.io.IptcSegment'))) return null;
+    if (!($seg= $this->segmentsOf(IptcSegment::class))) return null;
 
     $data= new IptcData();
     $iptc= $seg[0]->rawData();
@@ -103,38 +100,38 @@ class ImageMetaData {
       $created= null;
     }
 
-    $data->setTitle($iptc['2#005'][0] ?? null);
-    $data->setUrgency($iptc['2#010'][0] ?? null);
-    $data->setCategory($iptc['2#015'][0] ?? null);
-    $data->setSupplementalCategories($iptc['2#020'] ?? null);
-    $data->setKeywords($iptc['2#025'] ?? null);
-    $data->setSpecialInstructions($iptc['2#040'][0] ?? null);
-    $data->setDateCreated($created);
-    $data->setAuthor($iptc['2#080'][0] ?? null);
-    $data->setAuthorPosition($iptc['2#085'][0] ?? null);
-    $data->setCity($iptc['2#090'][0] ?? null);
-    $data->setState($iptc['2#095'][0] ?? null);
-    $data->setCountry($iptc['2#101'][0] ?? null);
-    $data->setOriginalTransmissionReference($iptc['2#103'][0] ?? null);
-    $data->setHeadline($iptc['2#105'][0] ?? null);
-    $data->setCredit($iptc['2#110'][0] ?? null);
-    $data->setSource($iptc['2#115'][0] ?? null);
-    $data->setCopyrightNotice($iptc['2#116'][0] ?? null);
-    $data->setCaption($iptc['2#120'][0] ?? null);
-    $data->setWriter($iptc['2#122'][0] ?? null);
-    return $data;
+    return $data
+      ->withTitle($iptc['2#005'][0] ?? null)
+      ->withUrgency($iptc['2#010'][0] ?? null)
+      ->withCategory($iptc['2#015'][0] ?? null)
+      ->withSupplementalCategories($iptc['2#020'] ?? null)
+      ->withKeywords($iptc['2#025'] ?? null)
+      ->withSpecialInstructions($iptc['2#040'][0] ?? null)
+      ->withDateCreated($created)
+      ->withAuthor($iptc['2#080'][0] ?? null)
+      ->withAuthorPosition($iptc['2#085'][0] ?? null)
+      ->withCity($iptc['2#090'][0] ?? null)
+      ->withState($iptc['2#095'][0] ?? null)
+      ->withCountry($iptc['2#101'][0] ?? null)
+      ->withOriginalTransmissionReference($iptc['2#103'][0] ?? null)
+      ->withHeadline($iptc['2#105'][0] ?? null)
+      ->withCredit($iptc['2#110'][0] ?? null)
+      ->withSource($iptc['2#115'][0] ?? null)
+      ->withCopyrightNotice($iptc['2#116'][0] ?? null)
+      ->withCaption($iptc['2#120'][0] ?? null)
+      ->withWriter($iptc['2#122'][0] ?? null)
+    ;
   }
 
   /**
    * Lookup helper for exifData() method
    *
    * @param   [:var] exif
-   * @param   string... key
-   * @return  string value or NULL
+   * @param   string... $keys
+   * @return  ?string value
    */
-  protected static function lookup($exif) {
-    for ($i= 1, $s= func_num_args(); $i < $s; $i++) {
-      $key= func_get_arg($i);
+  protected static function lookup($exif, ... $keys) {
+    foreach ($keys as $key) {
       if (isset($exif[$key])) return $exif[$key]['data'];
     }
     return null;
@@ -144,83 +141,78 @@ class ImageMetaData {
    * Returns an ExifData instance or NULL if this image does not contain 
    * EXIF Data
    * 
-   * @return img.util.ExifData
+   * @return ?img.util.ExifData
    */
   public function exifData() {
-    if (!($seg= $this->segmentsOf('img.io.ExifSegment'))) return null;
+    if (!($seg= $this->segmentsOf(ExifSegment::class))) return null;
 
     // Populate ExifData instance from ExifSegment's raw data
     with ($data= new ExifData(), $raw= $seg[0]->rawData()); {
-      $data->setFileName($this->source);
-      $data->setFileSize(-1);
-      $data->setMimeType('image/jpeg');
+      $data->withFileName($this->source);
+      $data->withFileSize(-1);
+      $data->withMimeType('image/jpeg');
 
-      $data->setMake(null === ($l= self::lookup($raw, 'Make')) ? null : trim($l));
-      $data->setModel(null === ($l= self::lookup($raw, 'Model')) ? null : trim($l));
-      $data->setSoftware(null === ($l= self::lookup($raw, 'Software')) ? null : trim($l));
+      $data->withMake(null === ($l= self::lookup($raw, 'Make')) ? null : trim($l));
+      $data->withModel(null === ($l= self::lookup($raw, 'Model')) ? null : trim($l));
+      $data->withSoftware(null === ($l= self::lookup($raw, 'Software')) ? null : trim($l));
 
       $exif= $raw['Exif_IFD_Pointer']['data'];
 
-      if ($sof= $this->segmentsOf('img.io.SOFNSegment')) {
-        $data->setWidth($sof[0]->width());
-        $data->setHeight($sof[0]->height());
+      if ($sof= $this->segmentsOf(SOFNSegment::class)) {
+        $data->withWidth($sof[0]->width());
+        $data->withHeight($sof[0]->height());
       } else {
-        $data->setWidth(self::lookup($exif, 'ExifImageWidth'));
-        $data->setHeight(self::lookup($exif, 'ExifImageLength'));
+        $data->withWidth(self::lookup($exif, 'ExifImageWidth'));
+        $data->withHeight(self::lookup($exif, 'ExifImageLength'));
       }
 
       // Aperture is either a FNumber (use directly), otherwise calculate from value
       if (null === ($a= self::lookup($exif, 'FNumber'))) {
         if (null === ($a= self::lookup($exif, 'ApertureValue', 'MaxApertureValue'))) {
-          $data->setApertureFNumber(null);
+          $data->withApertureFNumber(null);
         } else {
           sscanf($a, '%d/%d', $n, $frac);
-          $data->setApertureFNumber(sprintf('f/%.1F', exp($n / $frac * log(2) * 0.5)));
+          $data->withApertureFNumber(sprintf('f/%.1F', exp($n / $frac * log(2) * 0.5)));
         }
       } else {
         sscanf($a, '%d/%d', $n, $frac);
-        $data->setApertureFNumber(sprintf('f/%.1F', $n / $frac));
+        $data->withApertureFNumber(sprintf('f/%.1F', $n / $frac));
       }
 
-      $data->setExposureTime(self::lookup($exif, 'ExposureTime'));
-      $data->setExposureProgram(self::lookup($exif, 'ExposureProgram'));
-      $data->setMeteringMode(self::lookup($exif, 'MeteringMode'));
-      $data->setIsoSpeedRatings(self::lookup($exif, 'ISOSpeedRatings'));
+      $data->withExposureTime(self::lookup($exif, 'ExposureTime'));
+      $data->withExposureProgram(self::lookup($exif, 'ExposureProgram'));
+      $data->withMeteringMode(self::lookup($exif, 'MeteringMode'));
+      $data->withIsoSpeedRatings(self::lookup($exif, 'ISOSpeedRatings'));
 
       // Sometimes white balance is in MAKERNOTE - e.g. FUJIFILM's Finepix
       if (null !== ($w= self::lookup($exif, 'WhiteBalance'))) {
-        $data->setWhiteBalance($w);
+        $data->withWhiteBalance($w);
       } else if (isset($exif['MakerNote']) && null !== ($w= self::lookup($exif['MakerNote']['data'], 'WhiteBalance'))) {
-        $data->setWhiteBalance($w);
+        $data->withWhiteBalance($w);
       } else {
-        $data->setWhiteBalance(null);
+        $data->withWhiteBalance(null);
       }
 
       // Extract focal length. Some models store "80" as "80/1", rip off
       // the divisor "1" in this case.
       if (null !== ($l= self::lookup($exif, 'FocalLength'))) {
         sscanf($l, '%d/%d', $n, $frac);
-        $data->setFocalLength(1 == $frac ? $n : $n.'/'.$frac);
+        $data->withFocalLength(1 == $frac ? $n : $n.'/'.$frac);
       } else {
-        $data->setFocalLength(null);
+        $data->withFocalLength(null);
       }
 
-      // Check for Flash and flashUsed keys
-      if (null !== ($f= self::lookup($exif, 'Flash'))) {
-        $data->setFlash($f);
-      } else {
-        $data->setFlash(null);
-      }
+      $data->withFlash(self::lookup($exif, 'Flash'));
 
       if (null !== ($date= self::lookup($exif, 'DateTimeOriginal', 'DateTimeDigitized', 'DateTime'))) {
         $t= sscanf($date, '%4d:%2d:%2d %2d:%2d:%2d');
-        $data->setDateTime(new \util\Date(mktime($t[3], $t[4], $t[5], $t[1], $t[2], $t[0])));
+        $data->withDateTime(new Date(mktime($t[3], $t[4], $t[5], $t[1], $t[2], $t[0])));
       }
 
       if (null !== ($o= self::lookup($exif, 'Orientation'))) {
-        $data->setOrientation($o);
+        $data->withOrientation($o);
       } else {
-        $data->setOrientation(($data->width / $data->height) > 1.0
+        $data->withOrientation(($data->width / $data->height) > 1.0
           ? 1   // normal
           : 5   // transpose
         );

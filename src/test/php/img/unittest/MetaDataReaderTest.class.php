@@ -2,21 +2,14 @@
 
 use DOMDocument;
 use img\ImagingException;
-use img\io\{CommentSegment, MetaDataReader, SOFNSegment, XMPSegment};
+use img\io\{Segment, CommentSegment, MetaDataReader, SOFNSegment, XMPSegment, ExifSegment, IptcSegment};
+use img\util\{ExifData, IptcData};
+use lang\ArrayType;
 use test\{Assert, Before, Expect, Test};
+use util\Date;
 
 class MetaDataReaderTest {
   private $fixture;
-
-  /**
-   * Sets up this unittest 
-   *
-   * @throws  unittest.PrerequisitesNotMetError
-   */
-  #[Before]
-  public function setUp() {
-    $this->fixture= new MetaDataReader();
-  }
 
   /**
    * Returns a file for a classloader resource
@@ -51,8 +44,13 @@ class MetaDataReaderTest {
    * @throws unittest.AssertionFailedError
    */
   protected function assertArrayOf($type, $size, $value) {
-    Assert::instance(new \lang\ArrayType($type), $value);
+    Assert::instance(new ArrayType($type), $value);
     Assert::equals($size, sizeof($value));
+  }
+
+  #[Before]
+  public function fixture() {
+    $this->fixture= new MetaDataReader();
   }
 
   #[Test, Expect(class: ImagingException::class, message: '/Could not find start of image/')]
@@ -67,12 +65,12 @@ class MetaDataReaderTest {
 
   #[Test]
   public function all_segments() {
-    $this->assertArrayOf('img.io.Segment', 9, $this->extractFromFile('1x1.jpg')->allSegments());
+    $this->assertArrayOf(Segment::class, 9, $this->extractFromFile('1x1.jpg')->allSegments());
   }
 
   #[Test]
   public function segments_named_dqt() {
-    $this->assertArrayOf('img.io.Segment', 2, $this->extractFromFile('1x1.jpg')->segmentsNamed('DQT'));
+    $this->assertArrayOf(Segment::class, 2, $this->extractFromFile('1x1.jpg')->segmentsNamed('DQT'));
   }
 
   #[Test]
@@ -87,7 +85,7 @@ class MetaDataReaderTest {
   public function segment_of_sofn() {
     Assert::equals(
       [new SOFNSegment('SOF0', ['bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3])],
-      $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.SOFNSegment')
+      $this->extractFromFile('1x1.jpg')->segmentsOf(SOFNSegment::class)
     );
   }
 
@@ -95,14 +93,14 @@ class MetaDataReaderTest {
   public function com_segment() {
     Assert::equals(
       [new CommentSegment('COM', 'Created with GIMP')],
-      $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.CommentSegment')
+      $this->extractFromFile('1x1.jpg')->segmentsOf(CommentSegment::class)
     );
   }
 
   #[Test]
   public function xmp_segment() {
-    $segments= $this->extractFromFile('xmp.jpg')->segmentsOf('img.io.XMPSegment');
-    $this->assertArrayOf('img.io.XMPSegment', 1, $segments);
+    $segments= $this->extractFromFile('xmp.jpg')->segmentsOf(XMPSegment::class);
+    $this->assertArrayOf(XMPSegment::class, 1, $segments);
 
     Assert::matches('/^<.+/', $segments[0]->source);
     Assert::instance(DOMDocument::class, $segments[0]->document());
@@ -120,12 +118,12 @@ class MetaDataReaderTest {
 
   #[Test]
   public function no_exif_data_segments_in_1x1() {
-    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.ExifSegment'));
+    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf(ExifSegment::class));
   }
 
   #[Test]
   public function no_iptc_data_segments_in_1x1() {
-    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.IptcSegment'));
+    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf(IptcSegment::class));
   }
 
   #[Test]
@@ -141,30 +139,30 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_data_segments() {
     $this->assertArrayOf(
-      'img.io.ExifSegment', 1, 
-      $this->extractFromFile('exif-only.jpg')->segmentsOf('img.io.ExifSegment')
+      ExifSegment::class, 1, 
+      $this->extractFromFile('exif-only.jpg')->segmentsOf(ExifSegment::class)
     );
   }
 
   #[Test]
   public function iptc_data_segments() {
     $this->assertArrayOf(
-      'img.io.IptcSegment', 1, 
-      $this->extractFromFile('iptc-only.jpg')->segmentsOf('img.io.IptcSegment')
+      IptcSegment::class, 1, 
+      $this->extractFromFile('iptc-only.jpg')->segmentsOf(IptcSegment::class)
     );
   }
 
   #[Test]
   public function exif_and_iptc_data_segments() {
     $meta= $this->extractFromFile('exif-and-iptc.jpg');
-    $this->assertArrayOf('img.io.ExifSegment', 1, $meta->segmentsOf('img.io.ExifSegment'));
-    $this->assertArrayOf('img.io.IptcSegment', 1, $meta->segmentsOf('img.io.IptcSegment'));
+    $this->assertArrayOf(ExifSegment::class, 1, $meta->segmentsOf(ExifSegment::class));
+    $this->assertArrayOf(IptcSegment::class, 1, $meta->segmentsOf(IptcSegment::class));
   }
 
   #[Test]
   public function exif_dot_org_sample_CanonIxus() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('canon-ixus.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -180,7 +178,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('Canon DIGITAL IXUS')
-        ->withDateTime(new \util\Date('2001:06:09 15:17:32'))
+        ->withDateTime(new Date('2001:06:09 15:17:32'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -192,7 +190,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_FujifilmDx10() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('fujifilm-dx10.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -207,7 +205,7 @@ class MetaDataReaderTest {
         ->withWidth(1024)
         ->withHeight(768)
         ->withModel('DX-10')
-        ->withDateTime(new \util\Date('2001:04:12 20:33:14'))
+        ->withDateTime(new Date('2001:04:12 20:33:14'))
         ->withMeteringMode(5)
         ->withFlash(1)
         ->withOrientation(1)
@@ -219,7 +217,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_FujifilmFinepix40i() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('fujifilm-finepix40i.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -234,7 +232,7 @@ class MetaDataReaderTest {
         ->withWidth(600)
         ->withHeight(450)
         ->withModel('FinePix40i')
-        ->withDateTime(new \util\Date('2000:08:04 18:22:57'))
+        ->withDateTime(new Date('2000:08:04 18:22:57'))
         ->withMeteringMode(5)
         ->withFlash(1)
         ->withOrientation(1)
@@ -246,7 +244,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_FujifilmMx1700() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('fujifilm-mx1700.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -261,7 +259,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('MX-1700ZOOM')
-        ->withDateTime(new \util\Date('2000:09:02 14:30:10'))
+        ->withDateTime(new Date('2000:09:02 14:30:10'))
         ->withMeteringMode(5)
         ->withFlash(0)
         ->withOrientation(1)
@@ -273,7 +271,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_KodakDC210() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('kodak-dc210.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -288,7 +286,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('DC210 Zoom (V05.00)')
-        ->withDateTime(new \util\Date('2000:10:26 16:46:51'))
+        ->withDateTime(new Date('2000:10:26 16:46:51'))
         ->withMeteringMode(2)
         ->withFlash(1)
         ->withOrientation(1)
@@ -300,7 +298,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_KodakDC240() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('kodak-dc240.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -315,7 +313,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('KODAK DC240 ZOOM DIGITAL CAMERA')
-        ->withDateTime(new \util\Date('1999:05:25 21:00:09'))
+        ->withDateTime(new Date('1999:05:25 21:00:09'))
         ->withMeteringMode(1)
         ->withFlash(1)
         ->withOrientation(1)
@@ -327,7 +325,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_NikonE950() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('nikon-e950.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -342,7 +340,7 @@ class MetaDataReaderTest {
         ->withWidth(800)
         ->withHeight(600)
         ->withModel('E950')
-        ->withDateTime(new \util\Date('2001:04:06 11:51:40'))
+        ->withDateTime(new Date('2001:04:06 11:51:40'))
         ->withMeteringMode(5)
         ->withFlash(0)
         ->withOrientation(1)
@@ -354,7 +352,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_OlympusC960() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('olympus-c960.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -369,7 +367,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('C960Z,D460Z')
-        ->withDateTime(new \util\Date('2000:11:07 10:41:43'))
+        ->withDateTime(new Date('2000:11:07 10:41:43'))
         ->withMeteringMode(5)
         ->withFlash(0)
         ->withOrientation(1)
@@ -381,7 +379,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_Ricohrdc5300() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('ricoh-rdc5300.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -396,7 +394,7 @@ class MetaDataReaderTest {
         ->withWidth(896)
         ->withHeight(600)
         ->withModel('RDC-5300')
-        ->withDateTime(new \util\Date('2000:05:31 21:50:40'))
+        ->withDateTime(new Date('2000:05:31 21:50:40'))
         ->withMeteringMode(null)
         ->withFlash(1)
         ->withOrientation(1)
@@ -408,7 +406,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_SanyoVpcg250() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sanyo-vpcg250.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -423,7 +421,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('SR6')
-        ->withDateTime(new \util\Date('1998:01:01 00:00:00'))
+        ->withDateTime(new Date('1998:01:01 00:00:00'))
         ->withMeteringMode(2)
         ->withFlash(1)
         ->withOrientation(1)
@@ -435,7 +433,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_Sanyovpcsx550() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sanyo-vpcsx550.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -450,7 +448,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('SX113')
-        ->withDateTime(new \util\Date('2000:11:18 21:14:19'))
+        ->withDateTime(new Date('2000:11:18 21:14:19'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -462,7 +460,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_SonyCybershot() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sony-cybershot.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -477,7 +475,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('CYBERSHOT')
-        ->withDateTime(new \util\Date('2000:09:30 10:59:45'))
+        ->withDateTime(new Date('2000:09:30 10:59:45'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -489,7 +487,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_SonyD700() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sony-d700.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -504,7 +502,7 @@ class MetaDataReaderTest {
         ->withWidth(672)
         ->withHeight(512)
         ->withModel('DSC-D700')
-        ->withDateTime(new \util\Date('1998:12:01 14:22:36'))
+        ->withDateTime(new Date('1998:12:01 14:22:36'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -516,12 +514,12 @@ class MetaDataReaderTest {
   #[Test]
   public function detailed_iptc_data() {
     Assert::equals(
-      (new \img\util\IptcData())
+      (new IptcData())
         ->withTitle('Unittest Image')
         ->withUrgency(null)
         ->withCategory(null)
         ->withKeywords(null)
-        ->withDateCreated(new \util\Date('2011-12-07 00:00:00'))
+        ->withDateCreated(new Date('2011-12-07 00:00:00'))
         ->withAuthor(null)
         ->withAuthorPosition(null)
         ->withCity(null)
@@ -543,7 +541,7 @@ class MetaDataReaderTest {
 
   #[Test]
   public function gps_data() {
-    $exif= $this->extractFromFile('gps-embedded.jpg')->segmentsOf('img.io.ExifSegment')[0];
+    $exif= $this->extractFromFile('gps-embedded.jpg')->segmentsOf(ExifSegment::class)[0];
     Assert::equals(
       [
         'Version'      => '2/2/0/0',

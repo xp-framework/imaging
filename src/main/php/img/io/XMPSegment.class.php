@@ -1,24 +1,22 @@
 <?php namespace img\io;
 
-use xml\dom\Document;
+use DOMDocument;
+use lang\FormatException;
 
-
-/**
- * XMP/XAP meta data segment
- * 
- */
+/** XMP/XAP meta data segment */
 class XMPSegment extends Segment {
-  protected $document= null;
+  public $source;
+  private $document= null;
 
   /**
    * Creates a segment instance
    *
    * @param string $marker
-   * @param xml.dom.Document document
+   * @param string $source
    */
-  public function __construct($marker, Document $document) {
+  public function __construct($marker, $source) {
     parent::__construct($marker, null);
-    $this->document= $document;
+    $this->source= $source;
   }
 
   /**
@@ -31,15 +29,25 @@ class XMPSegment extends Segment {
   public static function read($marker, $bytes) {
 
     // Begin parsing after 28 bytes - strlen("http://ns.adobe.com/xap/1.0/")
-    return new self($marker, Document::fromString(trim(substr($bytes, 28), "\x00")));
+    return new self($marker, trim(substr($bytes, 28), "\x00"));
   }
 
   /**
    * Gets XML document
    *
-   * @return xml.dom.Document
+   * @return DOMDocument
+   * @throws lang.FormatException if parsing the XML fails
    */
   public function document() {
+    if (null === $this->document) {
+      $this->document= new DOMDocument();
+      if (false === $this->document->loadXML($this->source)) {
+        $this->document= null;
+        $e= new FormatException('Cannot parse XMP/XAP segment');
+        \xp::gc(__FILE__);
+        throw $e;
+      }
+    }
     return $this->document;
   }
 
@@ -49,7 +57,7 @@ class XMPSegment extends Segment {
    * @return string
    */
   public function toString() {
-    return nameof($this).'<'.$this->marker.'>'.\xp::stringOf($this->document);
+    return nameof($this).'('.$this->marker.')'.$this->source;
   }
 
   /**
@@ -62,7 +70,7 @@ class XMPSegment extends Segment {
     return (
       $cmp instanceof self &&
       $cmp->marker === $this->marker &&
-      $cmp->document->equals($this->document)
+      $cmp->source === $this->source
     );
   }
 }

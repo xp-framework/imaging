@@ -3,6 +3,20 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 11.0.0 / 2024-03-29
+
+* Removed deprecated global constants `IMG_PALETTE` / `IMG_TRUECOLOR`
+  (@thekid)
+* Removed field getters and setters from the `ExifData` and `IptcData`
+  classes in `img.util`.
+  (@thekid)
+* Dropped support for PHP 7.0 - 7.3, step 1 of xp-framework/rfc#343
+  (@thekid)
+* Merged PR #4: Remove deprecated `(ExifData|IptcData)::fromString()`
+  (@thekid)
+* Merged PR #3: Drop dependency on XML library, decreasing library size
+  (@thekid)
+
 ## 10.5.0 / 2024-03-29
 
 * Made compatible with `xp-framework/xml` 12.0+ - @thekid

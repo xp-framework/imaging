@@ -3,21 +3,13 @@
 use DOMDocument;
 use img\ImagingException;
 use img\io\{CommentSegment, MetaDataReader, SOFNSegment, XMPSegment};
-use img\util\ExifData;
+use img\util\{ExifData, IptcData};
+use lang\ArrayType;
 use test\{Assert, Before, Expect, Test};
+use util\Date;
 
 class MetaDataReaderTest {
   private $fixture;
-
-  /**
-   * Sets up this unittest 
-   *
-   * @throws  unittest.PrerequisitesNotMetError
-   */
-  #[Before]
-  public function setUp() {
-    $this->fixture= new MetaDataReader();
-  }
 
   /**
    * Returns a file for a classloader resource
@@ -52,8 +44,13 @@ class MetaDataReaderTest {
    * @throws unittest.AssertionFailedError
    */
   protected function assertArrayOf($type, $size, $value) {
-    Assert::instance(new \lang\ArrayType($type), $value);
+    Assert::instance(new ArrayType($type), $value);
     Assert::equals($size, sizeof($value));
+  }
+
+  #[Before]
+  public function fixture() {
+    $this->fixture= new MetaDataReader();
   }
 
   #[Test, Expect(class: ImagingException::class, message: '/Could not find start of image/')]
@@ -181,7 +178,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('Canon DIGITAL IXUS')
-        ->withDateTime(new \util\Date('2001:06:09 15:17:32'))
+        ->withDateTime(new Date('2001:06:09 15:17:32'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -208,7 +205,7 @@ class MetaDataReaderTest {
         ->withWidth(1024)
         ->withHeight(768)
         ->withModel('DX-10')
-        ->withDateTime(new \util\Date('2001:04:12 20:33:14'))
+        ->withDateTime(new Date('2001:04:12 20:33:14'))
         ->withMeteringMode(5)
         ->withFlash(1)
         ->withOrientation(1)
@@ -235,7 +232,7 @@ class MetaDataReaderTest {
         ->withWidth(600)
         ->withHeight(450)
         ->withModel('FinePix40i')
-        ->withDateTime(new \util\Date('2000:08:04 18:22:57'))
+        ->withDateTime(new Date('2000:08:04 18:22:57'))
         ->withMeteringMode(5)
         ->withFlash(1)
         ->withOrientation(1)
@@ -262,7 +259,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('MX-1700ZOOM')
-        ->withDateTime(new \util\Date('2000:09:02 14:30:10'))
+        ->withDateTime(new Date('2000:09:02 14:30:10'))
         ->withMeteringMode(5)
         ->withFlash(0)
         ->withOrientation(1)
@@ -289,7 +286,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('DC210 Zoom (V05.00)')
-        ->withDateTime(new \util\Date('2000:10:26 16:46:51'))
+        ->withDateTime(new Date('2000:10:26 16:46:51'))
         ->withMeteringMode(2)
         ->withFlash(1)
         ->withOrientation(1)
@@ -316,7 +313,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('KODAK DC240 ZOOM DIGITAL CAMERA')
-        ->withDateTime(new \util\Date('1999:05:25 21:00:09'))
+        ->withDateTime(new Date('1999:05:25 21:00:09'))
         ->withMeteringMode(1)
         ->withFlash(1)
         ->withOrientation(1)
@@ -343,7 +340,7 @@ class MetaDataReaderTest {
         ->withWidth(800)
         ->withHeight(600)
         ->withModel('E950')
-        ->withDateTime(new \util\Date('2001:04:06 11:51:40'))
+        ->withDateTime(new Date('2001:04:06 11:51:40'))
         ->withMeteringMode(5)
         ->withFlash(0)
         ->withOrientation(1)
@@ -370,7 +367,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('C960Z,D460Z')
-        ->withDateTime(new \util\Date('2000:11:07 10:41:43'))
+        ->withDateTime(new Date('2000:11:07 10:41:43'))
         ->withMeteringMode(5)
         ->withFlash(0)
         ->withOrientation(1)
@@ -397,7 +394,7 @@ class MetaDataReaderTest {
         ->withWidth(896)
         ->withHeight(600)
         ->withModel('RDC-5300')
-        ->withDateTime(new \util\Date('2000:05:31 21:50:40'))
+        ->withDateTime(new Date('2000:05:31 21:50:40'))
         ->withMeteringMode(null)
         ->withFlash(1)
         ->withOrientation(1)
@@ -424,7 +421,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('SR6')
-        ->withDateTime(new \util\Date('1998:01:01 00:00:00'))
+        ->withDateTime(new Date('1998:01:01 00:00:00'))
         ->withMeteringMode(2)
         ->withFlash(1)
         ->withOrientation(1)
@@ -451,7 +448,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('SX113')
-        ->withDateTime(new \util\Date('2000:11:18 21:14:19'))
+        ->withDateTime(new Date('2000:11:18 21:14:19'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -478,7 +475,7 @@ class MetaDataReaderTest {
         ->withWidth(640)
         ->withHeight(480)
         ->withModel('CYBERSHOT')
-        ->withDateTime(new \util\Date('2000:09:30 10:59:45'))
+        ->withDateTime(new Date('2000:09:30 10:59:45'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -505,7 +502,7 @@ class MetaDataReaderTest {
         ->withWidth(672)
         ->withHeight(512)
         ->withModel('DSC-D700')
-        ->withDateTime(new \util\Date('1998:12:01 14:22:36'))
+        ->withDateTime(new Date('1998:12:01 14:22:36'))
         ->withMeteringMode(2)
         ->withFlash(0)
         ->withOrientation(1)
@@ -517,12 +514,12 @@ class MetaDataReaderTest {
   #[Test]
   public function detailed_iptc_data() {
     Assert::equals(
-      (new \img\util\IptcData())
+      (new IptcData())
         ->withTitle('Unittest Image')
         ->withUrgency(null)
         ->withCategory(null)
         ->withKeywords(null)
-        ->withDateCreated(new \util\Date('2011-12-07 00:00:00'))
+        ->withDateCreated(new Date('2011-12-07 00:00:00'))
         ->withAuthor(null)
         ->withAuthorPosition(null)
         ->withCity(null)

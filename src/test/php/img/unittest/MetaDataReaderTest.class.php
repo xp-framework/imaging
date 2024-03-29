@@ -3,6 +3,7 @@
 use DOMDocument;
 use img\ImagingException;
 use img\io\{CommentSegment, MetaDataReader, SOFNSegment, XMPSegment};
+use img\util\ExifData;
 use test\{Assert, Before, Expect, Test};
 
 class MetaDataReaderTest {
@@ -164,7 +165,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_CanonIxus() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('canon-ixus.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -192,7 +193,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_FujifilmDx10() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('fujifilm-dx10.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -219,7 +220,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_FujifilmFinepix40i() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('fujifilm-finepix40i.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -246,7 +247,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_FujifilmMx1700() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('fujifilm-mx1700.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -273,7 +274,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_KodakDC210() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('kodak-dc210.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -300,7 +301,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_KodakDC240() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('kodak-dc240.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -327,7 +328,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_NikonE950() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('nikon-e950.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -354,7 +355,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_OlympusC960() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('olympus-c960.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -381,7 +382,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_Ricohrdc5300() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('ricoh-rdc5300.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -408,7 +409,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_SanyoVpcg250() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sanyo-vpcg250.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -435,7 +436,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_Sanyovpcsx550() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sanyo-vpcsx550.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -462,7 +463,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_SonyCybershot() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sony-cybershot.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')
@@ -489,7 +490,7 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_dot_org_sample_SonyD700() {
     Assert::equals(
-      (new \img\util\ExifData())
+      (new ExifData())
         ->withFileName('sony-d700.jpg')
         ->withFileSize(-1)
         ->withMimeType('image/jpeg')

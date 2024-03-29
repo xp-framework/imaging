@@ -1,6 +1,7 @@
 <?php namespace img\io;
 
 use img\ImagingException;
+use img\io\{SOFNSegment, IptcSegment, ExifSegment};
 use img\util\{ExifData, ImageInfo, IptcData};
 use lang\XPClass;
 use util\Date;
@@ -55,14 +56,13 @@ class ImageMetaData {
   /**
    * Returns segments with a given class
    * 
-   * @param  var type either a class name or an XPClass instance
+   * @param  string $type
    * @return img.io.Segment[]
    */
   public function segmentsOf($type) {
-    $class= $type instanceof XPClass ? $type->getName() : $type;
     $r= [];
     foreach ($this->segments as $segment) {
-      if (nameof($segment) === $class) $r[]= $segment;
+      if ($segment instanceof $type) $r[]= $segment;
     }
     return $r;
   }
@@ -74,7 +74,7 @@ class ImageMetaData {
    * @throws img.ImagingException if no information can be extracted
    */
   public function imageDimensions() {
-    if (!($seg= $this->segmentsOf('img.io.SOFNSegment'))) {
+    if (!($seg= $this->segmentsOf(SOFNSegment::class))) {
       throw new ImagingException('Cannot load image information from '.$this->source);
     }
 
@@ -88,7 +88,7 @@ class ImageMetaData {
    * @return ?img.util.IptcData
    */
   public function iptcData() {
-    if (!($seg= $this->segmentsOf('img.io.IptcSegment'))) return null;
+    if (!($seg= $this->segmentsOf(IptcSegment::class))) return null;
 
     $data= new IptcData();
     $iptc= $seg[0]->rawData();
@@ -144,7 +144,7 @@ class ImageMetaData {
    * @return ?img.util.ExifData
    */
   public function exifData() {
-    if (!($seg= $this->segmentsOf('img.io.ExifSegment'))) return null;
+    if (!($seg= $this->segmentsOf(ExifSegment::class))) return null;
 
     // Populate ExifData instance from ExifSegment's raw data
     with ($data= new ExifData(), $raw= $seg[0]->rawData()); {
@@ -158,7 +158,7 @@ class ImageMetaData {
 
       $exif= $raw['Exif_IFD_Pointer']['data'];
 
-      if ($sof= $this->segmentsOf('img.io.SOFNSegment')) {
+      if ($sof= $this->segmentsOf(SOFNSegment::class)) {
         $data->withWidth($sof[0]->width());
         $data->withHeight($sof[0]->height());
       } else {
@@ -206,7 +206,7 @@ class ImageMetaData {
 
       if (null !== ($date= self::lookup($exif, 'DateTimeOriginal', 'DateTimeDigitized', 'DateTime'))) {
         $t= sscanf($date, '%4d:%2d:%2d %2d:%2d:%2d');
-        $data->withDateTime(new \util\Date(mktime($t[3], $t[4], $t[5], $t[1], $t[2], $t[0])));
+        $data->withDateTime(new Date(mktime($t[3], $t[4], $t[5], $t[1], $t[2], $t[0])));
       }
 
       if (null !== ($o= self::lookup($exif, 'Orientation'))) {

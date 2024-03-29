@@ -2,7 +2,7 @@
 
 use DOMDocument;
 use img\ImagingException;
-use img\io\{CommentSegment, MetaDataReader, SOFNSegment, XMPSegment};
+use img\io\{Segment, CommentSegment, MetaDataReader, SOFNSegment, XMPSegment, ExifSegment, IptcSegment};
 use img\util\{ExifData, IptcData};
 use lang\ArrayType;
 use test\{Assert, Before, Expect, Test};
@@ -65,12 +65,12 @@ class MetaDataReaderTest {
 
   #[Test]
   public function all_segments() {
-    $this->assertArrayOf('img.io.Segment', 9, $this->extractFromFile('1x1.jpg')->allSegments());
+    $this->assertArrayOf(Segment::class, 9, $this->extractFromFile('1x1.jpg')->allSegments());
   }
 
   #[Test]
   public function segments_named_dqt() {
-    $this->assertArrayOf('img.io.Segment', 2, $this->extractFromFile('1x1.jpg')->segmentsNamed('DQT'));
+    $this->assertArrayOf(Segment::class, 2, $this->extractFromFile('1x1.jpg')->segmentsNamed('DQT'));
   }
 
   #[Test]
@@ -85,7 +85,7 @@ class MetaDataReaderTest {
   public function segment_of_sofn() {
     Assert::equals(
       [new SOFNSegment('SOF0', ['bits' => 8, 'height' => 1, 'width' => 1, 'channels' => 3])],
-      $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.SOFNSegment')
+      $this->extractFromFile('1x1.jpg')->segmentsOf(SOFNSegment::class)
     );
   }
 
@@ -93,14 +93,14 @@ class MetaDataReaderTest {
   public function com_segment() {
     Assert::equals(
       [new CommentSegment('COM', 'Created with GIMP')],
-      $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.CommentSegment')
+      $this->extractFromFile('1x1.jpg')->segmentsOf(CommentSegment::class)
     );
   }
 
   #[Test]
   public function xmp_segment() {
-    $segments= $this->extractFromFile('xmp.jpg')->segmentsOf('img.io.XMPSegment');
-    $this->assertArrayOf('img.io.XMPSegment', 1, $segments);
+    $segments= $this->extractFromFile('xmp.jpg')->segmentsOf(XMPSegment::class);
+    $this->assertArrayOf(XMPSegment::class, 1, $segments);
 
     Assert::matches('/^<.+/', $segments[0]->source);
     Assert::instance(DOMDocument::class, $segments[0]->document());
@@ -118,12 +118,12 @@ class MetaDataReaderTest {
 
   #[Test]
   public function no_exif_data_segments_in_1x1() {
-    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.ExifSegment'));
+    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf(ExifSegment::class));
   }
 
   #[Test]
   public function no_iptc_data_segments_in_1x1() {
-    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf('img.io.IptcSegment'));
+    Assert::equals([], $this->extractFromFile('1x1.jpg')->segmentsOf(IptcSegment::class));
   }
 
   #[Test]
@@ -139,24 +139,24 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_data_segments() {
     $this->assertArrayOf(
-      'img.io.ExifSegment', 1, 
-      $this->extractFromFile('exif-only.jpg')->segmentsOf('img.io.ExifSegment')
+      ExifSegment::class, 1, 
+      $this->extractFromFile('exif-only.jpg')->segmentsOf(ExifSegment::class)
     );
   }
 
   #[Test]
   public function iptc_data_segments() {
     $this->assertArrayOf(
-      'img.io.IptcSegment', 1, 
-      $this->extractFromFile('iptc-only.jpg')->segmentsOf('img.io.IptcSegment')
+      IptcSegment::class, 1, 
+      $this->extractFromFile('iptc-only.jpg')->segmentsOf(IptcSegment::class)
     );
   }
 
   #[Test]
   public function exif_and_iptc_data_segments() {
     $meta= $this->extractFromFile('exif-and-iptc.jpg');
-    $this->assertArrayOf('img.io.ExifSegment', 1, $meta->segmentsOf('img.io.ExifSegment'));
-    $this->assertArrayOf('img.io.IptcSegment', 1, $meta->segmentsOf('img.io.IptcSegment'));
+    $this->assertArrayOf(ExifSegment::class, 1, $meta->segmentsOf(ExifSegment::class));
+    $this->assertArrayOf(IptcSegment::class, 1, $meta->segmentsOf(IptcSegment::class));
   }
 
   #[Test]
@@ -541,7 +541,7 @@ class MetaDataReaderTest {
 
   #[Test]
   public function gps_data() {
-    $exif= $this->extractFromFile('gps-embedded.jpg')->segmentsOf('img.io.ExifSegment')[0];
+    $exif= $this->extractFromFile('gps-embedded.jpg')->segmentsOf(ExifSegment::class)[0];
     Assert::equals(
       [
         'Version'      => '2/2/0/0',

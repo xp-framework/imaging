@@ -1,17 +1,12 @@
 <?php namespace img\unittest;
 
+use DOMDocument;
 use img\ImagingException;
 use img\io\{CommentSegment, MetaDataReader, SOFNSegment, XMPSegment};
 use test\{Assert, Before, Expect, Test};
-use xml\Node;
 
-/**
- * TestCase for MetaDataReader class
- *
- * @see  xp://img.io.MetaDataReader
- */
 class MetaDataReaderTest {
-  protected $fixture;
+  private $fixture;
 
   /**
    * Sets up this unittest 
@@ -108,7 +103,9 @@ class MetaDataReaderTest {
   public function xmp_segment() {
     $segments= $this->extractFromFile('xmp.jpg')->segmentsOf('img.io.XMPSegment');
     $this->assertArrayOf('img.io.XMPSegment', 1, $segments);
-    Assert::instance(Node::class, $segments[0]->document()->getElementsByTagName('dc:title')[0]);
+
+    Assert::matches('/^<.+/', $segments[0]->source);
+    Assert::instance(DOMDocument::class, $segments[0]->document());
   }
 
   #[Test]

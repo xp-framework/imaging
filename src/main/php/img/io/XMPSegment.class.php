@@ -35,9 +35,9 @@ class XMPSegment extends Segment {
   }
 
   /**
-   * Get image bits
+   * Gets XML document
    *
-   * @return int
+   * @return xml.dom.Document
    */
   public function document() {
     return $this->document;

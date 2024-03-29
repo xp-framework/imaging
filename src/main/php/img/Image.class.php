@@ -4,26 +4,22 @@ use img\convert\ImageConverter;
 use img\filter\ImageFilter;
 use lang\CloneNotSupportedException;
 
-// @deprecated Use Image::PALETTE and Image::TRUECOLOR instead
-define('IMG_PALETTE',   0x0000);
-define('IMG_TRUECOLOR', 0x0001);
-
 /**
  * Base class for images
  *
  * Usage example: Creating an empty image:
- * <code>
- *   $palette_image= Image::create(640, 480);
- *   $truecolor_image= Image::create(640, 480, Image::TRUECOLOR);
- * </code>
+ * ```php
+ * $palette_image= Image::create(640, 480);
+ * $truecolor_image= Image::create(640, 480, Image::TRUECOLOR);
+ * ```
  *
  * Usage example: Loading an image from a file:
- * <code>
- *   $image= Image::loadFrom(new JpegStreamReader(new File('picture.jpg')));
- * </code>
+ * ```php
+ * $image= Image::loadFrom(new JpegStreamReader(new File('picture.jpg')));
+ * ```
  *
  * @ext  gd
- * @see  php://image
+ * @see  https://www.php.net/image
  */
 class Image {
   const PALETTE   = 0x0000;
@@ -75,18 +71,18 @@ class Image {
    *
    * @param   int w width
    * @param   int h height
-   * @param   int type default IMG_PALETTE either IMG_PALETTE or IMG_TRUECOLOR
+   * @param   int type Image::PALETTE or Image::TRUECOLOR
    * @param   string class default __CLASS__ class to create, defaulting to "Image"
    * @return  img.Image
    * @throws  img.ImagingException in case the image could not be created
    */
-  public static function create($w, $h, $type= IMG_PALETTE, $class= __CLASS__) {
+  public static function create($w, $h, $type= self::PALETTE, $class= __CLASS__) {
     switch ($type) {
-      case IMG_PALETTE:
+      case self::PALETTE:
         $handle= imagecreate($w, $h);
         break;
 
-      case IMG_TRUECOLOR:
+      case self::TRUECOLOR:
         $handle= imagecreatetruecolor($w, $h);
         break;
 

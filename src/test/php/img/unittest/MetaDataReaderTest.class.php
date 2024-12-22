@@ -5,8 +5,8 @@ use img\ImagingException;
 use img\io\{Segment, CommentSegment, MetaDataReader, SOFNSegment, XMPSegment, ExifSegment, IptcSegment};
 use img\util\{ExifData, IptcData};
 use lang\ArrayType;
-use test\{Assert, Before, Expect, Test};
-use util\Date;
+use test\{Assert, Before, Expect, Test, Values};
+use util\{Date, TimeZone};
 
 class MetaDataReaderTest {
   private $fixture;
@@ -18,7 +18,7 @@ class MetaDataReaderTest {
    * @param   string $sub default NULL subpackage
    * @return  io.File
    */
-  protected function resourceAsFile($name, $sub= null) {
+  private function resourceAsFile($name, $sub= null) {
     $package= typeof($this)->getPackage();
     $container= $sub ? $package->getPackage($sub) : $package;
     return $container->getResourceAsStream($name);
@@ -31,7 +31,7 @@ class MetaDataReaderTest {
    * @param   string $sub default NULL subpackage
    * @return  lang.Generic the instance
    */
-  protected function extractFromFile($name, $sub= null) {
+  private function extractFromFile($name, $sub= null) {
     return $this->fixture->read($this->resourceAsFile($name, $sub)->in(), $name);
   }
 
@@ -43,9 +43,16 @@ class MetaDataReaderTest {
    * @param  var $value The value
    * @throws unittest.AssertionFailedError
    */
-  protected function assertArrayOf($type, $size, $value) {
+  private function assertArrayOf($type, $size, $value) {
     Assert::instance(new ArrayType($type), $value);
     Assert::equals($size, sizeof($value));
+  }
+
+  /** @return iterable */
+  private function timezones() {
+    yield null;
+    yield TimeZone::getByName('UTC');
+    yield TimeZone::getByName('Europe/Berlin');
   }
 
   #[Before]
@@ -519,7 +526,7 @@ class MetaDataReaderTest {
         ->withUrgency(null)
         ->withCategory(null)
         ->withKeywords(null)
-        ->withDateCreated(new Date('2011-12-07 00:00:00'))
+        ->withDateCreated(new Date('2011-12-07 14:08:24'))
         ->withAuthor(null)
         ->withAuthorPosition(null)
         ->withCity(null)
@@ -557,6 +564,22 @@ class MetaDataReaderTest {
         'Longitude'    => $exif->rawData('GPS_IFD_Pointer', 'GPSLongitude'),
         'LongitudeRef' => $exif->rawData('GPS_IFD_Pointer', 'GPSLongitudeRef')
       ]
+    );
+  }
+
+  #[Test, Values(from: 'timezones')]
+  public function iptc_with_timezone($tz) {
+    Assert::equals(
+      new Date('2011-12-07 14:08:24', $tz),
+      $this->extractFromFile('detailed-iptc-embedded.jpg')->iptcData($tz)->dateCreated
+    );
+  }
+
+  #[Test, Values(from: 'timezones')]
+  public function exif_with_timezone($tz) {
+    Assert::equals(
+      new Date('2001:06:09 15:17:32', $tz),
+      $this->extractFromFile('canon-ixus.jpg', 'exif_org')->exifData($tz)->dateTime
     );
   }
 }

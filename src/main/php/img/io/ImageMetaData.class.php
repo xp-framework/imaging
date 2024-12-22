@@ -85,9 +85,10 @@ class ImageMetaData {
    * Returns an IptcData instance or NULL if this image does not contain 
    * IPTC Data
    * 
+   * @param  ?util.TimeZone $tz
    * @return ?img.util.IptcData
    */
-  public function iptcData() {
+  public function iptcData($tz= null) {
     if (!($seg= $this->segmentsOf(IptcSegment::class))) return null;
 
     $data= new IptcData();
@@ -95,7 +96,12 @@ class ImageMetaData {
 
     // Parse creation date
     if (3 === sscanf($iptc['2#055'][0] ?? '', '%4d%2d%d', $year, $month, $day)) {
-      $created= Date::create($year, $month, $day, 0, 0, 0);
+      if (isset($iptc['2#060'])) {
+        sscanf($iptc['2#060'][0], '%2d%2d%2d', $hour, $minute, $second);
+      } else {
+        $hour= $minute= $second= 0;
+      }
+      $created= Date::create($year, $month, $day, $hour, $minute, $second, $tz);
     } else {
       $created= null;
     }
@@ -141,9 +147,10 @@ class ImageMetaData {
    * Returns an ExifData instance or NULL if this image does not contain 
    * EXIF Data
    * 
+   * @param  ?util.TimeZone $tz
    * @return ?img.util.ExifData
    */
-  public function exifData() {
+  public function exifData($tz= null) {
     if (!($seg= $this->segmentsOf(ExifSegment::class))) return null;
 
     // Populate ExifData instance from ExifSegment's raw data
@@ -205,8 +212,7 @@ class ImageMetaData {
       $data->withFlash(self::lookup($exif, 'Flash'));
 
       if (null !== ($date= self::lookup($exif, 'DateTimeOriginal', 'DateTimeDigitized', 'DateTime'))) {
-        $t= sscanf($date, '%4d:%2d:%2d %2d:%2d:%2d');
-        $data->withDateTime(new Date(mktime($t[3], $t[4], $t[5], $t[1], $t[2], $t[0])));
+        $data->withDateTime(new Date($date, $tz));
       }
 
       if (null !== ($o= self::lookup($exif, 'Orientation'))) {

@@ -12,40 +12,16 @@ class MetaDataReaderTest {
   private $fixture;
 
   /**
-   * Returns a file for a classloader resource
+   * Extract meta data from a given resource
    *
    * @param   string $name
-   * @param   string $sub default NULL subpackage
-   * @return  io.File
-   */
-  private function resourceAsFile($name, $sub= null) {
-    $package= typeof($this)->getPackage();
-    $container= $sub ? $package->getPackage($sub) : $package;
-    return $container->getResourceAsStream($name);
-  }
-
-  /**
-   * Extract from file and return the instance
-   *
-   * @param   string $name
-   * @param   string $sub default NULL subpackage
-   * @return  lang.Generic the instance
+   * @param   ?string $sub
+   * @return  img.io.ImageMetaData
    */
   private function extractFromFile($name, $sub= null) {
-    return $this->fixture->read($this->resourceAsFile($name, $sub)->in(), $name);
-  }
-
-  /**
-   * Assertion helper
-   * 
-   * @param  string $type The expected type
-   * @param  int $size The expected size
-   * @param  var $value The value
-   * @throws unittest.AssertionFailedError
-   */
-  private function assertArrayOf($type, $size, $value) {
-    Assert::instance(new ArrayType($type), $value);
-    Assert::equals($size, sizeof($value));
+    $package= typeof($this)->getPackage();
+    $container= $sub ? $package->getPackage($sub) : $package;
+    return $this->fixture->read($container->getResourceAsStream($name)->in(), $name);
   }
 
   /** @return iterable */
@@ -72,12 +48,18 @@ class MetaDataReaderTest {
 
   #[Test]
   public function all_segments() {
-    $this->assertArrayOf(Segment::class, 9, $this->extractFromFile('1x1.jpg')->allSegments());
+    $segments= $this->extractFromFile('1x1.jpg')->allSegments();
+
+    Assert::instance('img.io.Segment[]', $segments);
+    Assert::equals(9, sizeof($segments));
   }
 
   #[Test]
   public function segments_named_dqt() {
-    $this->assertArrayOf(Segment::class, 2, $this->extractFromFile('1x1.jpg')->segmentsNamed('DQT'));
+    $segments= $this->extractFromFile('1x1.jpg')->segmentsNamed('DQT');
+
+    Assert::instance('img.io.Segment[]', $segments);
+    Assert::equals(2, sizeof($segments));
   }
 
   #[Test]
@@ -107,8 +89,8 @@ class MetaDataReaderTest {
   #[Test]
   public function xmp_segment() {
     $segments= $this->extractFromFile('xmp.jpg')->segmentsOf(XMPSegment::class);
-    $this->assertArrayOf(XMPSegment::class, 1, $segments);
 
+    Assert::instance('img.io.XMPSegment[]', $segments);
     Assert::matches('/^<.+/', $segments[0]->source);
     Assert::instance(DOMDocument::class, $segments[0]->document());
   }
@@ -145,16 +127,16 @@ class MetaDataReaderTest {
 
   #[Test]
   public function exif_data_segments() {
-    $this->assertArrayOf(
-      ExifSegment::class, 1, 
+    Assert::instance(
+      'img.io.ExifSegment[]',
       $this->extractFromFile('exif-only.jpg')->segmentsOf(ExifSegment::class)
     );
   }
 
   #[Test]
   public function iptc_data_segments() {
-    $this->assertArrayOf(
-      IptcSegment::class, 1, 
+    Assert::instance(
+      'img.io.IptcSegment[]',
       $this->extractFromFile('iptc-only.jpg')->segmentsOf(IptcSegment::class)
     );
   }
@@ -162,8 +144,8 @@ class MetaDataReaderTest {
   #[Test]
   public function exif_and_iptc_data_segments() {
     $meta= $this->extractFromFile('exif-and-iptc.jpg');
-    $this->assertArrayOf(ExifSegment::class, 1, $meta->segmentsOf(ExifSegment::class));
-    $this->assertArrayOf(IptcSegment::class, 1, $meta->segmentsOf(IptcSegment::class));
+    Assert::instance('img.io.ExifSegment[]', $meta->segmentsOf(ExifSegment::class));
+    Assert::instance('img.io.IptcSegment[]', $meta->segmentsOf(IptcSegment::class));
   }
 
   #[Test]

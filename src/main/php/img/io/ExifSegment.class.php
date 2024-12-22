@@ -1,7 +1,7 @@
 <?php namespace img\io;
 
 use img\util\ExifData;
-
+use util\Objects;
 
 /**
  * APP1: EXIF data meta data segment
@@ -328,7 +328,8 @@ class ExifSegment extends Segment {
     0xA40A => 'Sharpness',
     0xA40B => 'DeviceSettingDescription',
     0xA40C => 'SubjectDistanceRange',
-    0xA420 => 'ImageUniqueID'
+    0xA420 => 'ImageUniqueID',
+    0xA434 => 'LensModel',
   ];
 
   /**
@@ -583,7 +584,7 @@ class ExifSegment extends Segment {
    * @return string
    */
   public function toString() {
-    return nameof($this).'<'.$this->marker.'>'.\xp::stringOf($this->data);
+    return nameof($this).'<'.$this->marker.'>'.Objects::stringOf($this->data);
   }
 
   /**

@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #5: Make it possible to set default time zone for EXIF / IPTC
+  data; see also https://photo.stackexchange.com/questions/96711/
+  (@thekid)
+
 ## 11.0.0 / 2024-03-29
 
 * Removed deprecated global constants `IMG_PALETTE` / `IMG_TRUECOLOR`

@@ -213,7 +213,8 @@ class ImageMetaData {
       $data->withFlash(self::lookup($exif, 'Flash'));
 
       if (null !== ($date= self::lookup($exif, 'DateTimeOriginal', 'DateTimeDigitized', 'DateTime'))) {
-        $data->withDateTime(new Date($date, $tz));
+        sscanf($date, '%d:%d:%d %d:%d:%d', $year, $month, $day, $hour, $minute, $second);
+        $data->withDateTime(Date::create($year, $month, $day, $hour, $minute, $second, $tz));
       }
 
       if (null !== ($o= self::lookup($exif, 'Orientation'))) {

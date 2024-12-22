@@ -4,7 +4,6 @@ use DOMDocument;
 use img\ImagingException;
 use img\io\{Segment, CommentSegment, MetaDataReader, SOFNSegment, XMPSegment, ExifSegment, IptcSegment};
 use img\util\{ExifData, IptcData};
-use lang\ArrayType;
 use test\{Assert, Before, Expect, Test, Values};
 use util\{Date, TimeZone};
 

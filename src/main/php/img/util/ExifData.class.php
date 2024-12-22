@@ -16,6 +16,7 @@ class ExifData implements Value {
     $width            = 0,
     $make             = '',
     $model            = '',
+    $lensModel        = '',
     $flash            = 0,
     $orientation      = 0,
     $fileName         = '',
@@ -76,6 +77,17 @@ class ExifData implements Value {
    */
   public function withModel($model) {
     $this->model= $model;
+    return $this;
+  }
+
+  /**
+   * Set Lens Model
+   *
+   * @param   string model
+   * @return  self
+   */
+  public function withLensModel($lensModel) {
+    $this->lensModel= $lensModel;
     return $this;
   }
 
@@ -375,6 +387,7 @@ class ExifData implements Value {
       "  [file            ] %s (%d bytes)\n".
       "  [make            ] %s\n".
       "  [model           ] %s\n".
+      "  [lensModel       ] %s\n".
       "  [software        ] %s\n".
       "  [flash           ] %d (%s)\n".
       "  [orientation     ] %s (%s, %s)\n".
@@ -395,6 +408,7 @@ class ExifData implements Value {
       $this->fileSize,
       $this->make,
       $this->model,
+      $this->lensModel,
       $this->software,
       $this->flash, 
       $this->flashUsed() ? 'on' : 'off',

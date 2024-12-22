@@ -161,6 +161,7 @@ class ImageMetaData {
 
       $data->withMake(null === ($l= self::lookup($raw, 'Make')) ? null : trim($l));
       $data->withModel(null === ($l= self::lookup($raw, 'Model')) ? null : trim($l));
+      $data->withLensModel(null === ($l= self::lookup($raw, 'LensModel')) ? null : trim($l));
       $data->withSoftware(null === ($l= self::lookup($raw, 'Software')) ? null : trim($l));
 
       $exif= $raw['Exif_IFD_Pointer']['data'];

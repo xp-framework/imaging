@@ -44,12 +44,6 @@ class MetaDataReader {
     "\xfc" => 'JPG12', "\xfd" => 'JPG13', "\xfe" => 'COM',   
   ];
 
-  protected $impl= [
-    'SOF0'  => SOFNSegment::class,    // image width and height
-    'APP1'  => APP1Segment::class,    // Exif, XMP
-    'APP13' => APP13Segment::class,   // IPTC
-    'COM'   => CommentSegment::class
-  ];
 
   /**
    * Returns a segment
@@ -59,8 +53,15 @@ class MetaDataReader {
    * @return img.io.Segment
    */
   protected function segmentFor($marker, $data) {
+    static $impl= [
+      'SOF0'  => SOFNSegment::class,    // image width and height
+      'APP1'  => APP1Segment::class,    // Exif, XMP
+      'APP13' => APP13Segment::class,   // IPTC
+      'COM'   => CommentSegment::class
+    ];
+
     if ($seg= self::$seg[$marker] ?? null) {
-      if ($class= $this->impl[$seg] ?? null) {
+      if ($class= $impl[$seg] ?? null) {
         return $class::read($seg, $data);
       } else {
         return new Segment($seg, $data);

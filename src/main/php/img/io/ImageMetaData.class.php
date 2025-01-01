@@ -164,6 +164,7 @@ class ImageMetaData {
       $data->withSoftware(null === ($l= self::lookup($raw, 'Software')) ? null : trim($l));
 
       $exif= $raw['Exif_IFD_Pointer']['data'];
+      $data->withLensModel(null === ($l= self::lookup($exif, 'LensModel')) ? null : trim($l));
 
       if ($sof= $this->segmentsOf(SOFNSegment::class)) {
         $data->withWidth($sof[0]->width());
@@ -212,7 +213,8 @@ class ImageMetaData {
       $data->withFlash(self::lookup($exif, 'Flash'));
 
       if (null !== ($date= self::lookup($exif, 'DateTimeOriginal', 'DateTimeDigitized', 'DateTime'))) {
-        $data->withDateTime(new Date($date, $tz));
+        sscanf($date, '%d:%d:%d %d:%d:%d', $year, $month, $day, $hour, $minute, $second);
+        $data->withDateTime(Date::create($year, $month, $day, $hour, $minute, $second, $tz));
       }
 
       if (null !== ($o= self::lookup($exif, 'Orientation'))) {

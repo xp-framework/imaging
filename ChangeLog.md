@@ -3,6 +3,11 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 11.1.0 / 2025-01-01
+
+* Merged PR #6: Read lens model and pass it to EXIF data, see
+  https://stackoverflow.com/questions/39929814/exif-data-lensmodel-property
+  (@thekid)
 * Merged PR #5: Make it possible to set default time zone for EXIF / IPTC
   data; see also https://photo.stackexchange.com/questions/96711/
   (@thekid)

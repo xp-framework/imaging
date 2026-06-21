@@ -2,7 +2,7 @@
 
 use img\io\PngStreamReader;
 use img\{Image, ImagingException};
-use io\IOException;
+use io\OperationFailed;
 use io\streams\{InputStream, MemoryInputStream};
 use test\{Expect, Test};
 
@@ -12,7 +12,7 @@ class ImageReaderTest {
   #[Test, Expect(ImagingException::class)]
   public function readError() {
     Image::loadFrom(new PngStreamReader(new class() implements InputStream {
-      public function read($limit= 8192) { throw new IOException('Could not read: Intentional exception'); }
+      public function read($limit= 8192) { throw new OperationFailed('Could not read: Intentional exception'); }
       public function available() { return 1; }
       public function close() { }
     }));

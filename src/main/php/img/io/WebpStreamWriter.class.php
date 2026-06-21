@@ -39,7 +39,7 @@ class WebpStreamWriter extends StreamWriter {
     try {
       return imagewebp($copy, null, $this->quality);
     } finally {
-      imagedestroy($copy);
+      PHP_VERSION_ID <= 80000 && imagedestroy($copy);
     }
   }
 }

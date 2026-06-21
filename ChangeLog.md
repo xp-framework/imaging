@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added compatibility with PHP 8.5 and PHP 8.6 by suppressing calls to
+  the deprecated *imagedestroy()* functionality.
+  (@thekid)
+
 ## 11.1.0 / 2025-01-01
 
 * Merged PR #6: Read lens model and pass it to EXIF data, see

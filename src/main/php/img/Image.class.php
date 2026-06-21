@@ -48,7 +48,7 @@ class Image {
   public function __destruct() {
     if (null === $this->handle) return;
 
-    imagedestroy($this->handle);
+    PHP_VERSION_ID <= 80000 && imagedestroy($this->handle);
     $this->handle= null;
   }
 

@@ -1,8 +1,8 @@
 <?php namespace img\io;
 
 use img\ImagingException;
-use io\{Channel, IOException};
 use io\streams\{InputStream, Streams};
+use io\{Channel, OperationFailed};
 use lang\IllegalArgumentException;
 
 /**
@@ -78,7 +78,7 @@ class StreamReader implements ImageReader {
     $f= $this->reader;
     try {
       return $f($this, $this->stream);
-    } catch (IOException $e) {
+    } catch (OperationFailed $e) {
       throw new ImagingException($e->getMessage());
     }
   }

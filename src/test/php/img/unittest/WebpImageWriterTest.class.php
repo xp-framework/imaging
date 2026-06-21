@@ -2,7 +2,7 @@
 
 use img\ImagingException;
 use img\io\WebpStreamWriter;
-use io\IOException;
+use io\OperationFailed;
 use io\streams\{MemoryOutputStream, OutputStream};
 use test\{Assert, Expect, Test};
 
@@ -12,7 +12,7 @@ class WebpImageWriterTest extends AbstractImageWriterTest {
   #[Test, Expect(ImagingException::class)]
   public function write_error() {
     $this->image->saveTo(new WebpStreamWriter(new class() implements OutputStream {
-      public function write($arg) { throw new IOException('Could not write: Intentional exception'); }
+      public function write($arg) { throw new OperationFailed('Could not write: Intentional exception'); }
       public function flush() { }
       public function close() { }
     }));

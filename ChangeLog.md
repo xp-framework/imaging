@@ -3,7 +3,7 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
-## 11.2.0 / 2025-01-01
+## 11.2.0 / 2026-06-21
 
 * Merged PR #7: Refactor I/O exceptions, dropping XP 10 support in the
   doing. See xp-framework/core#363 for a write-up on the reason behind

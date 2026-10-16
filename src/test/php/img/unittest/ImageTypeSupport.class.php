@@ -32,7 +32,7 @@ class ImageTypeSupport implements Verification {
     $supported= imagetypes();
     foreach ($this->types as $type) {
       yield new Assertion(
-        $supported & constant('IMG_'.strtoupper($type)),
+        $supported & defined('IMG_'.strtoupper($type)),
         new Verify('Image type "'.$type.'" is supported')
       );
     }

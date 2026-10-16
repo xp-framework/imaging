@@ -3,6 +3,10 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 11.3.0 / 2026-10-16
+
+* Merged PR #8: Add AVIF support, added in PHP 8.1.0 - @thekid
+
 ## 11.2.0 / 2026-06-21
 
 * Merged PR #7: Refactor I/O exceptions, dropping XP 10 support in the

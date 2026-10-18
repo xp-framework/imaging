@@ -329,7 +329,9 @@ class ExifSegment extends Segment {
     0xA40B => 'DeviceSettingDescription',
     0xA40C => 'SubjectDistanceRange',
     0xA420 => 'ImageUniqueID',
+    0xA432 => 'LensInfo',
     0xA434 => 'LensModel',
+    0xA435 => 'LensSerialNumber',
   ];
 
   /**
@@ -538,7 +540,7 @@ class ExifSegment extends Segment {
             $definitions['tags'], 
             isset($definitions['format']) ? self::$pack[$definitions['format']] : $format
           );
-          // DEBUG Console::writeLine($definitions['name'], ': ', $entry['data'], ' @ ', $read, ': ', new Bytes($makernote));
+          // \util\cmd\Console::writeLine($definitions['name'], ': ', $entry['data'], ' @ ', $read, ': ', new Bytes($makernote));
           break;
         }
       } else if (isset($tags[$entry['tag']])) {

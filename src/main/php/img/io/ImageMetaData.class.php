@@ -164,7 +164,21 @@ class ImageMetaData {
       $data->withSoftware(null === ($l= self::lookup($raw, 'Software')) ? null : trim($l));
 
       $exif= $raw['Exif_IFD_Pointer']['data'];
-      $data->withLensModel(null === ($l= self::lookup($exif, 'LensModel')) ? null : trim($l));
+
+      // Use model, or make + " " + info, or make
+      if ($l= self::lookup($exif, 'LensModel')) {
+        $data->withLensModel(trim($l));
+      } else if ($l= self::lookup($exif, 'LensInfo')) {
+        $r= explode('/', $l); // LensSpecification: 18/1/200/1/0/1/0/1
+        $data->withLensModel(trim(sprintf(
+          '%s %.0F-%.0Fmm',
+          self::lookup($exif, 'LensMake'),
+          $r[0] / $r[1],
+          $r[2] / $r[3]
+        )));
+      } else if ($l= self::lookup($exif, 'LensMake')) {
+        $data->withLensModel(trim($l));
+      }
 
       if ($sof= $this->segmentsOf(SOFNSegment::class)) {
         $data->withWidth($sof[0]->width());

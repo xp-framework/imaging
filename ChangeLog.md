@@ -3,6 +3,11 @@ Imaging APIs for the XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 11.4.0 / 2026-10-25
+
+* Use EXIF `LensMake` and `LensInfo` if `LensModel` is not available
+  (@thekid)
+
 ## 11.3.0 / 2026-10-16
 
 * Merged PR #8: Add AVIF support, added in PHP 8.1.0 - @thekid

@@ -330,6 +330,7 @@ class ExifSegment extends Segment {
     0xA40C => 'SubjectDistanceRange',
     0xA420 => 'ImageUniqueID',
     0xA432 => 'LensInfo',
+    0xA433 => 'LensMake',
     0xA434 => 'LensModel',
     0xA435 => 'LensSerialNumber',
   ];
@@ -405,7 +406,7 @@ class ExifSegment extends Segment {
     ];
     static $sub= [
       0x8769 => true,           // Exif_IFD_Pointer, inherit tags
-      0x8825 => [          // GPS_IFD_Pointer, defines own tags
+      0x8825 => [               // GPS_IFD_Pointer, defines own tags
         0x0000 => 'GPSVersion',
         0x0001 => 'GPSLatitudeRef',
         0x0002 => 'GPSLatitude',

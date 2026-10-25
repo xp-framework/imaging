@@ -4,6 +4,7 @@ use DOMDocument;
 use img\ImagingException;
 use img\io\{Segment, CommentSegment, MetaDataReader, SOFNSegment, XMPSegment, ExifSegment, IptcSegment};
 use img\util\{ExifData, IptcData};
+use lang\ClassLoader;
 use test\{Assert, Before, Expect, Test, Values};
 use util\{Date, TimeZone};
 
@@ -18,9 +19,8 @@ class MetaDataReaderTest {
    * @return  img.io.ImageMetaData
    */
   private function extractFromFile($name, $sub= null) {
-    $package= typeof($this)->getPackage();
-    $container= $sub ? $package->getPackage($sub) : $package;
-    return $this->fixture->read($container->getResourceAsStream($name)->in(), $name);
+    $file= ClassLoader::getDefault()->getResourceAsStream('img/unittest/'.($sub ? $sub.'/'.$name : $name));
+    return $this->fixture->read($file->in(), $name);
   }
 
   /** @return iterable */
